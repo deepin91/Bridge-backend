@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="movie.mapper.LoginMapper">
+	<select id="login" parameterType="movie.dto.LoginDto" resultType="movie.dto.UserDto">
+		select user_id, user_password, user_name, user_email,phone_number 
+		  from users
+		 where user_id = #{userId} and user_password = #{userPassword}
+	</select>
+		<select id="selectUserByUserId" parameterType="String" resultType="movie.dto.UserDto">
+		select user_id, user_password, user_name, user_email,phone_number
+		  from users
+		 where user_id = #{userId}
+	</select>
+	
+	<insert id ="registUser" parameterType="movie.dto.UserDto">
+		insert into users (user_id, user_password, user_name, user_email,phone_number)
+		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},#{phoneNumber})
+	</insert>
+
+
+</mapper>
