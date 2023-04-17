@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bridge.mapper.ComposerRequestMapper">
+	<select id="selectUserInfo" resultType="bridge.dto.ComposerRequestDto">
+		select user_id, userNickname
+		from users
+	</select>
+	<select id="ctr"  resultType="bridge.dto.ComposerRequestDto">
+		select crt_idx, crt_tag, cr_idx
+		from composer_request_tag
+		where crt_idx = 
+	</select>
+</mapper>
