@@ -11,13 +11,13 @@ import bridge.dto.UserDto;
 import bridge.service.LoginService;
 
 @RestController
-
 public class RestLoginApiController {
 	@Autowired
 	private LoginService loginService;
 	
 	@PostMapping("/api/regist")
 	public ResponseEntity<Object> regist(@RequestBody UserDto userDto) throws Exception {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
 		int registedCount = loginService.registUser(userDto);
 		if (registedCount > 0) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(registedCount);

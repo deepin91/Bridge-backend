@@ -3,20 +3,19 @@
 
 <mapper namespace="bridge.mapper.LoginMapper">
 	<select id="login" parameterType="bridge.dto.LoginDto" resultType="bridge.dto.UserDto">
-		select user_id, user_password, user_name, user_email,phone_number 
+		select user_id, user_password, user_name, user_email, user_phone_number, user_point, user_halted, report_count, user_nickname
 		  from users
 		 where user_id = #{userId} and user_password = #{userPassword}
 	</select>
-		<select id="selectUserByUserId" parameterType="String" resultType="bridge.dto.UserDto">
-		select user_id, user_password, user_name, user_email,phone_number
+
+	<select id="selectUserByUserId" parameterType="String" resultType="bridge.dto.UserDto">
+		select user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count, user_nickname
 		  from users
 		 where user_id = #{userId}
 	</select>
 	
 	<insert id ="registUser" parameterType="bridge.dto.UserDto">
-		insert into users (user_id, user_password, user_name, user_email,phone_number)
-		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},#{phoneNumber})
+		insert into users (user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count,user_nickname)
+		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},#{userPhoneNumber},#{userPoint},#{userHalted},#{reportCount},#{userNickname})
 	</insert>
-
-
 </mapper>

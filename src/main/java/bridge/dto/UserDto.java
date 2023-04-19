@@ -8,5 +8,9 @@ public class UserDto {
 	private String userPassword;
 	private String userName;
 	private String userEmail;
-	private String phoneNumber;
+	private String userPhoneNumber;
+	private int userPoint;
+	private boolean userHalted;
+	private int reportCount;
+	private String userNickname;
 }
