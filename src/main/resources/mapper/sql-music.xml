@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bridge.mapper.BridgeMapper">
+	<!-- 잼 음악 insert, get -->
+	<insert id="insertMusic" parameterType="bridge.dto.MusicDto">
+		insert into t_music
+		(musicUUID, music_title)
+		values (#{musicUUID}, #{musicTitle})
+	</insert>
+
+	<select id="getMusic" resultType="bridge.dto.MusicDto">
+		select musicUUID, music_title
+		from t_music
+	</select>
+	
+	<select id="getSplitedMusic" resultType="bridge.dto.MusicDto">
+		select musicUUID
+		from t_music
+	</select>
+
+	<!-- 코맨트 관련 -->
+	<insert id="insertComments" parameterType="bridge.dto.CommentsDto">
+		insert into t_comments
+		(cc_comments, user_id, c_idx, c_date)
+		values (#{ccComments}, #{userId},
+		#{cIdx}, now())
+	</insert>
+
+	<select id="selectCommentsList"
+		resultType="bridge.dto.CommentsDto" parameterType="int">
+		select cc_idx,
+		cc_comments, user_id, c_date
+		from t_comments
+		where c_idx=#{cIdx} and
+		deleted_yn='N'
+	</select>
+
+	<update id="updateComments"
+		parameterType="bridge.dto.CommentsDto">
+		update t_comments
+		set cc_comments = #{ccComments},
+		user_id=#{userId}
+		where cc_idx = #{ccIdx}
+	</update>
+
+	<delete id="deleteComments" parameterType="int">
+		update t_comments
+		set
+		deleted_yn = 'Y'
+		where cc_idx = #{ccIdx}
+	</delete>
+
+
+	<!-- 얜 무시 -->
+	<select id="selectMusic" resultType="String">
+		select music_title
+		from
+		t_music
+		where musicUUID = #{musicUUID}
+	</select>
+</mapper>  
