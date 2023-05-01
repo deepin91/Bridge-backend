@@ -6,6 +6,7 @@ import lombok.Data;
 public class MusicDto {
 
 	private String musicTitle;
-	private int musicIdx;
+	private int cIdx;
+	private int cmIdx;
 	private String musicUUID;
 }

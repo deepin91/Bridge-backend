@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.MusicDto;
+import bridge.dto.ReportDto;
+import bridge.dto.UserDto;
 import bridge.mapper.BridgeMapper;
 
 @Service
@@ -47,4 +50,30 @@ public class BridgeServiceImpl implements BridgeService {
 	public String selectMusic(String musicUUID) throws Exception {
 		return bridgeMapper.selectMusic(musicUUID);
 	}
+
+	@Override
+	public int insertReport(ReportDto reportDto) {
+		return bridgeMapper.insertReport(reportDto);
+	}
+
+	@Override
+	public List<AnnouncementDto> announcementList() {
+		return bridgeMapper.announcementList();
+	}
+
+	@Override
+	public AnnouncementDto announcementDetail(int aIdx) {
+		return bridgeMapper.announcementDetail(aIdx);
+	}
+
+	@Override
+	public UserDto chargePoint(String userId) {
+		return bridgeMapper.chargePoint(userId);
+	}
+
+	@Override
+	public int doCharge(UserDto userDto) {
+		return bridgeMapper.doCharge(userDto);
+	}
+
 }

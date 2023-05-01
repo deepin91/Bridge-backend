@@ -5,25 +5,29 @@
 <mapper namespace="bridge.mapper.BridgeMapper">
 	<!-- 잼 음악 insert, get -->
 	<insert id="insertMusic" parameterType="bridge.dto.MusicDto">
-		insert into t_music
-		(musicUUID, music_title)
-		values (#{musicUUID}, #{musicTitle})
+		insert into concert_music
+		(musicUUID, music_title, c_idx)
+		values (#{musicUUID}, #{musicTitle},
+		#{cIdx})
 	</insert>
 
 	<select id="getMusic" resultType="bridge.dto.MusicDto">
 		select musicUUID, music_title
-		from t_music
+		from concert_music
 	</select>
-	
+
 	<select id="getSplitedMusic" resultType="bridge.dto.MusicDto">
 		select musicUUID
-		from t_music
+		from
+		concert_music
 	</select>
 
 	<!-- 코맨트 관련 -->
-	<insert id="insertComments" parameterType="bridge.dto.CommentsDto">
-		insert into t_comments
-		(cc_comments, user_id, c_idx, c_date)
+	<insert id="insertComments"
+		parameterType="bridge.dto.CommentsDto">
+		insert into concert_comments
+		(cc_comments, user_id,
+		c_idx, c_date)
 		values (#{ccComments}, #{userId},
 		#{cIdx}, now())
 	</insert>
@@ -32,32 +36,74 @@
 		resultType="bridge.dto.CommentsDto" parameterType="int">
 		select cc_idx,
 		cc_comments, user_id, c_date
-		from t_comments
-		where c_idx=#{cIdx} and
+		from concert_comments
+		where c_idx=#{cIdx}
+		and
 		deleted_yn='N'
 	</select>
 
 	<update id="updateComments"
 		parameterType="bridge.dto.CommentsDto">
-		update t_comments
+		update concert_comments
 		set cc_comments = #{ccComments},
 		user_id=#{userId}
 		where cc_idx = #{ccIdx}
 	</update>
 
 	<delete id="deleteComments" parameterType="int">
-		update t_comments
+		update
+		concert_comments
 		set
 		deleted_yn = 'Y'
 		where cc_idx = #{ccIdx}
 	</delete>
 
+	<!-- 신고 작성 -->
+	<insert id="insertReport" parameterType="bridge.dto.ReportDto">
+		insert into report
+		(report_reason, report_reason_detail, user_id, reported_user_id)
+		values (#{reportReason}, #{reportReasonDetail}, #{userId},
+		#{reportedUserId})
+	</insert>
+
+<!-- 공지 리스트 출력 -->
+	<select id="announcementList"
+		resultType="bridge.dto.AnnouncementDto">
+		select a_idx, a_title, a_contents, a_date 
+		from announcement
+		where deleted_yn='N'
+	</select>
+	
+	<!-- 특정 공지 -->
+	<select id="announcementDetail"
+		resultType="bridge.dto.AnnouncementDto" parameterType="int">
+		select a_idx,
+		a_title, a_contents, a_date
+		from announcement
+		where a_idx=#{aIdx}
+		and
+		deleted_yn='N'
+	</select>
+	
+	<!-- 포인트 충전 -->
+	<select id="chargePoint" resultType="bridge.dto.UserDto">
+		select user_point, user_id
+		from users
+		where user_id=#{userId}
+	</select>
+	
+	<update id="doCharge" parameterType="bridge.dto.UserDto">
+		update users
+		set user_point = #{userPoint}
+		where user_id = #{userId}
+	</update>
+	
 
 	<!-- 얜 무시 -->
 	<select id="selectMusic" resultType="String">
 		select music_title
 		from
-		t_music
+		concert_music
 		where musicUUID = #{musicUUID}
 	</select>
 </mapper>  
