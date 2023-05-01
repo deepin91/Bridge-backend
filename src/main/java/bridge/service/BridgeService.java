@@ -32,7 +32,7 @@ public interface BridgeService {
 	//포인트 충전
 	public UserDto chargePoint(String userId);
 
-	public int doCharge(UserDto userDto);
+//	public int doCharge(UserDto userDto);
 
 
 }

@@ -1,76 +1,70 @@
 package bridge.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.RestController;
 
 import bridge.dto.ApproveResponseDto;
 import bridge.dto.ReadyResponseDto;
+import bridge.dto.UserDto;
 import bridge.service.KakaoPayService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @Slf4j
-//@SessionAttributes("tid") 
+@RequiredArgsConstructor
 public class KakaoPayController {
-	// 카카오페이
-	// , Order order, Model model
+
 	@Autowired
 	private KakaoPayService kakaopayService;
+	
+	@GetMapping("/order/pay/{totalAmount}/{userId}")
+	public @ResponseBody ReadyResponseDto payReady(@PathVariable("totalAmount") int totalAmount, Model model, @PathVariable("userId") String userId) {
+//		UserDto userDto = (UserDto) authentication.getPrincipal();
+		UserDto userDto = new UserDto();
+		userDto.setUserId(userId);
+		ReadyResponseDto readyResponse = kakaopayService.payReady(totalAmount,userDto);
+		model.addAttribute("tid", readyResponse.getTid());
+		model.addAttribute("partner_order_id", readyResponse.getPartner_order_id());
 
-	@GetMapping("/order/pay")
-	public @ResponseBody ReadyResponseDto payReady(@RequestParam(name = "total_amount") int totalAmount, Model model) {
-		log.info("주문가격:" + totalAmount);
-		// 카카오 결제 준비하기 - 결제요청 service 실행.
-		ReadyResponseDto readyResponse = kakaopayService.payReady(totalAmount);
-		// 요청처리후 받아온 결재고유 번호(tid)를 모델에 저장
-		model.addAttribute("tid", readyResponse.getTid());	
-
-//		this.tid = readyResponse.getTid();
 		log.info("11111111111결재고유 번호: " + readyResponse.getTid());
-		// Order정보를 모델에 저장
-//		model.addAttribute("order", order);
+		log.info("22222222222파트너: " + readyResponse.getPartner_order_id());
+		log.info("33333333333333"+readyResponse.getCreated_at());
 		
-
-		return readyResponse; // 클라이언트에 보냄.(tid,next_redirect_pc_url이 담겨있음.)
+		return readyResponse;
 	}
 
 
-//	private String tid = "";
-
 	@GetMapping("/order/pay/completed")
-	public String payCompleted(@RequestParam("pg_token") String pgToken,@ModelAttribute("tid") String tid) {
-
-		
+	public void payCompleted(@RequestParam("pg_token") String pgToken, HttpServletResponse response) throws IOException{
 		log.info("22222222222222결제승인 요청을 인증하는 토큰: " + pgToken);
-//		log.info("주문정보: " + order);		
 
-		// String tid = "";
-//		log.info("tid >>>>>>>>>>>" + this.tid);
-		// 추가
-//		model.addAttribute("info",  kakaopayService.payApprove(pgToken));
+		ApproveResponseDto approveResponse = kakaopayService.payApprove(pgToken);
+		System.out.println(">>>>>>>>>>>>>>>>>>" + approveResponse);
 
-		// 카카오 결제 요청하기
-		ApproveResponseDto approveResponse = kakaopayService.payApprove(pgToken, tid);
+		response.sendRedirect("http://localhost:3000/19");
+	}
 
-		// 5. payment 저장
-		// orderNo, payMathod, 주문명.
-		// - 카카오 페이로 넘겨받은 결재정보값을 저장.
-//		Payment payment = Payment.builder() 
-//				.paymentClassName(approveResponse.getItem_name())
-//				.payMathod(approveResponse.getPayment_method_type())
-//				.payCode(tid)
-//				.build();
-//		
-//		orderService.saveOrder(payment);
+//	@GetMapping("/test1")
+//	public void test()  {
+//		response.sendRedirect("http://localhost:3000/1");
+//	}
 
-		return "redirect:/api/announcementList";
-//		return 
+	@GetMapping("/order/pay/cancel")
+	public String payCancel() {
+		return "결제취소";
 	}
 
 	// 결제 실패시 실행 url
@@ -78,4 +72,11 @@ public class KakaoPayController {
 	public String payFail() {
 		return "redirect:/order/pay";
 	}
+	
+//	@GetMapping("/test")
+//	public ResponseEntity<String> test (Authentication authentication) {
+//		UserDto userDto = (UserDto) authentication.getPrincipal();
+//		return ResponseEntity.status(HttpStatus.OK).body(userDto.getUserId());
+//	
+//	}
 }

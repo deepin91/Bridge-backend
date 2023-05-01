@@ -71,9 +71,9 @@ public class BridgeServiceImpl implements BridgeService {
 		return bridgeMapper.chargePoint(userId);
 	}
 
-	@Override
-	public int doCharge(UserDto userDto) {
-		return bridgeMapper.doCharge(userDto);
-	}
+//	@Override
+//	public int doCharge(UserDto userDto) {
+//		return bridgeMapper.doCharge(userDto);
+//	}
 
 }

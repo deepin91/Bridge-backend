@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import bridge.dto.AnnouncementDto;
+import bridge.dto.ApproveResponseDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.KakaopayDto;
 import bridge.dto.MusicDto;
@@ -37,7 +38,7 @@ public interface BridgeMapper {
 	//포인트 충전
 	UserDto chargePoint(String userId);
 
-	int doCharge(UserDto userDto);
+	int doCharge(ApproveResponseDto approveResponse);
 
 
 }

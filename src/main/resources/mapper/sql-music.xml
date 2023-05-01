@@ -94,8 +94,8 @@
 	
 	<update id="doCharge" parameterType="bridge.dto.UserDto">
 		update users
-		set user_point = #{userPoint}
-		where user_id = #{userId}
+		set user_point = user_point + #{money}
+		where user_id = #{partner_user_id}
 	</update>
 	
 

@@ -18,5 +18,7 @@ public class ApproveResponseDto {
 	private String created_at; // 결제 요청 시간
 	private String approved_at; // 결제 승인 시간
 	private String payload; // 결제 승인요청에 대한 저장값, 요청시 전달 내용
+	private int money;
 //	private Amount amount;
+//	private String userId;
 }

@@ -424,21 +424,21 @@ public class RestApiController {
 		}
 	}
 
-	@PostMapping("/api/doCharge/{userId}")
-	public ResponseEntity<String> doCharge(@PathVariable("userId") String userId, @RequestBody UserDto userDto)
-			throws Exception {
-		try {
-			userDto.setUserId(userId);
-			int updatedCount = bridgeService.doCharge(userDto);
-			if (updatedCount != 1) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("충전에 실패했습니다");
-			} else {
-				return ResponseEntity.status(HttpStatus.OK).body("포인트가 충전되었습니다");
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("포인트 충전 오류 발생");
-		}
-	}
+//	@PostMapping("/api/doCharge/{userId}")
+//	public ResponseEntity<String> doCharge(@PathVariable("userId") String userId, @RequestBody UserDto userDto)
+//			throws Exception {
+//		try {
+//			userDto.setUserId(userId);
+////			int updatedCount = bridgeService.doCharge(userDto);
+//			if (updatedCount != 1) {
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("충전에 실패했습니다");
+//			} else {
+//				return ResponseEntity.status(HttpStatus.OK).body("포인트가 충전되었습니다");
+//			}
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("포인트 충전 오류 발생");
+//		}
+//	}
 
 
 
