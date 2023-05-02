@@ -17,7 +17,11 @@
 
 	<!-- 로그를 출력하는 요소로 name 속성에 지정된 패키지 이하에 level 속성을 통해서
 		 출력할 로그의 레벨을 조절하여 appender에 전달 -->
-	<!--   <logger name="board" level="DEBUG" appender-ref="console" />
+
+
+<!-- 
+	<logger name="bridge" level="DEBUG" appender-ref="console" />
+
 	
 	<logger name="jdbc.sqlonly" level="INFO" appender-ref="console" />
 	<logger name="jdbc.resultsettable" level="INFO" appender-ref="console" />

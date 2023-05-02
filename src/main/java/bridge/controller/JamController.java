@@ -22,7 +22,7 @@ public class JamController {
 			throws Exception {
 		UserDto userDto = (UserDto) authentication.getPrincipal();
 		tipDto.setUserId(userDto.getUserId());
-		int registedCount = tipService.insertTip(tipDto);
+//		int registedCount = tipService.insertTip(tipDto);
 		if (registedCount > 0) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(registedCount);
 		} else {
