@@ -45,4 +45,9 @@ public class LoginServiceImpl implements LoginService {
 		}
 		return new User(userDto.getUserId(),userDto.getUserPassword(),true,true,true,true,new ArrayList<>());
 	}
+
+	@Override
+	public UserDto getloginDto(UserDto userDto) {
+		return loginMapper.getloginDto(userDto);
+	}
 }

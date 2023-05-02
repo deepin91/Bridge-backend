@@ -8,4 +8,5 @@ import bridge.dto.UserDto;
 public interface LoginService extends UserDetailsService {
 	public UserDto login(LoginDto loginDto) throws Exception;
 	public int registUser(UserDto userDto) throws Exception;
+	public UserDto getloginDto(UserDto userDto);
 }

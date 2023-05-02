@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @Slf4j
 public class LoggerAspect {
-	@Pointcut("execution(* tantara..controller.*Controller.*(..)) || execution(* tantara..service.*ServiceImpl.*(..)) || execution(* tantara..mapper.*Mapper.*(..))")
+	@Pointcut("execution(* bridge..controller.*Controller.*(..)) || execution(* bridge..service.*ServiceImpl.*(..)) || execution(* bridge..mapper.*Mapper.*(..))")
 	private void loggerTarget() {}
 	
 	@Around("loggerTarget()")
