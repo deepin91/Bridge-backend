@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.MusicDto;
 import bridge.dto.ReportDto;
 import bridge.dto.UserDto;
+import bridge.dto.UserProfileDto;
 import bridge.mapper.BridgeMapper;
 
 @Service
@@ -69,6 +71,26 @@ public class BridgeServiceImpl implements BridgeService {
 	@Override
 	public UserDto chargePoint(String userId) {
 		return bridgeMapper.chargePoint(userId);
+	}
+
+	@Override
+	public List<ReportDto> openReportList() {
+		return bridgeMapper.openReportList();
+	}
+
+	@Override
+	public ReportDto openReportDetail(int reportIdx) {
+		return bridgeMapper.openReportDetail(reportIdx);
+	}
+
+	@Override
+	public void handleReport(UserDto userDto) {
+		bridgeMapper.handleReport(userDto);	
+	}
+
+	@Override
+	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files) {
+		return bridgeMapper.insertProfile(userProfileDto);
 	}
 
 //	@Override
