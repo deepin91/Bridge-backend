@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import bridge.dto.LoginDto;
 import bridge.dto.UserDto;
-import bridge.dto.UsersDto;
 import bridge.mapper.LoginMapper;
 
 @Service
@@ -54,8 +53,8 @@ public class LoginServiceImpl implements LoginService {
 
 	// 외부 로그인
 	@Override
-	public UsersDto passInformation(UsersDto usersDto) throws Exception {
-		return loginMapper.passInformation(usersDto);
+	public UserDto passInformation(UserDto userDto) throws Exception {
+		return loginMapper.passInformation(userDto);
 	}
 
 	@Override

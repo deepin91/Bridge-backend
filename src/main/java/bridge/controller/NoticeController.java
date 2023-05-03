@@ -2,6 +2,7 @@ package bridge.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
-@Controller
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NoticeController {
 

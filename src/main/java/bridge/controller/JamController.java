@@ -41,6 +41,7 @@ public class JamController {
 //		}
 //		
 //	}
+	
 	@PostMapping("/api/insertjam")
 	public ResponseEntity<Integer> insertTip(
 			@RequestPart(value = "data", required = false) ConcertDto concertDto,

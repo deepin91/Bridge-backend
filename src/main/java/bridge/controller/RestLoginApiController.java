@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import bridge.dto.LoginDto;
 import bridge.dto.UserDto;
-import bridge.dto.UsersDto;
 import bridge.security.JwtTokenUtil;
 import bridge.service.LoginService;
 
@@ -58,10 +56,8 @@ public class RestLoginApiController {
 
 	// 외부 로그인
 	@PostMapping("/api/bridge/pass/login")
-	public void loginPass(@RequestBody UsersDto usersDto, HttpServletResponse response) throws Exception {
-
-		//
-		UsersDto usersDto1 = loginService.passInformation(usersDto);
+	public void loginPass(@RequestBody UserDto usersDto, HttpServletResponse response) throws Exception {
+		UserDto usersDto1 = loginService.passInformation(usersDto);
 		String jwtToken = jwtTokenUtil.generateToken(usersDto1);
 		response.setHeader("token", jwtToken);
 		response.getWriter().write(jwtToken);
