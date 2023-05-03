@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<<<<<<< HEAD
 <mapper namespace="project.mapper.LoginMapper">
 	<select id="login" parameterType="project.dto.LoginDto" resultType="project.dto.UsersDto">
 		select user_id, user_pw, user_name, user_email,user_phone_number 
@@ -9,10 +10,22 @@
 	</select>
 		<select id="selectUserByUserId" parameterType="String" resultType="project.dto.UsersDto">
 		select user_id, user_pw, user_name, user_email,user_phone_number
+=======
+<mapper namespace="bridge.mapper.LoginMapper">
+	<select id="login" parameterType="bridge.dto.LoginDto" resultType="bridge.dto.UserDto">
+		select user_id, user_password, user_name, user_email, user_phone_number, user_point, user_halted, report_count, user_nickname
+		  from users
+		 where user_id = #{userId} and user_password = #{userPassword}
+	</select>
+
+	<select id="selectUserByUserId" parameterType="String" resultType="bridge.dto.UserDto">
+		select user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count, user_nickname
+>>>>>>> 31765cb19e96f4367fb49bb9e81ce33b7ac7dc24
 		  from users
 		 where user_id = #{userId}
 	</select>
 	
+<<<<<<< HEAD
 	<insert id ="registUser" parameterType="project.dto.UsersDto">
 		insert into users (user_id, user_pw, user_name, user_nickname, user_phone_number, user_email)
 		values (#{userId}, #{userPw}, #{userName}, #{userNickName}, #{userPhoneNumber}, #{userEmail})
@@ -31,4 +44,15 @@
 		where user_id = #{userId}
 	</select>
 
+=======
+	<insert id ="registUser" parameterType="bridge.dto.UserDto">
+		insert into users (user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count,user_nickname)
+		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},#{userPhoneNumber},#{userPoint},#{userHalted},#{reportCount},#{userNickname})
+	</insert>
+	<select id ="getloginDto" parameterType="bridge.dto.UserDto" resultType="bridge.dto.UserDto">
+		select * 
+		from users
+		where user_phone_number = #{userPhoneNumber} and user_name = #{userName}
+	</select>
+>>>>>>> 31765cb19e96f4367fb49bb9e81ce33b7ac7dc24
 </mapper>
