@@ -2,11 +2,14 @@ package bridge.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.MusicDto;
 import bridge.dto.ReportDto;
 import bridge.dto.UserDto;
+import bridge.dto.UserProfileDto;
 
 public interface BridgeService {
 
@@ -22,7 +25,9 @@ public interface BridgeService {
 
 	public void deleteComments(int ccIdx);
 
+	//신고
 	public int insertReport(ReportDto reportDto);
+	public List<ReportDto> openReportList();
 
 	//공지 
 	public List<AnnouncementDto> announcementList();
@@ -31,6 +36,13 @@ public interface BridgeService {
 
 	//포인트 충전
 	public UserDto chargePoint(String userId);
+
+	public ReportDto openReportDetail(int reportIdx);
+
+	public void handleReport(UserDto userDto);
+
+	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files);
+
 
 //	public int doCharge(UserDto userDto);
 

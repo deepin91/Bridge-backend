@@ -11,6 +11,7 @@ import bridge.dto.KakaopayDto;
 import bridge.dto.MusicDto;
 import bridge.dto.ReportDto;
 import bridge.dto.UserDto;
+import bridge.dto.UserProfileDto;
 
 @Mapper
 public interface BridgeMapper {
@@ -30,6 +31,9 @@ public interface BridgeMapper {
 
 	//신고 작성
 	int insertReport(ReportDto reportDto);
+	void plusReportCount(String reportedUserId);
+	//신고 리스트
+	List<ReportDto> openReportList();
 	
 	//공지 리스트
 	List<AnnouncementDto> announcementList();
@@ -39,6 +43,16 @@ public interface BridgeMapper {
 	UserDto chargePoint(String userId);
 
 	int doCharge(ApproveResponseDto approveResponse);
+
+	ReportDto openReportDetail(int reportIdx);
+
+	void handleReport(UserDto userDto);
+
+	int selectReportCount(String userId);
+
+	int insertProfile(UserProfileDto userProfileDto);
+
+	
 
 
 }

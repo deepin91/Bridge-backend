@@ -37,6 +37,7 @@ import bridge.dto.CommentsDto;
 import bridge.dto.MusicDto;
 import bridge.dto.ReportDto;
 import bridge.dto.UserDto;
+import bridge.mapper.BridgeMapper;
 import bridge.service.BridgeService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,6 +53,9 @@ public class RestApiController {
 
 	@Autowired
 	private BridgeService bridgeService;
+	
+	@Autowired
+	private BridgeMapper bridgeMapper;
 
 	
 
@@ -322,6 +326,7 @@ public class RestApiController {
 
 			insertedCount = bridgeService.insertReport(reportDto);
 			if (insertedCount > 0) {
+				bridgeMapper.plusReportCount(reportedUserId);
 				Map<String, Object> result = new HashMap<>();
 				result.put("message", "정상적으로 등록되었습니다.");
 				result.put("reportedUserId", reportDto.getReportedUserId());
@@ -364,6 +369,7 @@ public class RestApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(announcementDto);
 		}
 	}
+	
 
 	// 유저 포인트 충전
 	@GetMapping("/api/chargePoint/{userId}")
@@ -376,21 +382,9 @@ public class RestApiController {
 		}
 	}
 
-//	@PostMapping("/api/doCharge/{userId}")
-//	public ResponseEntity<String> doCharge(@PathVariable("userId") String userId, @RequestBody UserDto userDto)
-//			throws Exception {
-//		try {
-//			userDto.setUserId(userId);
-////			int updatedCount = bridgeService.doCharge(userDto);
-//			if (updatedCount != 1) {
-//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("충전에 실패했습니다");
-//			} else {
-//				return ResponseEntity.status(HttpStatus.OK).body("포인트가 충전되었습니다");
-//			}
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("포인트 충전 오류 발생");
-//		}
-//	}
+	//유저간 포인트 결제
+//	@GetMappingn("/api/paymentPoint/{userId1}/{userId2}")
+//	public ResponseEntity<PartnerPaymentDto> 
 
 
 
