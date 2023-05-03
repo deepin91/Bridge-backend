@@ -53,52 +53,7 @@ public class RestApiController {
 	@Autowired
 	private BridgeService bridgeService;
 
-	// 잼 음원 등록
-	@PostMapping("/api/insertmusic/{cIdx}")
-	public ResponseEntity<Map<String, Object>> insertMusic(@PathVariable("cIdx") int cIdx,
-			@RequestPart(value = "files", required = false) MultipartFile[] files) throws Exception {
-		String UPLOAD_PATH = "C:\\Temp\\";
-		int insertedCount = 0;
-		String uuid = UUID.randomUUID().toString();
-		List<String> fileNames = new ArrayList<>();
-
-		Map<String, Object> result = new HashMap<>();
-
-		try {
-			for (MultipartFile mf : files) {
-				String originFileName = mf.getOriginalFilename();
-				try {
-					File f = new File(UPLOAD_PATH + File.separator + uuid + ".mp3");
-					System.out.println("---------------------------" + f);
-					mf.transferTo(f);
-
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				}
-				fileNames.add(originFileName);
-				insertedCount++;
-
-				MusicDto musicDto = new MusicDto();
-				musicDto.setCIdx(cIdx);
-				musicDto.setMusicTitle(originFileName);
-				musicDto.setMusicUUID(uuid);
-				bridgeService.insertMusic(musicDto);
-			}
-
-			if (insertedCount > 0) {
-				result.put("uuid", uuid);
-				result.put("fileNames", fileNames);
-				return ResponseEntity.status(HttpStatus.OK).body(result);
-			} else {
-				result.put("message", "No files uploaded");
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.put("message", "파일 업로드 중 오류가 발생했습니다.");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-		}
-	}
+	
 
 	@GetMapping("/api/getMusic/{musicUUID}")
 	public void getMusic(@PathVariable("musicUUID") String musicUUID, HttpServletResponse response) throws Exception {
