@@ -5,8 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-<<<<<<< HEAD
-rootProject.name = 'test'
-=======
 rootProject.name = 'bridge'
->>>>>>> 31765cb19e96f4367fb49bb9e81ce33b7ac7dc24

@@ -16,4 +16,6 @@ public class UserProfileDto {
 	private String profileImg;
 	private String bannerImg;
 	private String userSite;
+	private String userPhoto;
+	private String userTag;
 }

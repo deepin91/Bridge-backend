@@ -11,43 +11,56 @@ import org.springframework.stereotype.Service;
 
 import bridge.dto.LoginDto;
 import bridge.dto.UserDto;
+import bridge.dto.UsersDto;
 import bridge.mapper.LoginMapper;
 
-@Service 
+@Service
 public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	private LoginMapper loginMapper;
-	//해시값 설정
+	// 해시값 설정
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Override
 	public UserDto login(LoginDto loginDto) throws Exception {
 		return loginMapper.login(loginDto);
 	}
-	
+
 	@Override
 	public int registUser(UserDto userDto) throws Exception {
 		// 패스워드를 암호화 해서 새로 저장
 		userDto.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
 		return loginMapper.registUser(userDto);
 	}
-	
-	//String username, String password, boolean enabled, 
-	//boolean accountNonExpired, boolean credentialsNonExpired, 
-	//boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities
+
+	// String username, String password, boolean enabled,
+	// boolean accountNonExpired, boolean credentialsNonExpired,
+	// boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDto userDto = loginMapper.selectUserByUserId(username);
-		if(userDto == null) {
+		if (userDto == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		return new User(userDto.getUserId(),userDto.getUserPassword(),true,true,true,true,new ArrayList<>());
+		return new User(userDto.getUserId(), userDto.getUserPassword(), true, true, true, true, new ArrayList<>());
 	}
 
 	@Override
 	public UserDto getloginDto(UserDto userDto) {
 		return loginMapper.getloginDto(userDto);
+	}
+
+	// 외부 로그인
+	@Override
+	public UsersDto passInformation(UsersDto usersDto) throws Exception {
+		return loginMapper.passInformation(usersDto);
+	}
+
+	@Override
+	public int userIdCheck(String userIdCheck) throws Exception {
+		int result = loginMapper.userIdCheck(userIdCheck);
+		return result;
 	}
 }
