@@ -3,7 +3,45 @@
 
 <mapper namespace="project.mapper.BridgeMapper">
 
-	<!-- 1. 파트너 협업창 결제 내역 -->
+	<!-- 1. 파트너 협업창 조회 -->
+	
+	<!-- 2. 파트너 협업창 게시글 조회 -->
+	<select id="selectPartnerContent" resultType="project.dto.PartnerContentDto">
+		select pc_idx, pc_content, pc_writer, pd_idx
+		from partner_content
+		where pd_idx = #{pdIdx}
+	</select>
+	
+	<!-- 3. 파트너 협업창 게시글 상세조회 -->
+	<select id="selectPartnerContentDetail"	parameterType="int" resultType="project.dto.PartnerContentDto">
+		select pc_idx, pc_content, pc_writer, pc_file, pd_idx
+		from partner_content
+		where pc_idx = #{pcIdx}
+		
+	</select>
+	<!-- 4. 파트너 협업창 게시글 등록 -->
+	<insert id="insertPartnerContent" parameterType="project.dto.PartnerContentDto">
+		insert into partner_content (pc_content,pc_writer, pd_idx, pc_file, pc_date )
+		values (#{pcContent}, #{pcWriter}, #{pdIdx}, #{pcFile}, now() )
+	</insert>
+	
+	<!-- 5. 파트너 협업창 게시글 수정 -->
+	<update id="updatePartnerContent" parameterType="project.dto.PartnerContentDto">
+		update partner_content
+		   set pc_content = #{pcContent},
+				pc_file = #{pcFile},
+				pc_idx = #{pcIdx}
+		 where pc_idx = #{pcIdx} 	 	 
+	</update>
+	
+	<!-- 6. 파트너 협업창 게시글 삭제 -->
+	<delete id="deletePartnerContent" parameterType="int">
+		update partner_content
+		   set deleted_yn = 'Y' 
+		 where pc_idx = #{pcIdx} 		 
+	</delete>
+
+	<!-- 7. 파트너 협업창 결제 내역 -->
 	<select id="selectPayList" parameterType="project.dto.PayListDto" resultType="project.dto.PayListDto">
 		select pl_idx, user_id1, user_id2, pl_money, pl_date
 			from pay_list 
@@ -11,14 +49,14 @@
 		order by pl_idx desc
 	</select>
 	
-	<!-- 2. 파트너 협업창 작업목록 조회 -->
+	<!-- 8. 파트너 협업창 작업목록 조회 -->
 	<select id="selectProjectList" resultType="project.dto.PartnerDetailDto">
-		select pd.user_id1, pd.user_id2, up.user_photo, up.user_tag
+		select pd.pd_idx, pd.user_id1, pd.user_id2, up.user_photo, up.user_tag
 			from partner_detail pd, user_profile up
 		where user_id1=#{userId1} and pd.user_id2 = up.user_id
 	</select>
 	
-	<!-- 3. 파트너 협업창 게시글의 댓글 조회 -->
+	<!-- 9. 파트너 협업창 게시글의 댓글 조회 -->
 	<select id="selectPartnerComment" resultType="project.dto.PartnerDetailCommentDto" >
 		select pdc_comment, user_id, pdc_idx
 		from partner_detail_comment
@@ -26,10 +64,19 @@
 		      pc_idx = #{pcIdx}
 	</select>
 	
-	<!-- 4. 파트너 협업창 게시글의 댓글 작성 -->
+	<!-- 10. 파트너 협업창 게시글의 댓글 작성 -->
 	<insert id="insertPartnerComment" parameterType="project.dto.PartnerDetailCommentDto">
-		insert into partner_detail_comment (pdc_comment, user_id, pd_idx, pc-idx)
-		values (pdcComment, userId, pdIdx, pcIdx)
+		insert into partner_detail_comment (pdc_comment, user_id, pd_idx, pc_idx)
+		values (#{pdcComment}, #{userId}, #{pdIdx}, #{pcIdx})
 	</insert>
+	
+	<!-- 11. 파트너 협업창 게시글의 댓글 삭제 -->
+	<delete id="deletePartnerComment" parameterType="int">
+		update partner_detail_comment
+		   set deleted_yn = 'Y'  
+		 where pdc_idx = #{pdcIdx} 		 
+	</delete>
+	
+	
 
 </mapper>

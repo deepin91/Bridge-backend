@@ -13,4 +13,7 @@ public interface LoginService extends UserDetailsService {
 	public int registUser(UsersDto userDto) throws Exception;
 	// 외부 로그인
 	public UsersDto passInformation(UsersDto usersDto) throws Exception;
+	
+//	public List<UserDto> selectUserId(UserDto userDto) throws Exception;
+	public int userIdCheck(String userId) throws Exception;
 }

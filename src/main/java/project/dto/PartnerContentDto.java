@@ -10,4 +10,5 @@ public class PartnerContentDto {
 	private String pcWriter;
 	private int pdIdx;
 	private String pcDate;
+	private String pcFile;
 }

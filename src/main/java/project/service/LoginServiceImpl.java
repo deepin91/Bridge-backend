@@ -54,5 +54,12 @@ public class LoginServiceImpl implements LoginService {
 		return loginMapper.passInformation(usersDto);
 	}
 	
-	
+	@Override
+	public int userIdCheck(String userIdCheck) throws Exception {
+		int result = loginMapper.userIdCheck(userIdCheck);
+		return result;
+	}
 }
+	
+	
+
