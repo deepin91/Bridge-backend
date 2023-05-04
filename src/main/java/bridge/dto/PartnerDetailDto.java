@@ -9,6 +9,8 @@ public class PartnerDetailDto {
 	private String userId1;
 	private String userId2;
 	private int pdMoney;
-	private String userPhoto;
-	private String userTag;
+	private String profileImg;
+	private String userTag1;
+	private String userTag2;
+	private String userTag3;
 }

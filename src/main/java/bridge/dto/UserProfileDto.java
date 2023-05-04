@@ -17,5 +17,7 @@ public class UserProfileDto {
 	private String bannerImg;
 	private String userSite;
 	private String userPhoto;
-	private String userTag;
+	private String userTag1;
+	private String userTag2;
+	private String userTag3;
 }
