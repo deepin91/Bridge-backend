@@ -14,6 +14,8 @@ import bridge.dto.PartnerDetailCommentDto;
 import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.dto.ReportDto;
+import bridge.dto.ReviewDto;
+import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 
@@ -85,6 +87,14 @@ public interface BridgeMapper {
 	
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
+
+	void insertTag(TagDto tag);
+
+	List<UserProfileDto> getPorfile(String userId);
+
+	List<TagDto> getTaglist(String userId);
+
+	List<ReviewDto> getReview(String userId);
 
 
 }

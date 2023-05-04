@@ -14,6 +14,8 @@ import bridge.dto.PartnerDetailCommentDto;
 import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.dto.ReportDto;
+import bridge.dto.ReviewDto;
+import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.mapper.BridgeMapper;
@@ -93,7 +95,7 @@ public class BridgeServiceImpl implements BridgeService {
 	}
 
 	@Override
-	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files) {
+	public int insertProfile(UserProfileDto userProfileDto) {
 		return bridgeMapper.insertProfile(userProfileDto);
 	}
 
@@ -156,6 +158,30 @@ public class BridgeServiceImpl implements BridgeService {
 	@Override
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception {
 		return bridgeMapper.insertPartnerComment(partnerDetailCommentDto);
+	}
+
+	@Override
+	public void insertTag(TagDto tag) {
+		// TODO Auto-generated method stub
+		bridgeMapper.insertTag(tag);
+	}
+
+	@Override
+	public List<UserProfileDto> getPorfile(String userId) {
+		// TODO Auto-generated method stub
+		return bridgeMapper.getPorfile(userId);
+	}
+
+	@Override
+	public List<TagDto> getTaglist(String userId) {
+		// TODO Auto-generated method stub
+		return bridgeMapper.getTaglist(userId);
+	}
+
+	@Override
+	public List<ReviewDto> getReview(String userId) {
+		// TODO Auto-generated method stub
+		return bridgeMapper.getReview(userId);
 	}
 
 }

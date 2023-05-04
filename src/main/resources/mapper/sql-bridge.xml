@@ -76,7 +76,21 @@
 		   set deleted_yn = 'Y'  
 		 where pdc_idx = #{pdcIdx} 		 
 	</delete>
-	
+	<select  id="getPorfile"  resultType ="bridge.dto.UserProfileDto" parameterType="String">
+		select * 
+		from user_profile
+		where user_id = #{userId}
+	</select>
+	<select id="getTaglist" resultType="bridge.dto.TagDto" parameterType="String">
+		select * from
+		user_tag
+		where user_id = #{userId}
+	</select>
+	<select id="getReview" resultType="bridge.dto.ReviewDto" parameterType="String">
+		select * from
+		user_review
+		where user_id = #{userId}
+	</select>
 	
 
 </mapper>

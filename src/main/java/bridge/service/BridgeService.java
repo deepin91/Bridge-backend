@@ -12,6 +12,8 @@ import bridge.dto.PartnerDetailCommentDto;
 import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.dto.ReportDto;
+import bridge.dto.ReviewDto;
+import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 
@@ -46,7 +48,7 @@ public interface BridgeService {
 
 	public void handleReport(UserDto userDto);
 
-	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files);
+	public int insertProfile(UserProfileDto userProfileDto);
 
 //	public int doCharge(UserDto userDto);
 	
@@ -78,5 +80,13 @@ public interface BridgeService {
 
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
+
+	public void insertTag(TagDto tag);
+
+	public List<UserProfileDto> getPorfile(String userId);
+
+	public List<TagDto> getTaglist(String userId);
+
+	public List<ReviewDto> getReview(String userId);
 
 }

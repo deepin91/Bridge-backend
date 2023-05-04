@@ -21,19 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.AnnouncementDto;
-import bridge.dto.CommentsDto;
 import bridge.dto.MusicDto;
 import bridge.dto.ReportDto;
 import bridge.dto.UserDto;
@@ -44,7 +40,6 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Slf4j
-// @SessionAttributes("tid") 
 public class RestApiController {
 
 	
@@ -70,7 +65,7 @@ public class RestApiController {
 		try {
 			response.setHeader("Content-Disposition", "inline;");
 			byte[] buf = new byte[1024];
-			fis = new FileInputStream(UPLOAD_PATH + musicUUID + ".mp3");
+			fis = new FileInputStream(UPLOAD_PATH + musicUUID );
 			bis = new BufferedInputStream(fis);
 			bos = new BufferedOutputStream(response.getOutputStream());
 			int read;
@@ -248,72 +243,7 @@ public class RestApiController {
 		}
 	}
 
-	// 잼 코멘트
-	@PostMapping("/api/insertComments/{cIdx}")
-	public ResponseEntity<Map<String, Object>> insertComments(@RequestBody CommentsDto commentsDto,
-			@PathVariable("cIdx") int cIdx) throws Exception {
-		int insertedCount = 0;
-		try {
-			commentsDto.setCIdx(cIdx);
-			commentsDto.getUserId();
 
-			insertedCount = bridgeService.insertComments(commentsDto);
-			if (insertedCount > 0) {
-				Map<String, Object> result = new HashMap<>();
-				result.put("message", "정상적으로 등록되었습니다.");
-				result.put("ccIdx", commentsDto.getCcIdx());
-//				result.put("cIdx", commentsDto.getCIdx());
-
-				return ResponseEntity.status(HttpStatus.OK).body(result);
-			} else {
-				Map<String, Object> result = new HashMap<>();
-				result.put("message", "등록된 내용이 없습니다.");
-				result.put("count", insertedCount);
-				return ResponseEntity.status(HttpStatus.OK).body(result);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Map<String, Object> result = new HashMap<>();
-			result.put("message", "등록 중 오류가 발생했습니다.");
-			result.put("count", insertedCount);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-		}
-	}
-
-	@GetMapping("/api/openComments/{cIdx}")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> openComments(@PathVariable("cIdx") int cIdx) throws Exception {
-		List<CommentsDto> list = bridgeService.selectCommentsList(cIdx);
-		Map<String, Object> result = new HashMap<>();
-		result.put("selectCommentsList", list);
-		if (result != null && result.size() > 0) {
-			return ResponseEntity.status(HttpStatus.OK).body(result);
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
-	}
-
-	@PutMapping("/api/Comments/{ccIdx}")
-	public ResponseEntity<Object> updateComments(@PathVariable("ccIdx") int ccIdx, @RequestBody CommentsDto commentsDto)
-			throws Exception {
-		try {
-			commentsDto.setCcIdx(ccIdx);
-			bridgeService.updateComments(commentsDto);
-			return ResponseEntity.status(HttpStatus.OK).body(1);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
-		}
-	}
-
-	@DeleteMapping("/api/CommentsDelete/{ccIdx}")
-	public ResponseEntity<Object> deleteComments(@PathVariable("ccIdx") int ccIdx) throws Exception {
-		try {
-			bridgeService.deleteComments(ccIdx);
-			return ResponseEntity.status(HttpStatus.OK).body(1);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
-		}
-	}
 
 	// 신고 작성
 	@PostMapping("/api/report/{reportedUserId}")
