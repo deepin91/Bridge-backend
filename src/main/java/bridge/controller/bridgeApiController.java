@@ -45,8 +45,7 @@ public class bridgeApiController {
 	public ResponseEntity<List<PartnerContentDto>> openPartnerContentList(@PathVariable("pdIdx") int pdIdx)
 			throws Exception {
 		List<PartnerContentDto> list = bridgeService.selectPartnerContent(pdIdx);
-
-			return ResponseEntity.status(HttpStatus.OK).body(list);
+		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 
 	// 3. 파트너 협업창 게시글 상세조회
@@ -234,7 +233,7 @@ public class bridgeApiController {
 		}
 
 	}
-	
+
 	//
 
 }

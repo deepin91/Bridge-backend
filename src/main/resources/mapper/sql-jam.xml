@@ -16,5 +16,17 @@
 	insert into concert_music (c_idx,cm_music,cm_instrument,cm_user)
 	values(#{cIdx},#{cmMusic},#{cmInstrument},#{cmUser})
 	</insert>
-
+	<select id="getJam" resultType="bridge.dto.ConcertDto">
+		select *
+		from concert
+		where c_idx=#{cIdx}
+	</select>
+	<select id="getMusicUUID" resultType="bridge.dto.ConcertMusicDto">
+		select cm_idx, cm_music,cm_instrument,cm_user
+		from concert_music
+		where c_idx=#{cIdx}
+	</select>
+	<select id= "jamList" resultType="bridge.dto.ConcertDto">
+	select * from concert
+	</select>
 </mapper>
