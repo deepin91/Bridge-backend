@@ -1,6 +1,7 @@
 package bridge.controller;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,38 +13,42 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import bridge.dto.UserProfileDto;
+import bridge.dto.ComposerRequestDto;
+import bridge.dto.ComposerRequestTagDto;
+import bridge.mapper.BridgeMapper;
 import bridge.service.BridgeService;
 import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Slf4j
-public class UserProfileController {
-
+public class PartnerApiController {
 	@Autowired
 	BridgeService bridgeService;
+	
+	@Autowired
+	BridgeMapper bridgeMapper;
 
-	// 프로필 작성
-	@PostMapping("/api/insertProfile/{userId}")
-	public ResponseEntity<Map<String, Object>> insertProfile(@PathVariable("userId") String userId,
-			@RequestPart(value = "data", required = false) UserProfileDto userProfileDto,
+	// 파트너 모집글 작성
+	@PostMapping("/api/insertPartnerWrite")
+	public ResponseEntity<Map<String, Object>> insertPartnerWrite(
+			@RequestPart(value = "data", required = false) ComposerRequestDto composerRequestDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] files) throws Exception {
 		String UPLOAD_PATH = "C:\\Temp\\";
 		int insertedCount = 0;
+		
 		String fileNames = "";
 		try {
 			for (MultipartFile mf : files) {
 				String originFileName = mf.getOriginalFilename(); // 원본 파일 명
 				long fileSize = mf.getSize(); // 파일 사이즈
-				System.out.println("originFileName : " + originFileName);
-				System.out.println("fileSize : " + fileSize);
-				String safeFile = System.currentTimeMillis() + originFileName;
-				userProfileDto.setProfileImg(originFileName);
-				fileNames = fileNames + "," + safeFile;
+				String saveFile = System.currentTimeMillis() + originFileName;
+				composerRequestDto.setCrPhoto(originFileName); //원본 파일명으로 crPhoto set
+				fileNames = fileNames + "," + saveFile;
 				try {
 					File f1 = new File(UPLOAD_PATH + originFileName);
 					mf.transferTo(f1);
@@ -51,14 +56,14 @@ public class UserProfileController {
 					e.printStackTrace();
 				}
 			}
-
-			insertedCount = bridgeService.insertProfile(userProfileDto, files);
+			
+			insertedCount = bridgeService.insertPartnerWrite(composerRequestDto, files); //서비스 실행
 
 			if (insertedCount > 0) {
 				Map<String, Object> result = new HashMap<>();
 				result.put("message", "정상적으로 등록되었습니다.");
 				result.put("count", insertedCount);
-				result.put("userId", userProfileDto.getUserId());
+				result.put("userId", composerRequestDto.getUserId());
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} else {
 				Map<String, Object> result = new HashMap<>();
@@ -74,5 +79,19 @@ public class UserProfileController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
 		}
 	}
+	
+//	@PostMapping("/api/test/{crIdx}")
+//	public  ResponseEntity<Object> test(@PathVariable("crIdx") int crIdx, @RequestBody ComposerRequestTagDto composerRequestTagDto) throws Exception {
+//		int a = bridgeMapper.insertTest(crIdx);
+////		String b = composerRequestTagDto.setCrtTag(composerRequestTagDto.getCrtTag());
+//		
+//		if (a > 0) {
+//			composerRequestTagDto.setCrtTag(composerRequestTagDto.getCrtTag());
+//			System.out.println(">>>>>>>>>>>" + Arrays.toString(composerRequestTagDto.getCrtTag()));
+//			return ResponseEntity.status(HttpStatus.CREATED).body(composerRequestTagDto);
+//		} else {
+//			return ResponseEntity.status(HttpStatus.OK).body("2");
+//		}
+//	}
 
 }

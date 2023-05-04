@@ -135,10 +135,23 @@
 	<!-- 프로필 작성 -->
 	<insert id="insertProfile">
 		insert into user_profile
-		(user_id, user_position, user_introduction, profile_img, user_site)
-		values (#{userId}, #{userPosition}, #{userIntroduction}, #{profileImg}, #{userSite})
+		(user_id, user_position, user_introduction, profile_img, user_site, user_tag1, user_tag2, user_tag3)
+		values (#{userId}, #{userPosition}, #{userIntroduction}, #{profileImg}, #{userSite}, #{userTag1}, #{userTag2}, #{userTag3})
+	</insert>
+	
+	<!-- 파트너 구인 작성 -->
+	<insert id="insertPartnerWrite">
+		insert into composer_request
+		(cr_title, cr_contents, user_id, cr_photo, cr_money, cr_start_date, cr_end_date)
+		values (#{crTitle}, #{crContents}, #{userId}, #{crPhoto}, #{crMoney}, #{crStartDate}, #{crEndDate})
 	</insert>
 
+	<!-- 파트너 구인 태그 작성 -->
+	<insert id="insertPartnerTag">
+		insert into composer_request_tag
+		(crt_tag, cr_idx)
+		values(#{crtTag}, #{crIdx})
+	</insert>
 
 	<!-- 얜 무시 -->
 	<select id="selectMusic" resultType="String">
@@ -147,4 +160,10 @@
 		concert_music
 		where musicUUID = #{musicUUID}
 	</select>
+	
+	<insert id="insertTest">
+		insert into composer_request_tag
+		(crt_tag, cr_idx)
+		values(#{crtTag}, #{crIdx})
+	</insert>
 </mapper>  

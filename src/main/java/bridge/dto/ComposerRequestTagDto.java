@@ -7,5 +7,6 @@ public class ComposerRequestTagDto {
 
 	private int crtIdx;
 	private String crtTag;
+	private String [] crtTags;
 	private int crIdx;
 }

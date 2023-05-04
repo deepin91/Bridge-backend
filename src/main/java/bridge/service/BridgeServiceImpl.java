@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
+import bridge.dto.ComposerRequestDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
 import bridge.dto.PartnerDetailCommentDto;
@@ -91,10 +92,17 @@ public class BridgeServiceImpl implements BridgeService {
 	public void handleReport(UserDto userDto) {
 		bridgeMapper.handleReport(userDto);
 	}
-
+	
+	//프로필 작성
 	@Override
 	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files) {
 		return bridgeMapper.insertProfile(userProfileDto);
+	}
+	
+	//파트너 구인 작성
+	@Override
+	public int insertPartnerWrite(ComposerRequestDto composerRequestDto, MultipartFile[] files) {	
+		return bridgeMapper.insertPartnerWrite(composerRequestDto);
 	}
 
 //	@Override
@@ -157,5 +165,7 @@ public class BridgeServiceImpl implements BridgeService {
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception {
 		return bridgeMapper.insertPartnerComment(partnerDetailCommentDto);
 	}
+
+
 
 }

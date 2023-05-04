@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
+import bridge.dto.ComposerRequestDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
 import bridge.dto.PartnerDetailCommentDto;
@@ -47,6 +48,9 @@ public interface BridgeService {
 	public void handleReport(UserDto userDto);
 
 	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files);
+	
+	// 파트너 구인 작성
+	public int insertPartnerWrite(ComposerRequestDto composerRequestDto, MultipartFile[] files);
 
 //	public int doCharge(UserDto userDto);
 	
@@ -78,5 +82,7 @@ public interface BridgeService {
 
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
+
+
 
 }

@@ -9,7 +9,6 @@ public class UserProfileDto {
 	//인증 지금 없음 => 빼는건지 기능 넣는건지 결정 필요
 	private boolean userCertification;
 	
-	private int userHeart;
 	private String userId;
 	private String userPosition;
 	private String userIntroduction;
@@ -17,5 +16,7 @@ public class UserProfileDto {
 	private String bannerImg;
 	private String userSite;
 	private String userPhoto;
-	private String userTag;
+	private String userTag1;
+	private String userTag2;
+	private String userTag3;
 }

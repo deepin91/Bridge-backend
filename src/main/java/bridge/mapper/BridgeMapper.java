@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import bridge.dto.AnnouncementDto;
 import bridge.dto.ApproveResponseDto;
 import bridge.dto.CommentsDto;
+import bridge.dto.ComposerRequestDto;
 import bridge.dto.KakaopayDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
@@ -54,7 +55,12 @@ public interface BridgeMapper {
 
 	int selectReportCount(String userId);
 
+	//프로필 작성
 	int insertProfile(UserProfileDto userProfileDto);
+	//파트너 구인 작성
+	int insertPartnerWrite(ComposerRequestDto composerRequestDto);
+	//파트너 구인 작성-태그 입력
+	void insertPartnerTag(ComposerRequestDto composerRequestDto);
 
 	// 1. 파트너 협업창 조회
 	
@@ -85,6 +91,12 @@ public interface BridgeMapper {
 	
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
+
+	int insertTest(int crIdx);
+
+	
+
+	
 
 
 }

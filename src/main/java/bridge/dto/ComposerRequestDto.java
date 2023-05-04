@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ComposerRequestDto {
+	
 	 	private String userId;
 	 	private String userNickname;
 	 	private int crtidx;
@@ -14,7 +15,8 @@ public class ComposerRequestDto {
 		private String crContents;
 		private String crPhoto;
 		private int crMoney;
-		private String crPreiod;
+		private String crStartDate;
+		private String crEndDate;
 		
 	 	private int pdIdx;
 	 	private String userId1;
