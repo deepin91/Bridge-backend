@@ -89,4 +89,6 @@ public interface BridgeService {
 
 	public List<ReviewDto> getReview(String userId);
 
+	public UserDto getUserDto(String userId);
+
 }

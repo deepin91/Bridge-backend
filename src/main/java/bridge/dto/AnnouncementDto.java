@@ -10,5 +10,6 @@ public class AnnouncementDto {
 	private String aContents;
 	private String aDate;
 	private String deletedYn;
+	private String createdDt;
 
 }

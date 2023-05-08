@@ -10,4 +10,5 @@ public class NoticeDto {
 		private String title;
 		private String contents;
 		private String updatedDt;
+		private String createdDt;
 }

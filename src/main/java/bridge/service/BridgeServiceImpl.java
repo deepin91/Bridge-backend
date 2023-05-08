@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
@@ -19,13 +18,15 @@ import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.mapper.BridgeMapper;
+import bridge.mapper.LoginMapper;
 
 @Service
 public class BridgeServiceImpl implements BridgeService {
 
 	@Autowired
 	BridgeMapper bridgeMapper;
-
+	@Autowired
+	LoginMapper loginMapper;
 	@Override
 	public void insertMusic(MusicDto musicDto) {
 		bridgeMapper.insertMusic(musicDto);
@@ -182,6 +183,12 @@ public class BridgeServiceImpl implements BridgeService {
 	public List<ReviewDto> getReview(String userId) {
 		// TODO Auto-generated method stub
 		return bridgeMapper.getReview(userId);
+	}
+
+	@Override
+	public UserDto getUserDto(String userId) {
+		// TODO Auto-generated method stub
+		return loginMapper.selectUserByUserId(userId);
 	}
 
 }

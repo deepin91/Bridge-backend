@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.ReviewDto;
 import bridge.dto.TagDto;
+import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.service.BridgeService;
 import lombok.extern.slf4j.Slf4j;
@@ -94,13 +95,14 @@ public class UserProfileController {
 	@GetMapping("/api/profile/{userId}")
 	public ResponseEntity<Map<String, Object>> getPorfile(@PathVariable("userId") String userId) throws Exception {
 		Map<String, Object> result = new HashMap<>();
+		UserDto userDto = bridgeService.getUserDto(userId);
 		List<UserProfileDto> list = bridgeService.getPorfile(userId);
 		List<TagDto> taglist = bridgeService.getTaglist(userId);
 		List<ReviewDto> reviewDto = bridgeService.getReview(userId);
-		
 		result.put("profile", list);
 		result.put("taglist", taglist);
-		
+		result.put("reviewlist", reviewDto);
+		result.put("userDto", userDto);
 		if (list == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		} else {
