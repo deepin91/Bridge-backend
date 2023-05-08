@@ -32,16 +32,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-<<<<<<< HEAD
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
-	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-		implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
 
-}
-=======
 		// https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1
 	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
@@ -53,8 +44,6 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-
->>>>>>> 2d43ffad7d15c460c680e7cccbc102d9d168520e
 
 tasks.named('test') {
 	useJUnitPlatform()
