@@ -51,12 +51,11 @@ public class bridgeApiController {
 	// 3. 파트너 협업창 게시글 상세조회
 	@GetMapping("api/bridge/partnerdetail/content/{pcIdx}")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> openPartnerContentDetail(@PathVariable("pcIdx") int pcIdx)
+	public ResponseEntity<PartnerContentDto> openPartnerContentDetail(@PathVariable("pcIdx") int pcIdx)
 			throws Exception {
 		PartnerContentDto partnerContentDto = bridgeService.selectPartnerContentDetail(pcIdx);
-		Map<String, Object> result = new HashMap<>();
-		result.put("pcContent", partnerContentDto);
-		return ResponseEntity.status(HttpStatus.OK).body(result);
+
+		return ResponseEntity.status(HttpStatus.OK).body(partnerContentDto);
 	}
 
 	// 4. 파트너 협업창 게시글 등록
@@ -69,6 +68,7 @@ public class bridgeApiController {
 		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas" + pcImg);
 //			PartnerContentDto partnerContentDto = new PartnerContentDto();
 		try {
+			if (pcImg != null) {	
 			for (MultipartFile mf : pcImg) {
 				String originFileName = mf.getOriginalFilename();
 				try {
@@ -78,6 +78,7 @@ public class bridgeApiController {
 					e.printStackTrace();
 				}
 				partnerContentDto.setPcFile(originFileName);
+			}
 			}
 			System.out.println("aaaaaaaaaaaaaaaaaaaasssssssssssssssssss" + partnerContentDto);
 
@@ -127,6 +128,8 @@ public class bridgeApiController {
 				}
 				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
 
+			} else {
+				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
 			}
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + partnerContentDto);
 

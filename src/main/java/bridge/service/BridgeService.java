@@ -101,6 +101,7 @@ public interface BridgeService {
 	public List<ComposerRequestDto> openPartnerList();
 
 	public List<ComposerRequestTagDto> partnerTagList();
+	public UserDto getUserDto(String userId);
 
 
 }
