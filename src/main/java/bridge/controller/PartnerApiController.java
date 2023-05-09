@@ -14,15 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.ComposerRequestDto;
 import bridge.dto.ComposerRequestTagDto;
+import bridge.dto.TipDto;
 import bridge.mapper.BridgeMapper;
 import bridge.service.BridgeService;
 import lombok.extern.slf4j.Slf4j;
@@ -91,16 +95,13 @@ public class PartnerApiController {
 		}
 	}
 
+	// 파트너 구인 리스트
 	@GetMapping("/api/openPartnerList")
 	public ResponseEntity<Map<String, Object>> openPartnerList() throws Exception {
 
 		Map<String, Object> map = new HashMap<>();
-
 		List<ComposerRequestDto> list = bridgeService.openPartnerList();
-//		List<ComposerRequestTagDto> tagList = bridgeService.partnerTagList();
-
 		map.put("partnerList", list);
-//		map.put("partnerTag", tagList);
 
 		if (list == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -109,6 +110,7 @@ public class PartnerApiController {
 		}
 	};
 
+	// 파트너 구인 태그
 	@GetMapping("/api/openTagList")
 	public ResponseEntity<Map<String, Object>> openTagList() throws Exception {
 		Map<String, Object> map = new HashMap<>();
@@ -122,6 +124,7 @@ public class PartnerApiController {
 		}
 	}
 
+	// 파트너 구인 디테일
 	@GetMapping("/api/openPartnerDetail/{crIdx}")
 	public ResponseEntity<Map<String, Object>> openPartnerDetail(@PathVariable("crIdx") int crIdx) throws Exception {
 		Map<String, Object> map = new HashMap<>();
@@ -137,34 +140,49 @@ public class PartnerApiController {
 		}
 
 	}
-	
+
+	// 이미지 불러오는 코드 -> 재활용 가능
 	@GetMapping("/api/getImage/{imgName}")
 	public void getImage(@PathVariable("imgName") String imgName, HttpServletResponse response) throws Exception {
-	    FileInputStream fis = null;
-	    BufferedInputStream bis = null;
-	    OutputStream out = null;
-	    String UPLOAD_PATH = "C:\\Temp\\";
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		OutputStream out = null;
+		String UPLOAD_PATH = "C:\\Temp\\";
 
-	    try {
-	        response.setContentType("image/jpeg");
-	        fis = new FileInputStream(UPLOAD_PATH + imgName);
-	        bis = new BufferedInputStream(fis);
-	        out = response.getOutputStream();
+		try {
+			response.setContentType("image/jpeg");
+			fis = new FileInputStream(UPLOAD_PATH + imgName);
+			bis = new BufferedInputStream(fis);
+			out = response.getOutputStream();
 
-	        byte[] buffer = new byte[1024];
-	        while (bis.read(buffer) != -1) {
-	            out.write(buffer);
-	        }
-	    } finally {
-	        if (bis != null) {
-	            bis.close();
-	        }
-	        if (out != null) {
-	            out.close();
-	        }
-	        if (fis != null) {
-	            fis.close();
-	        }
-	    }
+			byte[] buffer = new byte[1024];
+			while (bis.read(buffer) != -1) {
+				out.write(buffer);
+			}
+		} finally {
+			if (bis != null) {
+				bis.close();
+			}
+			if (out != null) {
+				out.close();
+			}
+			if (fis != null) {
+				fis.close();
+			}
+		}
+	}
+
+	@PutMapping("/api/updatePartner/{crIdx}")
+	public ResponseEntity<Object> updatePartner(@PathVariable("crIdx") int crIdx,
+			@RequestPart(value = "data", required = false) ComposerRequestDto composerRequestDto,
+			@RequestPart(value = "files", required = false) MultipartFile[] files) throws Exception {
+		bridgeMapper.updatePartner(crIdx);
+		return ResponseEntity.status(HttpStatus.OK).body(null);
+	}
+	
+	@DeleteMapping("/api/deletePartner/{crIdx}")
+	public ResponseEntity<Object> deletePartner(@PathVariable("crIdx") int crIdx) throws Exception {
+		bridgeMapper.deletePartner(crIdx);
+		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 }

@@ -7,10 +7,9 @@
 	<!-- 파트너 구인 목록 -->
 	<select id="openPartnerList"
 		resultType="bridge.dto.ComposerRequestDto">
-		select user_id, cr_idx, cr_title, cr_contents, cr_photo,
-		cr_money,
-		cr_start_date, cr_end_date
+		select *
 		from composer_request
+		where deleted_yn = 0
 	</select>
 
 	<!-- 파트너 구인 작성 -->
@@ -18,10 +17,10 @@
 		keyProperty="crIdx">
 		insert into composer_request
 		(cr_title, cr_contents,
-		user_id, cr_photo, cr_money, cr_start_date, cr_end_date)
+		user_id, cr_photo, cr_money, cr_start_date, cr_end_date, created_dt)
 		values
 		(#{crTitle}, #{crContents}, #{userId}, #{crPhoto}, #{crMoney},
-		#{crStartDate}, #{crEndDate})
+		#{crStartDate}, #{crEndDate}, now())
 	</insert>
 
 	<!-- 파트너 구인 태그 작성 -->
@@ -40,18 +39,29 @@
 		from composer_request_tag
 	</select>
 
-	<select id="openPartnerDetail" resultType="bridge.dto.ComposerRequestDto">
+	<!-- 파트너 구인 디테일 -->
+	<select id="openPartnerDetail"
+		resultType="bridge.dto.ComposerRequestDto">
 		select * from composer_request
-		where cr_idx = #{crIdx}
+		where cr_idx = #{crIdx} and
+		deleted_yn=0
 	</select>
-
-	<select id="PartnerDetailTag" resultType="bridge.dto.ComposerRequestTagDto">
+	<!-- 파트너 구인 디테일 태그 -->
+	<select id="PartnerDetailTag"
+		resultType="bridge.dto.ComposerRequestTagDto">
 		select crt_tag
 		from composer_request_tag
-		where cr_idx = #{crIdx}
+		where cr_idx =
+		#{crIdx}
 	</select>
 
-	<!-- <foreach collection="crtTag" item="crtTag" open="#" separator="#"> 
-		#{crtTag} </foreach> -->
+	<delete id="deletePartner" parameterType="int">
+		update composer_request
+		set
+		deleted_yn= 1
+		where cr_idx = #{crIdx}
+	</delete>
+
+
 
 </mapper>

@@ -20,6 +20,8 @@ public class ComposerRequestDto {
 		private int crMoney;
 		private String crStartDate;
 		private String crEndDate;
+		private String createdDt;
+		private int deletedYn;
 		
 //	 	private int pdIdx;
 //	 	private String userId1;

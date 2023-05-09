@@ -114,5 +114,10 @@ public interface BridgeMapper {
 
 	List<ComposerRequestTagDto> PartnerDetailTag(int crIdx);
 
+	//파트너구인 수정
+	void updatePartner(int crIdx);
+	//파트너구인 삭제
+	void deletePartner(int crIdx);
+	
 
 }
