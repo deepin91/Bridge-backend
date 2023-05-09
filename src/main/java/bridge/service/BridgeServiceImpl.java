@@ -9,12 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.ComposerRequestDto;
+import bridge.dto.ComposerRequestTagDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
 import bridge.dto.PartnerDetailCommentDto;
 import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.dto.ReportDto;
+import bridge.dto.ReviewDto;
+import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.mapper.BridgeMapper;
@@ -95,7 +98,7 @@ public class BridgeServiceImpl implements BridgeService {
 	
 	//프로필 작성
 	@Override
-	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files) {
+	public int insertProfile(UserProfileDto userProfileDto) {
 		return bridgeMapper.insertProfile(userProfileDto);
 	}
 	
@@ -166,6 +169,46 @@ public class BridgeServiceImpl implements BridgeService {
 		return bridgeMapper.insertPartnerComment(partnerDetailCommentDto);
 	}
 
+	@Override
+	public void insertTag(TagDto tag) {
+		// TODO Auto-generated method stub
+		bridgeMapper.insertTag(tag);
+	}
 
+	@Override
+	public List<UserProfileDto> getPorfile(String userId) {
+		// TODO Auto-generated method stub
+		return bridgeMapper.getPorfile(userId);
+	}
+
+	@Override
+	public List<TagDto> getTaglist(String userId) {
+		// TODO Auto-generated method stub
+		return bridgeMapper.getTaglist(userId);
+	}
+
+	@Override
+	public List<ReviewDto> getReview(String userId) {
+		// TODO Auto-generated method stub
+		return bridgeMapper.getReview(userId);
+	}
+
+	//파트너 구인 태그 작성
+	@Override
+	public void insertCrtTag(ComposerRequestTagDto crtTag) {
+		bridgeMapper.insertCrtTag(crtTag);
+		
+	}
+
+	@Override
+	public List<ComposerRequestDto> openPartnerList() {
+		return bridgeMapper.openPartnerList();
+	}
+
+
+	@Override
+	public List<ComposerRequestTagDto> partnerTagList() {
+		return bridgeMapper.partnerTagList();
+	}
 
 }

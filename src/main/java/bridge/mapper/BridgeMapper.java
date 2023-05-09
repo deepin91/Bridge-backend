@@ -8,6 +8,7 @@ import bridge.dto.AnnouncementDto;
 import bridge.dto.ApproveResponseDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.ComposerRequestDto;
+import bridge.dto.ComposerRequestTagDto;
 import bridge.dto.KakaopayDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
@@ -15,6 +16,8 @@ import bridge.dto.PartnerDetailCommentDto;
 import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.dto.ReportDto;
+import bridge.dto.ReviewDto;
+import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 
@@ -92,11 +95,24 @@ public interface BridgeMapper {
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
 
-	int insertTest(int crIdx);
+	void insertTag(TagDto tag);
 
-	
+	List<UserProfileDto> getPorfile(String userId);
 
-	
+	List<TagDto> getTaglist(String userId);
+
+	List<ReviewDto> getReview(String userId);
+
+	//파트너 구인 태그 작성
+	void insertCrtTag(ComposerRequestTagDto crtTag);
+
+	List<ComposerRequestDto> openPartnerList();
+
+	List<ComposerRequestTagDto> partnerTagList();
+
+	ComposerRequestDto openPartnerDetail(int crIdx);
+
+	List<ComposerRequestTagDto> PartnerDetailTag(int crIdx);
 
 
 }

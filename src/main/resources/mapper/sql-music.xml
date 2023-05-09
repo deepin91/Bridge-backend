@@ -69,33 +69,40 @@
 	<!-- 신고 카운트 증가 -->
 	<update id="plusReportCount" parameterType="bridge.dto.UserDto">
 		update users
-		set report_count = report_count + 1
+		set
+		report_count = report_count + 1
 		where user_id=#{reportedUserId};
 	</update>
-	
+
 	<!-- 신고 리스트 -->
 	<select id="openReportList" resultType="bridge.dto.ReportDto">
-		select report_idx, report_reason, user_id, reported_user_id
+		select report_idx,
+		report_reason, user_id, reported_user_id
 		from report
 	</select>
 
-	<!-- 특정 신고 디테일-->
-	<select id="openReportDetail" resultType="bridge.dto.ReportDto" parameterType="int">
-		select report_idx, report_reason, report_reason_detail, user_id, reported_user_id
+	<!-- 특정 신고 디테일 -->
+	<select id="openReportDetail" resultType="bridge.dto.ReportDto"
+		parameterType="int">
+		select report_idx, report_reason, report_reason_detail,
+		user_id, reported_user_id
 		from report
 		where report_idx=#{reportIdx}
 	</select>
-	
+
 	<!-- 신고 처리 -->
 	<update id="handleReport" parameterType="bridge.dto.UserDto">
 		update users
-		set user_halted = 1
+		set
+		user_halted = 1
 		where user_id=#{userId};
 	</update>
-	
-	<select id="selectReportCount" parameterType="bridge.dto.UserDto" resultType="int">
+
+	<select id="selectReportCount"
+		parameterType="bridge.dto.UserDto" resultType="int">
 		select report_count
-		from users
+		from
+		users
 		where user_id = #{userId}
 	</select>
 
@@ -131,27 +138,18 @@
 		user_point + #{money}
 		where user_id = #{partner_user_id}
 	</update>
-	
+
 	<!-- 프로필 작성 -->
 	<insert id="insertProfile">
 		insert into user_profile
-		(user_id, user_position, user_introduction, profile_img, user_site, user_tag1, user_tag2, user_tag3)
-		values (#{userId}, #{userPosition}, #{userIntroduction}, #{profileImg}, #{userSite}, #{userTag1}, #{userTag2}, #{userTag3})
-	</insert>
-	
-	<!-- 파트너 구인 작성 -->
-	<insert id="insertPartnerWrite">
-		insert into composer_request
-		(cr_title, cr_contents, user_id, cr_photo, cr_money, cr_start_date, cr_end_date)
-		values (#{crTitle}, #{crContents}, #{userId}, #{crPhoto}, #{crMoney}, #{crStartDate}, #{crEndDate})
+		(user_id, user_position,
+		user_introduction, profile_img, user_site,user_music)
+		values
+		(#{userId}, #{userPosition}, #{userIntroduction}, #{profileImg},
+		#{userSite},#{userMusic})
 	</insert>
 
-	<!-- 파트너 구인 태그 작성 -->
-	<insert id="insertPartnerTag">
-		insert into composer_request_tag
-		(crt_tag, cr_idx)
-		values(#{crtTag}, #{crIdx})
-	</insert>
+
 
 	<!-- 얜 무시 -->
 	<select id="selectMusic" resultType="String">
@@ -160,10 +158,17 @@
 		concert_music
 		where musicUUID = #{musicUUID}
 	</select>
-	
-	<insert id="insertTest">
-		insert into composer_request_tag
-		(crt_tag, cr_idx)
-		values(#{crtTag}, #{crIdx})
+
+	<insert id="insertTag">
+		insert into user_tag(user_id,tag)
+		values
+		<foreach collection="tags" item="tags"
+			separator=",">
+			( #{userId}, #{tags})
+		</foreach>
 	</insert>
+	
+	
+
+	
 </mapper>  

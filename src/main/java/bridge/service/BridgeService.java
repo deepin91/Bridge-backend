@@ -7,12 +7,15 @@ import org.springframework.web.multipart.MultipartFile;
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
 import bridge.dto.ComposerRequestDto;
+import bridge.dto.ComposerRequestTagDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
 import bridge.dto.PartnerDetailCommentDto;
 import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.dto.ReportDto;
+import bridge.dto.ReviewDto;
+import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 
@@ -46,11 +49,11 @@ public interface BridgeService {
 	public ReportDto openReportDetail(int reportIdx);
 
 	public void handleReport(UserDto userDto);
-
-	public int insertProfile(UserProfileDto userProfileDto, MultipartFile[] files);
 	
 	// 파트너 구인 작성
 	public int insertPartnerWrite(ComposerRequestDto composerRequestDto, MultipartFile[] files);
+
+	public int insertProfile(UserProfileDto userProfileDto);
 
 //	public int doCharge(UserDto userDto);
 	
@@ -83,6 +86,21 @@ public interface BridgeService {
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
 
+
+	public void insertTag(TagDto tag);
+
+	public List<UserProfileDto> getPorfile(String userId);
+
+	public List<TagDto> getTaglist(String userId);
+
+	public List<ReviewDto> getReview(String userId);
+
+	//파트너 작업 태그 작성
+	public void insertCrtTag(ComposerRequestTagDto crtTag);
+
+	public List<ComposerRequestDto> openPartnerList();
+
+	public List<ComposerRequestTagDto> partnerTagList();
 
 
 }
