@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,9 +34,8 @@ public class UserProfileController {
 	BridgeService bridgeService;
 
 	// 프로필 작성
-	// 관리자 : 영화 정보 등록
 	@PostMapping("/api/insertProfile/{userId}")
-	public ResponseEntity<Map<String, Object>> insertmovie(@PathVariable("userId") String userId,
+	public ResponseEntity<Map<String, Object>> insertProfile(@PathVariable("userId") String userId,
 			@RequestPart(value = "data", required = false) UserProfileDto userProfileDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] files,
 			@RequestPart(value = "music", required = false) MultipartFile[] files1,
