@@ -16,4 +16,8 @@ public interface LoginService extends UserDetailsService {
 	public UserDto passInformation(UserDto userDto) throws Exception;
 	//ID중복체크
 	public int userIdCheck(String userId) throws Exception;
+
+	public String findId(String email);
+
+	public void findPassword(String email,String password);
 }

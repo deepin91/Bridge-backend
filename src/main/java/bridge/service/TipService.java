@@ -21,4 +21,6 @@ public interface TipService {
 
 	void updateTip(TipDto tipDto);
 
+	void deleteTip(int tbIdx);
+
 }

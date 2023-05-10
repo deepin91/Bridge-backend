@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,5 +71,14 @@ public class RestLoginApiController {
 		int result = loginService.userIdCheck(userId);
 		return result;
 	}
-
+	@PostMapping("/api/findid/{email}")
+	public String findId(@PathVariable("email") String email) {
+		String result = loginService.findId(email);
+		return result;
+	}
+	@PutMapping("api/findPassword/{email}/{password}")
+	public void findPassword(@PathVariable("email")String email,@PathVariable("password")String password) {
+		loginService.findPassword(email,password);	
+	}
+	
 }

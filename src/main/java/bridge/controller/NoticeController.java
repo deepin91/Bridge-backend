@@ -45,8 +45,10 @@ public class NoticeController {
 	
 	/* 공지 작성 */
 	@PostMapping("/api/notice/write")
-	public ResponseEntity<String> insertNotice(@RequestBody NoticeDto noticeDto) throws Exception {
+	public ResponseEntity<String> insertNotice(@RequestBody NoticeDto noticeDto,Authentication authentication) throws Exception {
 		try {
+			UserDto userDto = (UserDto) authentication.getPrincipal();	
+			noticeDto.setWriter(userDto.getUserId());
 			jpaService.insertNotice(noticeDto);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록에 실패하였습니다.");
@@ -58,6 +60,8 @@ public class NoticeController {
 	/* 공지 상세 */
 	@GetMapping("/api/notice/detail/{noticeIdx}")
 	public ResponseEntity<NoticeDto> noticeDetail(@PathVariable("noticeIdx") int noticeIdx) throws Exception {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
 		NoticeDto noticeDto = jpaService.noticeDetail(noticeIdx);
 		if (noticeDto != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(noticeDto);
@@ -70,10 +74,12 @@ public class NoticeController {
 	@PutMapping("/api/notice/{noticeIdx}")
 	public ResponseEntity<String> updateNotice(@PathVariable("noticeIdx") int noticeIdx, 
 			@RequestBody NoticeDto noticeDto, Authentication authentication) throws Exception {
+		System.out.println("putputputputputputputputputputputputputputput");
 		try {
 			NoticeDto detail = jpaService.noticeDetail(noticeIdx);
 			UserDto userDto = (UserDto) authentication.getPrincipal();	
-			if (  detail.getUserId().equals(userDto.getUserId()) || userDto.getUserId().equals("admin")) {
+			
+			if (  detail.getWriter().equals(userDto.getUserId()) || userDto.getUserId().equals("admin")) {
 				noticeDto.setNoticeIdx(noticeIdx);
 				int updatedCount = jpaService.updateNotice(noticeDto);
 				if (updatedCount != 1) {
@@ -91,15 +97,17 @@ public class NoticeController {
 	}
 
 	/* 공지 삭제 */
-	@DeleteMapping("/api/notice/{noticeIdx}")
+	@DeleteMapping("/api/notice/delete/{noticeIdx}")
 	public ResponseEntity<String> deleteNotice(@PathVariable ("noticeIdx") int noticeIdx, Authentication authentication) throws Exception{
+		System.out.println("deldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldel");
 		try {
 			UserDto userDto = (UserDto) authentication.getPrincipal();
 			NoticeDto noticeDto = jpaService.noticeDetail(noticeIdx);
-			
-			log.debug(">>>>>>>>>>>>>>>" +userDto.getUserId());
-			if (noticeDto.getUserId().equals(noticeDto.getWriter()) || noticeDto.getUserId().equals("admin") ) {
+
+			if (noticeDto.getWriter().equals(noticeDto.getWriter()) || userDto.getUserId().equals("admin") ) {
+				System.out.println("if문안에 들어옴if문안에 들어옴if문안에 들어옴if문안에 들어옴if문안에 들어옴if문안에 들어옴");
 				int deletedCount = jpaService.deleteNotice(noticeIdx);
+				System.out.println("deletedCount >>>>>>>>>>>>>" + deletedCount);
 				if (deletedCount != 1) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("삭제에 실패했습니다");
 				} else {

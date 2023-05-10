@@ -62,4 +62,19 @@ public class LoginServiceImpl implements LoginService {
 		int result = loginMapper.userIdCheck(userIdCheck);
 		return result;
 	}
+
+	@Override
+	public String findId(String email) {
+		// TODO Auto-generated method stub
+		return loginMapper.findId(email);
+	}
+
+	@Override
+	public void findPassword(String email,String password) {
+		// TODO Auto-generated method stub
+		UserDto userDto =  loginMapper.findPassword(email);
+		userDto.setUserPassword(passwordEncoder.encode(password));
+		loginMapper.updatePassword(userDto);		
+
+	}
 }

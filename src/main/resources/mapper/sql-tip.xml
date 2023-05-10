@@ -2,38 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bridge.mapper.TipMapper">
-	
-	<insert id ="insertTip" parameterType="bridge.dto.TipDto">
-		insert into tip_board (tb_title,tb_contents,user_id,tb_createdt)
-		values (#{tbTitle},#{tbContents},#{userId},now())
+
+	<insert id="insertTip" parameterType="bridge.dto.TipDto">
+		insert into tip_board
+		(tb_title,tb_contents,user_id,tb_createdt)
+		values
+		(#{tbTitle},#{tbContents},#{userId},now())
 	</insert>
-	<select id = "tipdetail" parameterType="int" resultType="bridge.dto.TipDto">
+	<select id="tipdetail" parameterType="int"
+		resultType="bridge.dto.TipDto">
 		select * from tip_board
 		where tb_idx = #{tbIdx}
 	</select>
-	<select id = "tipcommentslist" parameterType="int" resultType="bridge.dto.TipCommentsDto">
+	<select id="tipcommentslist" parameterType="int"
+		resultType="bridge.dto.TipCommentsDto">
 		select * from tip_board_comments
 		where tb_idx = #{tbIdx}
 	</select>
-	<select id = "tipList"  resultType="bridge.dto.TipDto">
-		select tb_idx,user_id,tb_title,tb_heart from tip_board
+	<select id="tipList" resultType="bridge.dto.TipDto">
+		select
+		tb_idx,user_id,tb_title,tb_heart from tip_board
 	</select>
 	<update id="updateViews" parameterType="int">
 		update tip_board
-		set tb_views =
+		set
+		tb_views =
 		tb_views + 1
 		where tb_idx = #{tbIdx}
 	</update>
-	<insert id ="insertComment" parameterType="bridge.dto.TipCommentsDto">
-		insert into tip_board_comments (user_id,tbc_comments,tb_idx)
+	<insert id="insertComment"
+		parameterType="bridge.dto.TipCommentsDto">
+		insert into tip_board_comments
+		(user_id,tbc_comments,tb_idx)
 		values(#{userId},#{tbcComments},#{tbIdx})
 	</insert>
 	<update id="updateTip" parameterType="bridge.dto.TipDto">
 		update tip_board
-		set tb_title = #{tbTitle},
+		set
+		tb_title = #{tbTitle},
 		tb_contents = #{tbContents},
 		tb_createdt = now()
 		where tb_idx = #{tbIdx}
 	</update>
-	
+	<delete id="deleteTip" parameterType="Integer">
+		DELETE
+		FROM tip_board
+		WHERE tb_idx = #{tbIdx} 
+	</delete>
 </mapper>

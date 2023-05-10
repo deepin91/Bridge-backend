@@ -57,4 +57,9 @@ public class TipServiceImpl implements TipService{
 		tipMapper.updateTip(tipDto);
 	}
 
+	@Override
+	public void deleteTip(int tbIdx) {
+		tipMapper.deleteTip(tbIdx);
+	}
+
 }
