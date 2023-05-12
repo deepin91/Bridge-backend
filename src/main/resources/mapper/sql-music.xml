@@ -150,6 +150,7 @@
 	</insert>
 
 
+
 	<!-- 얜 무시 -->
 	<select id="selectMusic" resultType="String">
 		select music_title
@@ -157,6 +158,7 @@
 		concert_music
 		where musicUUID = #{musicUUID}
 	</select>
+
 	<insert id="insertTag">
 		insert into user_tag(user_id,tag)
 		values
@@ -165,4 +167,8 @@
 			( #{userId}, #{tags})
 		</foreach>
 	</insert>
+	
+	
+
+	
 </mapper>  

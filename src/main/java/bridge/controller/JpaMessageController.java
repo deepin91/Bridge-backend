@@ -50,15 +50,11 @@ public class JpaMessageController {
     	map.put("chatting",chattingEntity);
     	return ResponseEntity.status(HttpStatus.OK).body(map);
     }
+    
     @MessageMapping("/hello")
     public void message(MessageEntity message) {
     	simpMessageSendingOperations.convertAndSend("/sub/channel/" + message.getRoomIdx(), message);
     	jpaService.insertData(message);
     }
-    // 1. 채팅방을 클릭하면 get 룸아이디엑스를 파라미터로 받는다
-    // 2. 1번방(1 유저) 2번 방(2번 유저) 뽑아서 리턴시켜준다 클라이언트 쪽으로
-    // 3. 룸 인데스를 가지고 메세지 내역에서 같은 것들을 클라이언트 쪽으로 리턴시켜준다
-    // 4. 클라이언트가 그걸 받으면 그 데이터를 토대로 채널에 연결을 한다
-    // 5. 데이터 넘어가면 알아서 db에 저장이되고 이거는 실시간 채팅은 클라이언트에서 구현할 거같아요 이게 내가 쓴 채팅 내역은
-    // 리턴이 아마 안될거 같아서 클라이언트쪽에서 처리할 예정? 이건 방법을 찾으면 바뀔수도 있고 아닐 수도 있고
+    
 }

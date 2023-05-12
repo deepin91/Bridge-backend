@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.AnnouncementDto;
 import bridge.dto.CommentsDto;
+import bridge.dto.ComposerRequestDto;
+import bridge.dto.ComposerRequestTagDto;
 import bridge.dto.MusicDto;
 import bridge.dto.PartnerContentDto;
 import bridge.dto.PartnerDetailCommentDto;
@@ -19,13 +21,15 @@ import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.mapper.BridgeMapper;
+import bridge.mapper.LoginMapper;
 
 @Service
 public class BridgeServiceImpl implements BridgeService {
 
 	@Autowired
 	BridgeMapper bridgeMapper;
-
+	@Autowired
+	LoginMapper loginMapper;
 	@Override
 	public void insertMusic(MusicDto musicDto) {
 		bridgeMapper.insertMusic(musicDto);
@@ -93,10 +97,17 @@ public class BridgeServiceImpl implements BridgeService {
 	public void handleReport(UserDto userDto) {
 		bridgeMapper.handleReport(userDto);
 	}
-
+	
+	//프로필 작성
 	@Override
 	public int insertProfile(UserProfileDto userProfileDto) {
 		return bridgeMapper.insertProfile(userProfileDto);
+	}
+	
+	//파트너 구인 작성
+	@Override
+	public int insertPartnerWrite(ComposerRequestDto composerRequestDto, MultipartFile[] files) {	
+		return bridgeMapper.insertPartnerWrite(composerRequestDto);
 	}
 
 //	@Override
@@ -194,6 +205,31 @@ public class BridgeServiceImpl implements BridgeService {
 	public List<ReviewDto> getReview(String userId) {
 		// TODO Auto-generated method stub
 		return bridgeMapper.getReview(userId);
+	}
+
+
+	//파트너 구인 태그 작성
+	@Override
+	public void insertCrtTag(ComposerRequestTagDto crtTag) {
+		bridgeMapper.insertCrtTag(crtTag);
+		
+	}
+
+	@Override
+	public List<ComposerRequestDto> openPartnerList() {
+		return bridgeMapper.openPartnerList();
+	}
+
+
+	@Override
+	public List<ComposerRequestTagDto> partnerTagList() {
+		return bridgeMapper.partnerTagList();
+	}
+
+	@Override
+	public UserDto getUserDto(String userId) {
+		return loginMapper.selectUserByUserId(userId);
+
 	}
 
 }

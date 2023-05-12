@@ -19,7 +19,7 @@
 		 출력할 로그의 레벨을 조절하여 appender에 전달 -->
 
 
-
+<!--  -->
 	<logger name="bridge" level="DEBUG" appender-ref="console" />
 
 

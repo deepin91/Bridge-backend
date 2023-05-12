@@ -3,12 +3,12 @@
 
 <mapper namespace="bridge.mapper.NoticeMapper">
 	<insert id="insertNotice" parameterType="bridge.dto.NoticeDto">
-		insert into notice (user_id, writer, title, contents, created_dt)
-		values ('admin','admin', #{title}, #{contents}, now())
+		insert into notice ( writer, title, contents, created_dt)
+		values (#{writer}, #{title}, #{contents}, now())
 	</insert>
 
 	<select id="noticeList" resultType="bridge.dto.NoticeDto">
-		select notice_idx, title, user_id
+		select *
 		from notice
 		where deleted_yn = 'N'
 		order by notice_idx desc
@@ -16,7 +16,7 @@
 
 	<select id="noticeDetail" parameterType="int"
 		resultType="bridge.dto.NoticeDto">
-		select notice_idx, title, contents, user_id
+		select notice_idx, title, contents, writer
 		from notice
 		where notice_idx = #{noticeIdx}
 	</select>
@@ -33,7 +33,7 @@
 	<delete id="deleteNotice" parameterType="int">
 		update notice
 		set
-		deleted= 1
+		deleted_yn= 1
 		where notice_idx = #{noticeIdx}
 	</delete>
 

@@ -23,4 +23,6 @@ public interface TipMapper {
 
 	void updateTip(TipDto tipDto);
 
+	void deleteTip(int tbIdx);
+
 }

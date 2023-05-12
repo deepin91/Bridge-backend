@@ -18,4 +18,7 @@ public interface LoginMapper {
 	
 	List<UserDto> selectUserId(UserDto usersDto) throws Exception;
 	int userIdCheck(String userId) throws Exception;
+	public String findId(String email);
+	public UserDto findPassword(String email);
+	public void updatePassword(UserDto userDto);
 }

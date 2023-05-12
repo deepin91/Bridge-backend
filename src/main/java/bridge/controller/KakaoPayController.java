@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import bridge.dto.ApproveResponseDto;
 import bridge.dto.ReadyResponseDto;
 import bridge.dto.UserDto;
+import bridge.mapper.KakaoPayMapper;
 import bridge.service.KakaoPayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class KakaoPayController {
 
 	@Autowired
 	private KakaoPayService kakaopayService;
+	
+	@Autowired
+	private KakaoPayMapper kakaoPayMapper;
 	
 	@GetMapping("/order/pay/{totalAmount}/{userId}")
 	public @ResponseBody ReadyResponseDto payReady(@PathVariable("totalAmount") int totalAmount, Model model, @PathVariable("userId") String userId) {
@@ -47,13 +51,18 @@ public class KakaoPayController {
 	}
 
 
-	@GetMapping("/order/pay/completed")
-	public void payCompleted(@RequestParam("pg_token") String pgToken, HttpServletResponse response) throws IOException{
+	@GetMapping("/order/pay/completed/{userId}")
+	public void payCompleted(@RequestParam("pg_token") String pgToken, HttpServletResponse response, @PathVariable("userId") String userId) throws IOException{
 		log.info("22222222222222결제승인 요청을 인증하는 토큰: " + pgToken);
 
 		ApproveResponseDto approveResponse = kakaopayService.payApprove(pgToken);
+		kakaoPayMapper.kakaoToList();
 		System.out.println(">>>>>>>>>>>>>>>>>>" + approveResponse);
-
+		
+		//충전내역 저장
+//		kakaoPayMapper.insertPayment()
+		
+		
 		response.sendRedirect("http://localhost:3000/19");
 	}
 

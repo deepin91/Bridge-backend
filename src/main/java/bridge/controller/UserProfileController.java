@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import bridge.dto.ReviewDto;
 import bridge.dto.TagDto;
+import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.service.BridgeService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +34,8 @@ public class UserProfileController {
 	BridgeService bridgeService;
 
 	// 프로필 작성
-	// 관리자 : 영화 정보 등록
 	@PostMapping("/api/insertProfile/{userId}")
-	public ResponseEntity<Map<String, Object>> insertmovie(@PathVariable("userId") String userId,
+	public ResponseEntity<Map<String, Object>> insertProfile(@PathVariable("userId") String userId,
 			@RequestPart(value = "data", required = false) UserProfileDto userProfileDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] files,
 			@RequestPart(value = "music", required = false) MultipartFile[] files1,
@@ -94,13 +95,14 @@ public class UserProfileController {
 	@GetMapping("/api/profile/{userId}")
 	public ResponseEntity<Map<String, Object>> getPorfile(@PathVariable("userId") String userId) throws Exception {
 		Map<String, Object> result = new HashMap<>();
+		UserDto userDto = bridgeService.getUserDto(userId);
 		List<UserProfileDto> list = bridgeService.getPorfile(userId);
 		List<TagDto> taglist = bridgeService.getTaglist(userId);
 		List<ReviewDto> reviewDto = bridgeService.getReview(userId);
-		
 		result.put("profile", list);
 		result.put("taglist", taglist);
-		
+		result.put("reviewlist", reviewDto);
+		result.put("userDto", userDto);
 		if (list == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		} else {
