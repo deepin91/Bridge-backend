@@ -7,9 +7,9 @@
 	
 	<!-- 2. 파트너 협업창 게시글 조회 -->
 	<select id="selectPartnerContent" resultType="bridge.dto.PartnerContentDto">
-		select pc_idx, pc_content, pc_writer, pd_idx
-		from partner_content
-		where pd_idx = #{pdIdx} and deleted_yn = 'N'
+		select pc.pc_idx, pc.pc_content, pc.pc_writer, pc.pd_idx, pc.pc_date, pc.pc_file, up.profile_img
+		from partner_content pc, user_profile up
+		where pd_idx = #{pdIdx} and deleted_yn = 'N' and pc.pc_writer = up.user_id
 	</select>
 	
 	<!-- 3. 파트너 협업창 게시글 상세조회 -->
@@ -43,9 +43,9 @@
 
 	<!-- 7. 파트너 협업창 결제 내역 -->
 	<select id="selectPayList" parameterType="bridge.dto.PayListDto" resultType="bridge.dto.PayListDto">
-		select pl_idx, user_id1, user_id2, pl_money, pl_date
-			from pay_list 
-		where user_id1=#{userId1} and user_id2 = #{userId2}
+		select pl.pl_idx, pl.user_id1, pl.user_id2, pl.pl_money, pl.pl_date, up.profile_img
+			from pay_list pl, user_profile up
+		where user_id1=#{userId1} and user_id2 = #{userId2} and pl.user_id1 = up.user_id
 		order by pl_idx desc
 	</select>
 	

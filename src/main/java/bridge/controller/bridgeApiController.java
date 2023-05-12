@@ -273,4 +273,35 @@ public class bridgeApiController {
 		}
 	}
 
+	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
+	@GetMapping("/api/bridge/partnerdetail/content/file")
+	public ResponseEntity<Resource> fileDownload() throws Exception{
+	    Path filePath = Paths.get("<file_path_string>");
+	    InputStreamResource resource = new InputStreamResource(new FileInputStream(filePath.toString()));
+	    String fileName = "<file_name_string>";
+	    logger.info("Success download input excel file : " + filePath);
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+	            .cacheControl(CacheControl.noCache())
+	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+	            .body(resource);
+	}
+	
+	  @GetMapping("/download")
+	  public void download(HttpServletResponse response) throws IOException {
+
+	    String path = "C:/Users/superpil/OneDrive/바탕 화면/file/tistory.PNG";
+	    
+	    byte[] fileByte = FileUtils.readFileToByteArray(new File(path));
+
+	    response.setContentType("application/octet-stream");
+	    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode("tistory.png", "UTF-8")+"\";");
+	    response.setHeader("Content-Transfer-Encoding", "binary");
+
+	    response.getOutputStream().write(fileByte);
+	    response.getOutputStream().flush();
+	    response.getOutputStream().close();
+	  }
+
+	}
 }
