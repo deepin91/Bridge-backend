@@ -8,4 +8,6 @@ public interface KakaoPayMapper {
 
 	 public void insertPay(ApproveResponseDto approveResponse);
 
+	public void kakaoToList();
+
 }

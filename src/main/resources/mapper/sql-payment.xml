@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bridge.mapper.PaymentMapper">
+
+	<select resultType="bridge.dto.PaymentDto" id="paymentList"> select
+		payment_idx, clients, producer, deposit, downpayment, total_cost,
+		client_point, usepoint from payment order by payment_idx desc
+	</select>
+
+	<!-- 수정 <insert id="insertPayment" parameterType="bridge.dto.PaymentDto">insert 
+		into payment(clients, producer, deposit, downpayment, total_cost, client_point, 
+		usepoint)values(#{clients}, #{producer}, #{deposit}, #{downpayment}, #{totalCost}, 
+		#{clientPoint}, #{usepoint} ) </insert> -->
+
+	<select resultType="bridge.dto.PaymentDto" id="paymentDetail"
+		parameterType="int">select payment_idx, clients, producer, deposit,
+		downpayment, total_cost, usepoint from paymentwhere payment_idx =
+		#{paymentIdx}
+	</select>
+
+	<insert id="doPayment" parameterType="bridge.dto.PaymentDto">
+		insert
+		into payment
+		(clients, producer, downpayment, total_cost, client_point, usepoint, payment_dt)
+		values
+		(#{clients}, #{producer}, #{downpayment}, #{totalCost}, #{clientPoint}, #{usepoint}, now() )
+	</insert>
+	
+	<update id="updatePoint">
+		update payment p, users u
+		set 
+		p.client_point = p.client_point - #{usepoint},
+		u.user_point = p.client_point
+		where p.clients = u.user_id
+	</update>
+
+	<insert id="insertPayment">
+		insert into pay_list(user_id1, user_id2,
+		pl_money,pl_date)
+		select clients, producer, downpayment, payment_dt
+		from
+		payment
+		order by payment_idx DESC limit 1
+	</insert>
+	
+	<!-- 관리자용 결제 리스트 -->
+	<select id="payListAll" resultType="bridge.dto.PayListDto">
+		select * from pay_list
+		order by pl_idx DESC
+	</select>
+
+</mapper>

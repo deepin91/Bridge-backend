@@ -6,4 +6,11 @@
 	insert into Kakaopay_list(user_id,tid,partner_order_id,created_at, money)
 	values (#{partner_user_id},#{tid},#{partner_order_id},#{created_at}, #{money})
 	</insert>
+	
+	<insert id="kakaoToList">
+		insert into pay_list(user_id1, pl_money, pl_date)
+		select user_id, money, created_at
+		from kakaopay_list
+		order by kakaopay_idx DESC limit 1
+	</insert>
 </mapper>
