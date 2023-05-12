@@ -88,6 +88,12 @@ public interface BridgeMapper {
 	// 10. 파트너 협업창 게시글의 댓글 작성
 	int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
 
+	// 11, 파트너 협업창 게시글의 댓글 삭제
+	int deletePartnerComment(int pdcIdx) throws Exception;
+	
+	// 12. 파트너 협업창 작업 진행 상황
+	int partnerComplete(int pdIdx) throws Exception;
+	
 	void insertTag(TagDto tag);
 
 	List<UserProfileDto> getPorfile(String userId);

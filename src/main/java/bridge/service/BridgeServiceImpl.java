@@ -159,7 +159,19 @@ public class BridgeServiceImpl implements BridgeService {
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception {
 		return bridgeMapper.insertPartnerComment(partnerDetailCommentDto);
 	}
+	
+	// 11. 파트너 협업창 게시글의 댓글 삭제
+	@Override
+	public int deletePartnerComment(int pdcIdx) throws Exception {
+		return bridgeMapper.deletePartnerComment(pdcIdx);
+	}
 
+	// 12. 파트너 협업창 작업 진행 상황
+	@Override
+	public int partnerComplete(int pdIdx) throws Exception {
+		return bridgeMapper.partnerComplete(pdIdx);
+	}
+	
 	@Override
 	public void insertTag(TagDto tag) {
 		// TODO Auto-generated method stub

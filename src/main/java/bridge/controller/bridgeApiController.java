@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,23 +68,26 @@ public class bridgeApiController {
 		String UPLOAD_PATH = "C:/temp/upload/";
 		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas" + pcImg);
 //			PartnerContentDto partnerContentDto = new PartnerContentDto();
+		int insertedCount;
 		try {
-			if (pcImg != null) {	
-			for (MultipartFile mf : pcImg) {
-				String originFileName = mf.getOriginalFilename();
-				try {
-					File f = new File(UPLOAD_PATH + originFileName);
-					mf.transferTo(f);
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
+			if (pcImg != null) {
+				for (MultipartFile mf : pcImg) {
+					String originFileName = mf.getOriginalFilename();
+					try {
+						File f = new File(UPLOAD_PATH + originFileName);
+						mf.transferTo(f);
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					}
+					partnerContentDto.setPcFile(originFileName);
 				}
-				partnerContentDto.setPcFile(originFileName);
-			}
 			}
 			System.out.println("aaaaaaaaaaaaaaaaaaaasssssssssssssssssss" + partnerContentDto);
-
-			int insertedCount = bridgeService.insertPartnerContent(partnerContentDto);
-
+			if (partnerContentDto.getPcContent() == "") {
+				insertedCount = 0;
+			} else {
+				insertedCount = bridgeService.insertPartnerContent(partnerContentDto);
+			}
 			if (insertedCount > 0) {
 				Map<String, Object> result = new HashMap<>();
 				result.put("message", "정상적으로 등록되었습니다.");
@@ -112,7 +116,7 @@ public class bridgeApiController {
 			@RequestPart(value = "Data", required = false) PartnerContentDto partnerContentDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] pcImg) throws Exception {
 		String UPLOAD_PATH = "C:/temp/upload/";
-		int insertedCount = 0;
+		int insertedCount;
 		partnerContentDto.setPcIdx(pcIdx);
 		try {
 			if (pcImg != null) {
@@ -128,6 +132,8 @@ public class bridgeApiController {
 				}
 				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
 
+			} else if (partnerContentDto.getPcContent() == "" && pcImg == null) {
+				insertedCount = 0;
 			} else {
 				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
 			}
@@ -158,7 +164,7 @@ public class bridgeApiController {
 	}
 
 	// 6. 파트너 협업창 게시글 삭제
-	@PutMapping("/api/bridge/partnerdetail/delete/{pcIdx}")
+	@DeleteMapping("/api/bridge/partnerdetail/delete/{pcIdx}")
 	public ResponseEntity<Object> deletePartnerContent(@PathVariable("pcIdx") int pcIdx) throws Exception {
 		try {
 			bridgeService.deletePartnerContent(pcIdx);
@@ -169,7 +175,7 @@ public class bridgeApiController {
 	}
 
 	// 7. 파트너 협업창 결제 내역
-	@GetMapping("/api/bridge/partnerDetail/paylist/{userId1}/{userId2}")
+	@GetMapping("/api/bridge/partnerdetail/paylist/{userId1}/{userId2}")
 	public ResponseEntity<PayListDto> openPayList(@PathVariable("userId1") String userId1,
 			@PathVariable("userId2") String userId2) throws Exception {
 		PayListDto payListDto = new PayListDto();
@@ -187,7 +193,7 @@ public class bridgeApiController {
 	}
 
 	// 8. 파트너 협업창 작업목록 조회
-	@GetMapping("/api/bridge/partnerDetail/projectList/{userId1}")
+	@GetMapping("/api/bridge/partnerdetail/projectList/{userId1}")
 	public ResponseEntity<List<PartnerDetailDto>> openProjectList(@PathVariable("userId1") String userId1) {
 		try {
 
@@ -204,7 +210,7 @@ public class bridgeApiController {
 	}
 
 	// 9. 파트너 협업창 게시글의 댓글 조회
-	@GetMapping("/api/bridge/partnerDetail/comment/{pcIdx}")
+	@GetMapping("/api/bridge/partnerdetail/comment/{pcIdx}")
 	public ResponseEntity<List<PartnerDetailCommentDto>> openPartnerCommentList(@PathVariable("pcIdx") int pcIdx)
 			throws Exception {
 
@@ -223,12 +229,16 @@ public class bridgeApiController {
 	}
 
 	// 10. 파트너 협업창 게시글의 댓글 작성
-	@PostMapping("/api/bridge/partnerDetail/comment/write/{pcIdx}")
+	@PostMapping("/api/bridge/partnerdetail/comment/write/{pcIdx}")
 	public ResponseEntity<Integer> addComment(@RequestBody PartnerDetailCommentDto partnerDetailCommentDto)
 			throws Exception {
 
-		int insertCommentCount = bridgeService.insertPartnerComment(partnerDetailCommentDto);
-
+		int insertCommentCount;
+		if (partnerDetailCommentDto.getPdcComment() == "") {
+			insertCommentCount = 0;
+		} else {
+			insertCommentCount = bridgeService.insertPartnerComment(partnerDetailCommentDto);
+		}
 		if (insertCommentCount != 1) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(insertCommentCount);
 		} else {
@@ -237,6 +247,30 @@ public class bridgeApiController {
 
 	}
 
-	//
+	// 11. 파트너 협업창 게시글의 댓글 삭제
+	@DeleteMapping("/api/bridge/partnerdetail/comment/delete/{pdcIdx}")
+	public ResponseEntity<Integer> deleteComment(@PathVariable("pdcIdx") int pdcIdx) throws Exception {
+
+		int deletedCount = bridgeService.deletePartnerComment(pdcIdx);
+
+		if (deletedCount != 1) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(deletedCount);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(deletedCount);
+		}
+	}
+	
+	// 12. 파트너 협업창 작업 진행 상황
+	@PutMapping("/api/bridge/partnerdetail/complete/{pdIdx}")
+	public ResponseEntity<Integer> projectComplete(@PathVariable("pdIdx") int pdIdx) throws Exception {
+		
+		int completeCount = bridgeService.partnerComplete(pdIdx);
+		
+		if (completeCount != 1) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(completeCount);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(completeCount);
+		}
+	}
 
 }
