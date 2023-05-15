@@ -17,6 +17,8 @@ public interface PaymentMapper {
 	void updatePoint(int i);
 	int insertPayment();
 	List<PayListDto> payListAll();
+	List<PayListDto> payListDeal();
+	List<PayListDto> payListCharge();
 	
 
 }

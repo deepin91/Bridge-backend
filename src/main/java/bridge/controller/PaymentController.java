@@ -77,6 +77,18 @@ public class PaymentController {
 		List<PayListDto> payListDto = paymentService.payListAll();
 		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
 	}
+		//회원간 거래내역
+	@GetMapping("/api/payList/deal")
+	public ResponseEntity<List<PayListDto>> payListDeal() throws Exception {
+		List<PayListDto> payListDto = paymentMapper.payListDeal();
+		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
+	}
+		//충전 내역
+	@GetMapping("/api/payList/charge")
+	public ResponseEntity<List<PayListDto>> payListCharge() throws Exception {
+		List<PayListDto> payListDto = paymentMapper.payListCharge();
+		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
+	}
 	
 	
     

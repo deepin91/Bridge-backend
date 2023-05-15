@@ -50,5 +50,17 @@
 		select * from pay_list
 		order by pl_idx DESC
 	</select>
+	
+	<select id="payListDeal" resultType="bridge.dto.PayListDto">
+		select * from pay_list
+		where user_id2 != "Bridge"
+		order by pl_idx DESC
+	</select>
+	
+	<select id="payListCharge" resultType="bridge.dto.PayListDto">
+		select * from pay_list
+		where user_id2 = "Bridge"
+		order by pl_idx DESC
+	</select>
 
 </mapper>

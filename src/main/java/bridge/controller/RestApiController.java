@@ -49,7 +49,7 @@ public class RestApiController {
 	private BridgeMapper bridgeMapper;
 
 	
-
+	//음악파일 불러옴
 	@GetMapping("/api/getMusic/{musicUUID}")
 	public void getMusic(@PathVariable("musicUUID") String musicUUID, HttpServletResponse response) throws Exception {
 		FileInputStream fis = null;
@@ -75,7 +75,6 @@ public class RestApiController {
 		}
 	}
 
-	// 추가
 	// 음원 분리하는 컨테이너 실행
 	@GetMapping("/api/docker/{musicUUID}")
 	public ResponseEntity<Map<String, Object>> dockerList(@PathVariable("musicUUID") String musicUUID)
