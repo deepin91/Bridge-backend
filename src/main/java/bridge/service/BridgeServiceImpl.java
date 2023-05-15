@@ -232,4 +232,10 @@ public class BridgeServiceImpl implements BridgeService {
 
 	}
 
+	@Override
+	public void partnerMoney() {
+		bridgeMapper.partnerMoney();
+//		bridgeMapper.moneyToZero();
+	}
+
 }

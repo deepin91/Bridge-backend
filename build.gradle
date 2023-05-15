@@ -42,18 +42,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-<<<<<<< HEAD
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	
-}
-=======
 
 
 }
 
-
-
->>>>>>> 0f976816521af5fb2edd3b2e7af157318a8cd54d
 tasks.named('test') {
 	useJUnitPlatform()
 }

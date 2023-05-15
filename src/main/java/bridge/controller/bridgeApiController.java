@@ -1,11 +1,20 @@
 package bridge.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.jpa.domain.JpaSort.Path;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +35,11 @@ import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.security.JwtTokenUtil;
 import bridge.service.BridgeService;
+import io.github.classgraph.Resource;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.MediaType;
 import lombok.extern.slf4j.Slf4j;
+import nonapi.io.github.classgraph.utils.FileUtils;
 
 @Slf4j
 @RestController
@@ -259,19 +272,21 @@ public class bridgeApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(deletedCount);
 		}
 	}
-	
+
 	// 12. 파트너 협업창 작업 진행 상황
 	@PutMapping("/api/bridge/partnerdetail/complete/{pdIdx}")
 	public ResponseEntity<Integer> projectComplete(@PathVariable("pdIdx") int pdIdx) throws Exception {
-		
+
 		int completeCount = bridgeService.partnerComplete(pdIdx);
-		
+		bridgeService.partnerMoney();
+
 		if (completeCount != 1) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(completeCount);
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(completeCount);
 		}
 	}
+<<<<<<< HEAD
 //
 //	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
 //	@GetMapping("/api/bridge/partnerdetail/content/file")
@@ -304,4 +319,38 @@ public class bridgeApiController {
 //	  }
 //
 //	}
+=======
+	
+
+	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
+//	@GetMapping("/api/bridge/partnerdetail/content/file")
+//	public ResponseEntity<Resource> fileDownload() throws Exception {
+//		Path filePath = Paths.get("<file_path_string>");
+//		InputStreamResource resource = new InputStreamResource(new FileInputStream(filePath.toString()));
+//		String fileName = "<file_name_string>";
+//		log.info("Success download input excel file : " + filePath);
+//		return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).cacheControl(CacheControl.noCache())
+//				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName).body(resource);
+//	}
+//
+//	@GetMapping("/download")
+//	public void download(HttpServletResponse response) throws IOException {
+//
+//		String path = "C:/Users/superpil/OneDrive/바탕 화면/file/tistory.PNG";
+//
+//		byte[] fileByte = FileUtils.readFileToByteArray(new File(path));
+//
+//		response.setContentType("application/octet-stream");
+//		response.setHeader("Content-Disposition",
+//				"attachment; fileName=\"" + URLEncoder.encode("tistory.png", "UTF-8") + "\";");
+//		response.setHeader("Content-Transfer-Encoding", "binary");
+//
+//		response.getOutputStream().write(fileByte);
+//		response.getOutputStream().flush();
+//		response.getOutputStream().close();
+//	}
+	
+
+
+>>>>>>> 700be1433424e23328c6236fbc20bd0a8c111939
 }

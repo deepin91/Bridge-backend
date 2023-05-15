@@ -124,6 +124,10 @@ public interface BridgeMapper {
 	void updatePartner(int crIdx);
 	//파트너구인 삭제
 	void deletePartner(int crIdx);
+
+	void partnerMoney();
+
+	void moneyToZero();
 	
 
 }

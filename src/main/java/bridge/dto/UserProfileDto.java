@@ -24,3 +24,4 @@ public class UserProfileDto {
 	private String userMusic;
 
 }
+

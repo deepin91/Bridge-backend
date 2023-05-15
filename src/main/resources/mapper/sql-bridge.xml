@@ -4,101 +4,157 @@
 <mapper namespace="bridge.mapper.BridgeMapper">
 
 	<!-- 1. 파트너 협업창 조회 -->
-	
+
 	<!-- 2. 파트너 협업창 게시글 조회 -->
-	<select id="selectPartnerContent" resultType="bridge.dto.PartnerContentDto">
-		select pc.pc_idx, pc.pc_content, pc.pc_writer, pc.pd_idx, pc.pc_date, pc.pc_file, up.profile_img
-		from partner_content pc, user_profile up
-		where pd_idx = #{pdIdx} and deleted_yn = 'N' and pc.pc_writer = up.user_id
+	<select id="selectPartnerContent"
+		resultType="bridge.dto.PartnerContentDto">
+		select pc.pc_idx, pc.pc_content, pc.pc_writer, pc.pd_idx,
+		pc.pc_date, pc.pc_file, up.profile_img
+		from partner_content pc,
+		user_profile up
+		where pd_idx = #{pdIdx} and deleted_yn = 'N' and
+		pc.pc_writer = up.user_id
 	</select>
-	
+
 	<!-- 3. 파트너 협업창 게시글 상세조회 -->
-	<select id="selectPartnerContentDetail"	parameterType="int" resultType="bridge.dto.PartnerContentDto">
+	<select id="selectPartnerContentDetail" parameterType="int"
+		resultType="bridge.dto.PartnerContentDto">
 		select pc_idx, pc_content, pc_writer, pc_file, pd_idx
-		from partner_content
+		from
+		partner_content
 		where pc_idx = #{pcIdx} and deleted_yn = 'N'
-		
+
 	</select>
 	<!-- 4. 파트너 협업창 게시글 등록 -->
-	<insert id="insertPartnerContent" parameterType="bridge.dto.PartnerContentDto">
-		insert into partner_content (pc_content, pc_writer, pd_idx, pc_file, pc_date )
-		values (#{pcContent}, #{pcWriter}, #{pdIdx}, #{pcFile}, now() )
+	<insert id="insertPartnerContent"
+		parameterType="bridge.dto.PartnerContentDto">
+		insert into partner_content (pc_content, pc_writer,
+		pd_idx, pc_file, pc_date )
+		values (#{pcContent}, #{pcWriter}, #{pdIdx},
+		#{pcFile}, now() )
 	</insert>
-	
+
 	<!-- 5. 파트너 협업창 게시글 수정 -->
-	<update id="updatePartnerContent" parameterType="bridge.dto.PartnerContentDto">
+	<update id="updatePartnerContent"
+		parameterType="bridge.dto.PartnerContentDto">
 		update partner_content
-		   set pc_content = #{pcContent},
-				pc_file = #{pcFile},
-				pc_idx = #{pcIdx}
-		 where pc_idx = #{pcIdx} 	 	 
+		set pc_content = #{pcContent},
+		pc_file = #{pcFile},
+		pc_idx = #{pcIdx}
+		where pc_idx = #{pcIdx}
 	</update>
-	
+
 	<!-- 6. 파트너 협업창 게시글 삭제 -->
 	<delete id="deletePartnerContent" parameterType="int">
-		update partner_content
-		   set deleted_yn = 'Y' 
-		 where pc_idx = #{pcIdx} 		 
+		update
+		partner_content
+		set deleted_yn = 'Y'
+		where pc_idx = #{pcIdx}
 	</delete>
 
 	<!-- 7. 파트너 협업창 결제 내역 -->
-	<select id="selectPayList" parameterType="bridge.dto.PayListDto" resultType="bridge.dto.PayListDto">
-		select pl.pl_idx, pl.user_id1, pl.user_id2, pl.pl_money, pl.pl_date, up.profile_img
-			from pay_list pl, user_profile up
-		where user_id1=#{userId1} and user_id2 = #{userId2} and pl.user_id1 = up.user_id
+	<select id="selectPayList" parameterType="bridge.dto.PayListDto"
+		resultType="bridge.dto.PayListDto">
+		select pl.pl_idx, pl.user_id1, pl.user_id2, pl.pl_money,
+		pl.pl_date, up.profile_img
+		from pay_list pl, user_profile up
+		where
+		user_id1=#{userId1} and user_id2 =
+		#{userId2} and pl.user_id1 =
+		up.user_id
 		order by pl_idx desc
 	</select>
-	
+
 	<!-- 8. 파트너 협업창 작업목록 조회 -->
-	<select id="selectProjectList" resultType="bridge.dto.PartnerDetailDto">
-		select pd.pd_idx, pd.user_id1, pd.user_id2, up.profile_img, up.user_tag1, up.user_tag2, up.user_tag3, pd.progress
-			from partner_detail pd, user_profile up
-		where user_id1=#{userId1} and pd.user_id2 = up.user_id
+	<select id="selectProjectList"
+		resultType="bridge.dto.PartnerDetailDto">
+		select pd.pd_idx, pd.user_id1, pd.user_id2, up.profile_img,
+		up.user_tag1, up.user_tag2, up.user_tag3, pd.progress
+		from
+		partner_detail pd, user_profile up
+		where user_id1=#{userId1} and
+		pd.user_id2 = up.user_id
 	</select>
-	
+
 	<!-- 9. 파트너 협업창 게시글의 댓글 조회 -->
+<<<<<<< HEAD
 	<select id="selectPartnerComment" resultType="bridge.dto.PartnerDetailCommentDto" >
 		select pdc.pdc_comment, pdc.user_id, pdc.pdc_idx, up.profile_img, pdc.pc_idx
 		from partner_detail_comment pdc, user_profile up
 		where comment_deleted_yn = 'N' and
 		      pc_idx = #{pcIdx} and pdc.user_id = up.user_id
+=======
+	<select id="selectPartnerComment"
+		resultType="bridge.dto.PartnerDetailCommentDto">
+		select pdc_comment,
+		user_id, pdc_idx
+		from
+		partner_detail_comment
+		where comment_deleted_yn =
+		'N' and
+		pc_idx =
+		#{pcIdx}
+>>>>>>> 700be1433424e23328c6236fbc20bd0a8c111939
 	</select>
-	
+
 	<!-- 10. 파트너 협업창 게시글의 댓글 작성 -->
-	<insert id="insertPartnerComment" parameterType="bridge.dto.PartnerDetailCommentDto">
-		insert into partner_detail_comment (pdc_comment, user_id, pc_idx)
-		values (#{pdcComment}, #{userId},	 #{pcIdx})
+	<insert id="insertPartnerComment"
+		parameterType="bridge.dto.PartnerDetailCommentDto">
+		insert into partner_detail_comment (pdc_comment,
+		user_id, pc_idx)
+		values (#{pdcComment}, #{userId}, #{pcIdx})
 	</insert>
-	
+
 	<!-- 11. 파트너 협업창 게시글의 댓글 삭제 -->
 	<delete id="deletePartnerComment" parameterType="int">
-		update partner_detail_comment
-		   set comment_deleted_yn = 'Y'  
-		 where pdc_idx = #{pdcIdx} 		 
+		update
+		partner_detail_comment
+		set comment_deleted_yn = 'Y'
+		where pdc_idx =
+		#{pdcIdx}
 	</delete>
-	
+
 	<!-- 12. 파트너 협업창 작업 진행 상황 -->
-	<update id="partnerComplete" parameterType = "int">
-		update partner_detail 
+	<update id="partnerComplete" parameterType="int">
+		update partner_detail
 		set progress = '1'
 		where pd_idx = #{pdIdx}
 	</update>
-	
-	<select  id="getPorfile"  resultType ="bridge.dto.UserProfileDto" parameterType="String">
-		select * 
+
+	<select id="getPorfile" resultType="bridge.dto.UserProfileDto"
+		parameterType="String">
+		select *
 		from user_profile
 		where user_id = #{userId}
 	</select>
-	<select id="getTaglist" resultType="bridge.dto.TagDto" parameterType="String">
+	<select id="getTaglist" resultType="bridge.dto.TagDto"
+		parameterType="String">
 		select * from
 		user_tag
 		where user_id = #{userId}
 	</select>
-	<select id="getReview" resultType="bridge.dto.ReviewDto" parameterType="String">
+	<select id="getReview" resultType="bridge.dto.ReviewDto"
+		parameterType="String">
 		select * from
 		user_review
 		where user_id = #{userId}
 	</select>
-	
+
+	<!-- 예치금 포인트에 추가하고 0으로 업데이트 -->
+	<update id="partnerMoney">
+		update partner_detail d
+		inner join users u
+		on
+		d.user_id2 = u.user_id
+		set u.user_point = u.user_point + d.pd_money
+	</update>
+
+	<!--  <update id="moneyToZero">
+		update partner_detail d
+		inner join users u
+		on d.user_id2 = u.user_id
+		set d.
+	</update> -->
+
 
 </mapper>
