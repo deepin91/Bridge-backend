@@ -11,4 +11,6 @@ public class PayListDto {
 	private int plMoney;
 	private String plDate;
 	
+	private String profileImg;
+	
 }

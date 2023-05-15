@@ -4,6 +4,7 @@ import java.util.List;
 
 import bridge.dto.PayListDto;
 import bridge.dto.PaymentDto;
+import bridge.dto.UserDto;
 
 public interface PaymentService {
 
@@ -11,7 +12,7 @@ public interface PaymentService {
 
 	void insertPayment(PaymentDto paymentDto) throws Exception;
 
-	PaymentDto paymentDetail(int paymentIdx) throws Exception;
+	int paymentDetail(String userId) throws Exception;
 
 	void doPayment(PaymentDto paymentDto);
 

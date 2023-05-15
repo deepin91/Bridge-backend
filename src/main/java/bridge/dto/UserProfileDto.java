@@ -17,7 +17,11 @@ public class UserProfileDto {
 	private String userSite;
 	private String userPhoto;
 
+	private String userTag1;
+	private String userTag2;
+	private String userTag3;
 	private String userTag;
 	private String userMusic;
 
 }
+

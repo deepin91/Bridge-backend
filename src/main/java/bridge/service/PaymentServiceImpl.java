@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import bridge.dto.PayListDto;
 import bridge.dto.PaymentDto;
+import bridge.dto.UserDto;
 import bridge.mapper.PaymentMapper;
 
 @Service
@@ -27,8 +28,8 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentDto paymentDetail(int paymentIdx) throws Exception {
-        return paymentMapper.paymentDetail(paymentIdx);
+    public int paymentDetail(String userId) throws Exception {
+        return paymentMapper.paymentDetail(userId);
     }
 
 	@Override

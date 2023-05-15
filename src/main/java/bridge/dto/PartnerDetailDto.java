@@ -13,4 +13,5 @@ public class PartnerDetailDto {
 	private String userTag1;
 	private String userTag2;
 	private String userTag3;
+	private int progress;
 }

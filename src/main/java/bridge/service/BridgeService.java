@@ -87,6 +87,13 @@ public interface BridgeService {
 	public int insertPartnerComment(PartnerDetailCommentDto partnerDetailCommentDto) throws Exception;
 
 
+	// 11. 파트너 협업창 게시글의 댓글 삭제
+	public int deletePartnerComment(int pdcIdx) throws Exception;
+	
+	// 12, 파트너 협업창 작업 진행 상황
+	public int partnerComplete(int pdIdx) throws Exception;
+	
+
 	public void insertTag(TagDto tag);
 
 	public List<UserProfileDto> getPorfile(String userId);
@@ -102,6 +109,8 @@ public interface BridgeService {
 
 	public List<ComposerRequestTagDto> partnerTagList();
 	public UserDto getUserDto(String userId);
+
+	public void partnerMoney();
 
 
 }
