@@ -58,10 +58,10 @@
 	
 	<!-- 9. 파트너 협업창 게시글의 댓글 조회 -->
 	<select id="selectPartnerComment" resultType="bridge.dto.PartnerDetailCommentDto" >
-		select pdc_comment, user_id, pdc_idx
-		from partner_detail_comment
+		select pdc.pdc_comment, pdc.user_id, pdc.pdc_idx, up.profile_img, pdc.pc_idx
+		from partner_detail_comment pdc, user_profile up
 		where comment_deleted_yn = 'N' and
-		      pc_idx = #{pcIdx}
+		      pc_idx = #{pcIdx} and pdc.user_id = up.user_id
 	</select>
 	
 	<!-- 10. 파트너 협업창 게시글의 댓글 작성 -->

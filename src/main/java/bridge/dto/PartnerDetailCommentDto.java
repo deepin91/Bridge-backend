@@ -11,4 +11,6 @@ public class PartnerDetailCommentDto {
 	private int pdIdx;
 	private int pcIdx;
 	private String commentDeletedYn;
+	
+	private String profileImg;
 }
