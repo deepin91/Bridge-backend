@@ -125,9 +125,13 @@ public interface BridgeMapper {
 	//파트너구인 삭제
 	void deletePartner(int crIdx);
 
-	void partnerMoney();
+	void partnerMoney(int pdIdx);
 
 	void moneyToZero();
+
+	int selectIdx(String userId);
+
+	void tagToProfile(TagDto tag);
 	
 
 }

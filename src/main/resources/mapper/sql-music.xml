@@ -140,15 +140,34 @@
 	</update>
 
 	<!-- 프로필 작성 -->
-	<insert id="insertProfile">
+	<insert id="insertProfile" parameterType="String"
+		useGeneratedKeys="true" keyProperty="userProfileIdx">
 		insert into user_profile
-		(user_id, user_position,
-		user_introduction, profile_img, user_site,user_music)
+		(user_id,
+		user_position,
+		user_introduction, profile_img, user_site,user_music,
+		user_portfolio)
 		values
-		(#{userId}, #{userPosition}, #{userIntroduction}, #{profileImg},
-		#{userSite},#{userMusic})
+		(#{userId}, #{userPosition}, #{userIntroduction},
+		#{profileImg},
+		#{userSite},#{userMusic}, #{userPortfolio})
 	</insert>
 
+	<insert id="insertTag">
+		insert into user_tag(user_profile_idx,tag)
+		values
+		<foreach collection="tags" item="tags" separator=",">
+			(
+			#{userProfileIdx}, #{tags})
+		</foreach>
+	</insert>
+
+	<insert id="tagToProfile">
+		UPDATE user_profile
+		SET user_tag1 = #{tags[0]}, user_tag2 = #{tags[1]}, user_tag3 =
+		#{tags[2]}
+		WHERE user_profile_idx = #{userProfileIdx}
+	</insert>
 
 
 	<!-- 얜 무시 -->
@@ -159,16 +178,7 @@
 		where musicUUID = #{musicUUID}
 	</select>
 
-	<insert id="insertTag">
-		insert into user_tag(user_id,tag)
-		values
-		<foreach collection="tags" item="tags"
-			separator=",">
-			( #{userId}, #{tags})
-		</foreach>
-	</insert>
-	
-	
 
-	
+
+
 </mapper>  

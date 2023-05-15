@@ -43,4 +43,9 @@ public class PaymentServiceImpl implements PaymentService{
 		return paymentMapper.payListAll();
 	}
 
+	@Override
+	public List<PayListDto> payList(String userId) {
+		return paymentMapper.payList(userId);
+	}
+
 }

@@ -15,7 +15,9 @@ public interface PaymentService {
 	int paymentDetail(String userId) throws Exception;
 
 	void doPayment(PaymentDto paymentDto);
-
+	//관리자용 결제내역
 	List<PayListDto> payListAll();
+	//회원용 결제내역
+	List<PayListDto> payList(String userId);
 
 }

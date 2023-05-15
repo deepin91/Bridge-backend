@@ -278,7 +278,7 @@ public class bridgeApiController {
 	public ResponseEntity<Integer> projectComplete(@PathVariable("pdIdx") int pdIdx) throws Exception {
 
 		int completeCount = bridgeService.partnerComplete(pdIdx);
-		bridgeService.partnerMoney();
+		bridgeService.partnerMoney(pdIdx);
 
 		if (completeCount != 1) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(completeCount);
