@@ -84,5 +84,26 @@
 		where user_id2 = "Bridge"
 		order by pl_idx DESC
 	</select>
+	
+	<!-- 회원용 결제 내역 -->
+	<select id="payList" parameterType="String" resultType="bridge.dto.PayListDto">
+		select * from pay_list
+		where user_id1 = #{userId} or user_id2 = #{userId}
+		order by pl_idx DESC
+	</select>
 
+	<!-- 회원 거래내역 -->
+	<select id="payDeal" parameterType="String" resultType="bridge.dto.PayListDto">
+		select * from pay_list
+		where
+		user_id2 != "Bridge" and user_id1 = #{userId} or user_id2 = #{userId}
+		order by pl_idx DESC
+	</select>
+	
+	<!-- 회원 충전내역 -->
+	<select id="payCharge" parameterType="String" resultType="bridge.dto.PayListDto">
+		select * from pay_list
+		where user_id2 = "Bridge" and user_id1 = #{userId}
+		order by pl_idx DESC
+	</select>
 </mapper>

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +21,7 @@ import bridge.dto.ReviewDto;
 import bridge.dto.TagDto;
 import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
+import bridge.mapper.BridgeMapper;
 import bridge.service.BridgeService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +32,9 @@ public class UserProfileController {
 
 	@Autowired
 	BridgeService bridgeService;
+	
+	@Autowired
+	BridgeMapper bridgeMapper;
 
 	// 프로필 작성
 	@PostMapping("/api/insertProfile/{userId}")
@@ -67,9 +70,18 @@ public class UserProfileController {
 					e.printStackTrace();
 				}
 			}
-			tag.setUserId(userId);
-			bridgeService.insertTag(tag);
+			
+			
+			
+			userProfileDto.setUserId(userId);
+//			int idx = bridgeMapper.selectIdx(userId);
+//			userProfileDto.
+			
 			insertedCount = bridgeService.insertProfile(userProfileDto);
+			
+			tag.setUserProfileIdx(userProfileDto.getUserProfileIdx());
+			bridgeService.insertTag(tag);
+			bridgeMapper.tagToProfile(tag);
 
 			if (insertedCount > 0) {
 				Map<String, Object> result = new HashMap<>();

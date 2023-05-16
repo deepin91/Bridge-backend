@@ -129,20 +129,12 @@
 	</select>
 
 	<!-- 예치금 포인트에 추가하고 0으로 업데이트 -->
-	<update id="partnerMoney">
-		update partner_detail d
-		inner join users u
-		on
-		d.user_id2 = u.user_id
-		set u.user_point = u.user_point + d.pd_money
+	<update id="partnerMoney" parameterType="bridge.dto.PartnerDetailCommentDto">
+		UPDATE users u, partner_detail d
+		SET u.user_point = u.user_point + d.pd_money,
+		d.pd_money = 0
+		WHERE u.user_id = d.user_id2 and d.pd_idx = #{pdIdx}
 	</update>
-
-	<!--  <update id="moneyToZero">
-		update partner_detail d
-		inner join users u
-		on d.user_id2 = u.user_id
-		set d.
-	</update> -->
 
 
 </mapper>

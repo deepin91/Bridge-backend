@@ -18,9 +18,16 @@ public interface PaymentMapper {
 	void updatePoint(int i);
 	void updatePartnerMoney();
 	int insertPayment();
+	//관리자용 결제 내역
 	List<PayListDto> payListAll();
+	//관리자용 거래 내역
 	List<PayListDto> payListDeal();
+	//관리자용 충전 내역
 	List<PayListDto> payListCharge();
+	//회원용 결제 내역
+	List<PayListDto> payList(String userId);
+	List<PayListDto> payDeal(String userId);
+	List<PayListDto> payCharge(String userId);
 	
 	
 

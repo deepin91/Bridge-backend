@@ -42,17 +42,6 @@ public class PaymentController {
 		}
 	};
 
-	// 이건 어떨때 사용?
-//	@GetMapping("/api/payment/detail/{paymentIdx}")
-//    public ResponseEntity<PaymentDto> paymentDetail(@PathVariable("paymentIdx") int paymentIdx) throws Exception {
-//        PaymentDto paymentDto = paymentService.paymentDetail(paymentIdx);
-//        if (paymentDto != null) {
-//            return ResponseEntity.status(HttpStatus.OK).body(paymentDto);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.OK).body(null);
-//        }
-//	};
-
 	//보유포인트
 	@GetMapping("/api/payment/detail/{userId}")
     public ResponseEntity<Integer> paymentDetail(@PathVariable("userId") String userId) throws Exception {
@@ -90,6 +79,24 @@ public class PaymentController {
 		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
 	}
 	
+	//회원용 결제내역
+	@GetMapping("/api/payList/{userId}")
+	public ResponseEntity<List<PayListDto>> payListUser(@PathVariable("userId") String userId) throws Exception {
+		List<PayListDto> payListDto = paymentService.payList(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
+	}
+	
+	@GetMapping("/api/pay/deal/{userId}")
+	public ResponseEntity<List<PayListDto>> payDeal(@PathVariable("userId") String userId) throws Exception {
+		List<PayListDto> payListDto = paymentMapper.payDeal(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
+	}
+		//충전 내역
+	@GetMapping("/api/pay/charge/{userId}")
+	public ResponseEntity<List<PayListDto>> payCharge(@PathVariable("userId") String userId) throws Exception {
+		List<PayListDto> payListDto = paymentMapper.payCharge(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(payListDto);
+	}
 	
     
 }

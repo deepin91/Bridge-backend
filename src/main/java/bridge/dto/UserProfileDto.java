@@ -22,6 +22,8 @@ public class UserProfileDto {
 	private String userTag3;
 	private String userTag;
 	private String userMusic;
+	
+	private String userPortfolio;
 
 }
 
