@@ -55,13 +55,13 @@ public class RestApiController {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		BufferedOutputStream bos = null;
-		String UPLOAD_PATH = "C:\\Temp\\";
+		String UPLOAD_PATH = "C:\\Temp\\upload\\";
 		System.out.println(">>>>>>>>>>>>>>>>>>>>    " + musicUUID);
 		System.out.println("++++++++++++++++++++++" + response);
 		try {
 			response.setHeader("Content-Disposition", "inline;");
 			byte[] buf = new byte[1024];
-			fis = new FileInputStream(UPLOAD_PATH + musicUUID );
+			fis = new FileInputStream(UPLOAD_PATH + musicUUID + ".mp3");
 			bis = new BufferedInputStream(fis);
 			bos = new BufferedOutputStream(response.getOutputStream());
 			int read;

@@ -1,22 +1,16 @@
 package bridge.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.jpa.domain.JpaSort.Path;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +29,7 @@ import bridge.dto.PartnerDetailDto;
 import bridge.dto.PayListDto;
 import bridge.security.JwtTokenUtil;
 import bridge.service.BridgeService;
-import io.github.classgraph.Resource;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.media.MediaType;
 import lombok.extern.slf4j.Slf4j;
-import nonapi.io.github.classgraph.utils.FileUtils;
 
 @Slf4j
 @RestController
@@ -77,22 +67,40 @@ public class bridgeApiController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Map<String, Object>> insertPartnetContent(@PathVariable int pdIdx,
 			@RequestPart(value = "Data", required = false) PartnerContentDto partnerContentDto,
-			@RequestPart(value = "files", required = false) MultipartFile[] pcImg) throws Exception {
+			@RequestPart(value = "files", required = false) MultipartFile[] pcFile) throws Exception {
 		String UPLOAD_PATH = "C:/temp/upload/";
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas" + pcImg);
+		String uuid = UUID.randomUUID().toString();
+		List<String> fileNames = new ArrayList<>();
+
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas" + pcFile);
 //			PartnerContentDto partnerContentDto = new PartnerContentDto();
 		int insertedCount;
 		try {
-			if (pcImg != null) {
-				for (MultipartFile mf : pcImg) {
+			if (pcFile != null) {
+				for (MultipartFile mf : pcFile) {
 					String originFileName = mf.getOriginalFilename();
-					try {
-						File f = new File(UPLOAD_PATH + originFileName);
-						mf.transferTo(f);
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
+					
+					// 파일이 음악 파일인지 확인
+					if (isAudioFile(originFileName)) {
+						// 음악 파일인 경우 처리
+						try {
+							File f = new File(UPLOAD_PATH + File.separator + uuid + ".mp3");
+							mf.transferTo(f);
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						}
+						partnerContentDto.setCmMusic(uuid);
+					} else {
+						// 일반 파일인 경우 처리
+						try {
+							File f = new File(UPLOAD_PATH + originFileName);
+							mf.transferTo(f);
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						}
+						partnerContentDto.setPcFile(originFileName);
 					}
-					partnerContentDto.setPcFile(originFileName);
+
 				}
 			}
 			System.out.println("aaaaaaaaaaaaaaaaaaaasssssssssssssssssss" + partnerContentDto);
@@ -118,9 +126,29 @@ public class bridgeApiController {
 			System.out.println(e);
 			result.put("message", "등록 중 오류가 발생했습니다.");
 			System.out.println("111111111111111" + result);
-			System.out.println("222222222222" + pcImg);
+			System.out.println("222222222222" + pcFile);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
 		}
+	}
+
+	// 4-1. pcFile이 음악 파일인지 여부를 확인하는 메서드
+	private boolean isAudioFile(String filename) {
+		// 파일 이름에서 확장자 추출
+		String extension = StringUtils.getFilenameExtension(filename);
+
+		// 음악 파일 확장자 목록
+		String[] audioExtensions = { "mp3", "wav", "flac" };
+
+		// 확장자가 음악 파일 확장자 목록에 포함되어 있는지 확인
+		if (extension != null) {
+			for (String audioExtension : audioExtensions) {
+				if (extension.equalsIgnoreCase(audioExtension)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// 5. 파트너 협업창 게시글 수정
@@ -286,7 +314,6 @@ public class bridgeApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(completeCount);
 		}
 	}
-<<<<<<< HEAD
 //
 //	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
 //	@GetMapping("/api/bridge/partnerdetail/content/file")
@@ -319,8 +346,6 @@ public class bridgeApiController {
 //	  }
 //
 //	}
-=======
-	
 
 	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
 //	@GetMapping("/api/bridge/partnerdetail/content/file")
@@ -349,8 +374,5 @@ public class bridgeApiController {
 //		response.getOutputStream().flush();
 //		response.getOutputStream().close();
 //	}
-	
 
-
->>>>>>> 700be1433424e23328c6236fbc20bd0a8c111939
 }

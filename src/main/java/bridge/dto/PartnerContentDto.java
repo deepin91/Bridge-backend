@@ -13,4 +13,6 @@ public class PartnerContentDto {
 	private String pcFile;
 	
 	private String profileImg;
+	
+	private String cmMusic;
 }
