@@ -135,7 +135,6 @@ public class JamController {
 
 				return ResponseEntity.status(HttpStatus.OK).body(null);
 			} else {
-
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 			}
 		} catch (Exception e) {

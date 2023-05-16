@@ -121,7 +121,7 @@ public class RestApiController {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(isRunning);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + isRunning);
 		return ResponseEntity.ok(isRunning);
 	}
 
