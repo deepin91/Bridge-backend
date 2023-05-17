@@ -10,9 +10,11 @@
 		resultType="bridge.dto.PartnerContentDto">
 		select pc.pc_idx, pc.pc_content, pc.pc_writer, pc.pd_idx,
 		pc.pc_date, pc.pc_file, pc.cm_music, up.profile_img
-		from partner_content pc,
+		from
+		partner_content pc,
 		user_profile up
-		where pd_idx = #{pdIdx} and deleted_yn = 'N' and
+		where pd_idx = #{pdIdx} and
+		deleted_yn = 'N' and
 		pc.pc_writer = up.user_id
 	</select>
 
@@ -30,7 +32,8 @@
 		parameterType="bridge.dto.PartnerContentDto">
 		insert into partner_content (pc_content, pc_writer,
 		pd_idx, pc_file, pc_date, cm_music )
-		values (#{pcContent}, #{pcWriter}, #{pdIdx},
+		values (#{pcContent}, #{pcWriter},
+		#{pdIdx},
 		#{pcFile}, now(), #{cmMusic})
 	</insert>
 
@@ -59,8 +62,8 @@
 		pl.pl_date, up.profile_img
 		from pay_list pl, user_profile up
 		where
-		user_id1=#{userId1} and user_id2 =
-		#{userId2} and pl.user_id1 =
+		((user_id1=#{userId1} and user_id2 =#{userId2})
+		 or (user_id2=#{userId1} and user_id1=#{userId2})) and pl.user_id1 =
 		up.user_id
 		order by pl_idx desc
 	</select>
@@ -68,21 +71,26 @@
 	<!-- 8. 파트너 협업창 작업목록 조회 -->
 	<select id="selectProjectList"
 		resultType="bridge.dto.PartnerDetailDto">
-		select pd.pd_idx, pd.user_id1, pd.user_id2, up.profile_img,
+		SELECT pd.pd_idx, pd.user_id1, pd.user_id2, up.profile_img,
 		up.user_tag1, up.user_tag2, up.user_tag3, pd.progress
-		from
-		partner_detail pd, user_profile up
-		where user_id1=#{userId1} and
-		pd.user_id2 = up.user_id
+		FROM partner_detail pd
+		JOIN user_profile up ON pd.user_id2 = up.user_id
+		WHERE CASE
+		WHEN pd.user_id1 = #{userId1} THEN pd.user_id1 = #{userId1}
+		WHEN pd.user_id2 = #{userId1} THEN pd.user_id2 = #{userId1}
+		END;
 	</select>
 
 	<!-- 9. 파트너 협업창 게시글의 댓글 조회 -->
 
-	<select id="selectPartnerComment" resultType="bridge.dto.PartnerDetailCommentDto" >
-		select pdc.pdc_comment, pdc.user_id, pdc.pdc_idx, up.profile_img, pdc.pc_idx
+	<select id="selectPartnerComment"
+		resultType="bridge.dto.PartnerDetailCommentDto">
+		select
+		pdc.pdc_comment, pdc.user_id, pdc.pdc_idx, up.profile_img, pdc.pc_idx
 		from partner_detail_comment pdc, user_profile up
-		where comment_deleted_yn = 'N' and
-		      pc_idx = #{pcIdx} and pdc.user_id = up.user_id
+		where
+		comment_deleted_yn = 'N' and
+		pc_idx = #{pcIdx} and pdc.user_id = up.user_id
 	</select>
 
 	<!-- 10. 파트너 협업창 게시글의 댓글 작성 -->
@@ -129,11 +137,14 @@
 	</select>
 
 	<!-- 예치금 포인트에 추가하고 0으로 업데이트 -->
-	<update id="partnerMoney" parameterType="bridge.dto.PartnerDetailCommentDto">
+	<update id="partnerMoney"
+		parameterType="bridge.dto.PartnerDetailCommentDto">
 		UPDATE users u, partner_detail d
-		SET u.user_point = u.user_point + d.pd_money,
+		SET u.user_point =
+		u.user_point + d.pd_money,
 		d.pd_money = 0
-		WHERE u.user_id = d.user_id2 and d.pd_idx = #{pdIdx}
+		WHERE u.user_id = d.user_id2
+		and d.pd_idx = #{pdIdx}
 	</update>
 
 

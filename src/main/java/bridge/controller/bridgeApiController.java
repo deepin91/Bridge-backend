@@ -1,11 +1,15 @@
 package bridge.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -314,65 +318,27 @@ public class bridgeApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(completeCount);
 		}
 	}
-//
-//	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
-//	@GetMapping("/api/bridge/partnerdetail/content/file")
-//	public ResponseEntity<Resource> fileDownload() throws Exception{
-//	    Path filePath = Paths.get("<file_path_string>");
-//	    InputStreamResource resource = new InputStreamResource(new FileInputStream(filePath.toString()));
-//	    String fileName = "<file_name_string>";
-//	    logger.info("Success download input excel file : " + filePath);
-//	    return ResponseEntity.ok()
-//	            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//	            .cacheControl(CacheControl.noCache())
-//	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-//	            .body(resource);
-//	}
-//	
-//	  @GetMapping("/download")
-//	  public void download(HttpServletResponse response) throws IOException {
-//
-//	    String path = "C:/Users/superpil/OneDrive/바탕 화면/file/tistory.PNG";
-//	    
-//	    byte[] fileByte = FileUtils.readFileToByteArray(new File(path));
-//
-//	    response.setContentType("application/octet-stream");
-//	    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode("tistory.png", "UTF-8")+"\";");
-//	    response.setHeader("Content-Transfer-Encoding", "binary");
-//
-//	    response.getOutputStream().write(fileByte);
-//	    response.getOutputStream().flush();
-//	    response.getOutputStream().close();
-//	  }
-//
-//	}
-
+	
 	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
-//	@GetMapping("/api/bridge/partnerdetail/content/file")
-//	public ResponseEntity<Resource> fileDownload() throws Exception {
-//		Path filePath = Paths.get("<file_path_string>");
-//		InputStreamResource resource = new InputStreamResource(new FileInputStream(filePath.toString()));
-//		String fileName = "<file_name_string>";
-//		log.info("Success download input excel file : " + filePath);
-//		return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).cacheControl(CacheControl.noCache())
-//				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName).body(resource);
-//	}
-//
-//	@GetMapping("/download")
-//	public void download(HttpServletResponse response) throws IOException {
-//
-//		String path = "C:/Users/superpil/OneDrive/바탕 화면/file/tistory.PNG";
-//
-//		byte[] fileByte = FileUtils.readFileToByteArray(new File(path));
-//
-//		response.setContentType("application/octet-stream");
-//		response.setHeader("Content-Disposition",
-//				"attachment; fileName=\"" + URLEncoder.encode("tistory.png", "UTF-8") + "\";");
-//		response.setHeader("Content-Transfer-Encoding", "binary");
-//
-//		response.getOutputStream().write(fileByte);
-//		response.getOutputStream().flush();
-//		response.getOutputStream().close();
-//	}
+	@GetMapping("/api/bridge/partnerdetail/download/{fileName}")
+	public void downloadFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws Exception {
+		String filePath = "C:\\Temp\\upload\\" + fileName;
+		File file = new File(filePath);
+		if (file.exists()) {
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+			try(FileInputStream inputStream = new FileInputStream(file);
+					ServletOutputStream outputStream = response.getOutputStream()) {
+				byte[] buffer = new byte[1024];
+				int length;
+				while ((length = inputStream.read(buffer)) > 0) {
+					outputStream.write(buffer, 0, length);
+				}
+				outputStream.flush();
+			}
+		} else {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+
 
 }
