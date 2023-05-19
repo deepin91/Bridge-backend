@@ -4,14 +4,13 @@
 
 <mapper namespace="bridge.mapper.LoginMapper">
 	<select id="login" parameterType="bridge.dto.LoginDto" resultType="bridge.dto.UserDto">
-		select user_id, user_password, user_name, user_email, user_phone_number, user_point, user_halted, report_count, user_nickname
+		select user_id, user_password, user_name, user_email, user_phone_number, user_point, user_halted, report_count
 		  from users
 		 where user_id = #{userId} and user_password = #{userPassword}
 	</select>
 
 	<select id="selectUserByUserId" parameterType="String" resultType="bridge.dto.UserDto">
-		select user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count, user_nickname
-
+		select user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count
 		  from users
 		 where user_id = #{userId}
 	</select>
@@ -19,8 +18,8 @@
 
 	<!-- 외부 로그인 -->
 	<select id ="passInformation" parameterType="bridge.dto.UserDto" resultType="bridge.dto.UserDto">
-		select user_nickname, user_email from users
-			where user_nickname = #{userNickName} and user_email=#{userEmail}
+		select user_name, user_email from users
+			where user_name = #{userName} and user_email=#{userEmail}
 	</select>
 	<!-- 아이디 중복체크 -->
 	<select id="userIdCheck" parameterType="bridge.dto.UserDto" resultType="int">
@@ -29,8 +28,8 @@
 		where user_id = #{userId}
 	</select>
 	<insert id ="registUser" parameterType="bridge.dto.UserDto">
-		insert into users (user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count,user_nickname)
-		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},#{userPhoneNumber},#{userPoint},#{userHalted},#{reportCount},#{userNickname})
+		insert into users (user_id, user_password, user_name,  user_email, user_phone_number, user_point, user_halted, report_count, user_nickname)
+		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},#{userPhoneNumber},#{userPoint},#{userHalted},#{reportCount}, #{userName})
 	</insert>
 	<select id ="findId" parameterType="String" resultType="String">
 		select user_id

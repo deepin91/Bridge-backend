@@ -12,5 +12,5 @@ public class UserDto {
 	private int userPoint;
 	private boolean userHalted;
 	private int reportCount;
-	private String userNickname;
+
 }
