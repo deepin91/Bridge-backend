@@ -83,7 +83,7 @@ public class bridgeApiController {
 			if (pcFile != null) {
 				for (MultipartFile mf : pcFile) {
 					String originFileName = mf.getOriginalFilename();
-					
+
 					// 파일이 음악 파일인지 확인
 					if (isAudioFile(originFileName)) {
 						// 음악 파일인 경우 처리
@@ -159,25 +159,40 @@ public class bridgeApiController {
 	@PutMapping("/api/bridge/partnerdetail/update/{pcIdx}")
 	public ResponseEntity<Map<String, Object>> updatePartnerContent(@PathVariable("pcIdx") int pcIdx,
 			@RequestPart(value = "Data", required = false) PartnerContentDto partnerContentDto,
-			@RequestPart(value = "files", required = false) MultipartFile[] pcImg) throws Exception {
+			@RequestPart(value = "files", required = false) MultipartFile[] pcFile) throws Exception {
 		String UPLOAD_PATH = "C:/temp/upload/";
+		String uuid = UUID.randomUUID().toString();
 		int insertedCount;
 		partnerContentDto.setPcIdx(pcIdx);
 		try {
-			if (pcImg != null) {
-				for (MultipartFile mf : pcImg) {
+			if (pcFile != null) {
+				for (MultipartFile mf : pcFile) {
 					String originFileName = mf.getOriginalFilename();
-					try {
-						File f = new File(UPLOAD_PATH + originFileName);
-						mf.transferTo(f);
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
+
+					// 파일이 음악 파일인지 확인
+					if (isAudioFile(originFileName)) {
+						// 음악 파일인 경우 처리
+						try {
+							File f = new File(UPLOAD_PATH + File.separator + uuid + ".mp3");
+							mf.transferTo(f);
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						}
+						partnerContentDto.setCmMusic(uuid);
+					} else {
+						// 일반 파일인 경우 처리
+						try {
+							File f = new File(UPLOAD_PATH + originFileName);
+							mf.transferTo(f);
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						}
+						partnerContentDto.setPcFile(originFileName);
 					}
-					partnerContentDto.setPcFile(originFileName);
 				}
 				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
 
-			} else if (partnerContentDto.getPcContent() == "" && pcImg == null) {
+			} else if (partnerContentDto.getPcContent() == "" && pcFile == null) {
 				insertedCount = 0;
 			} else {
 				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
@@ -190,7 +205,8 @@ public class bridgeApiController {
 //							result.put("count", insertedCount);
 				result.put("pcContent", partnerContentDto.getPcContent());
 				result.put("pcIdx", partnerContentDto.getPcIdx());
-				result.put("pcImg", partnerContentDto.getPcFile());
+				result.put("pcFile", partnerContentDto.getPcFile());
+				result.put("cmMusic", partnerContentDto.getCmMusic());
 				System.out.println("1111111111111111111111111");
 				return ResponseEntity.status(HttpStatus.OK).body(result);
 			} else {
@@ -262,12 +278,13 @@ public class bridgeApiController {
 		try {
 
 			List<PartnerDetailCommentDto> list = bridgeService.selectPartnerComment(pcIdx);
+			return ResponseEntity.status(HttpStatus.OK).body(list);
 
-			if (list.size() != 0) {
-				return ResponseEntity.status(HttpStatus.OK).body(list);
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-			}
+//			if (list.size() != 0) {
+//				return ResponseEntity.status(HttpStatus.OK).body(list);
+//			} else {
+//				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
@@ -279,15 +296,19 @@ public class bridgeApiController {
 			throws Exception {
 
 		int insertCommentCount;
-		if (partnerDetailCommentDto.getPdcComment() == "") {
-			insertCommentCount = 0;
-		} else {
-			insertCommentCount = bridgeService.insertPartnerComment(partnerDetailCommentDto);
-		}
-		if (insertCommentCount != 1) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(insertCommentCount);
-		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(insertCommentCount);
+		try {
+			if (partnerDetailCommentDto.getPdcComment() == "") {
+				insertCommentCount = 0;
+			} else {
+				insertCommentCount = bridgeService.insertPartnerComment(partnerDetailCommentDto);
+			}
+			if (insertCommentCount != 1) {
+				return ResponseEntity.status(HttpStatus.OK).body(insertCommentCount);
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(insertCommentCount);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 
 	}
@@ -318,7 +339,7 @@ public class bridgeApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(completeCount);
 		}
 	}
-	
+
 	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
 	@GetMapping("/api/bridge/partnerdetail/download/{fileName}")
 	public void downloadFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws Exception {
@@ -326,7 +347,7 @@ public class bridgeApiController {
 		File file = new File(filePath);
 		if (file.exists()) {
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-			try(FileInputStream inputStream = new FileInputStream(file);
+			try (FileInputStream inputStream = new FileInputStream(file);
 					ServletOutputStream outputStream = response.getOutputStream()) {
 				byte[] buffer = new byte[1024];
 				int length;
@@ -339,6 +360,5 @@ public class bridgeApiController {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-
 
 }

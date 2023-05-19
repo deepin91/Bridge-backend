@@ -43,7 +43,8 @@
 		update partner_content
 		set pc_content = #{pcContent},
 		pc_file = #{pcFile},
-		pc_idx = #{pcIdx}
+		pc_idx = #{pcIdx},
+		cm_music = #{cmMusic}
 		where pc_idx = #{pcIdx}
 	</update>
 
