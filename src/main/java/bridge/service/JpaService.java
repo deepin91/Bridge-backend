@@ -18,5 +18,6 @@ public interface JpaService {
 	int deleteNotice(int noticeIdx)throws Exception;
 	int updateNotice(NoticeDto noticeDto)throws Exception;
 	int selectNoticeListCount() throws Exception;
+	void openChat(ChattingEntity chattingEntity);
 
 }

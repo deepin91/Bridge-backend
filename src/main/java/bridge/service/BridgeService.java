@@ -96,9 +96,9 @@ public interface BridgeService {
 
 	public void insertTag(TagDto tag);
 
-	public List<UserProfileDto> getPorfile(String userId);
+	public List<UserProfileDto> getPorfile(int idx);
 
-	public List<TagDto> getTaglist(String userId);
+	public List<TagDto> getTaglist(int idx);
 
 	public List<ReviewDto> getReview(String userId);
 

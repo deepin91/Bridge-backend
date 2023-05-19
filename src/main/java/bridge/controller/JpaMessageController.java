@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import bridge.dto.UserDto;
 import bridge.entity.ChattingEntity;
@@ -29,6 +31,7 @@ public class JpaMessageController {
     @Autowired
     private JpaService jpaService;
     
+    
     @GetMapping("/chatroom")
     public ResponseEntity<Map<String,Object>> chatroom(Authentication authentication){
     	UserDto userDto = (UserDto) authentication.getPrincipal();
@@ -39,7 +42,12 @@ public class JpaMessageController {
     	return ResponseEntity.status(HttpStatus.OK).body(map);
     }
     
-    
+    @PostMapping("/api/chatroom")
+    public void openChat(@RequestBody ChattingEntity chattingEntity){
+        jpaService.openChat(chattingEntity);
+
+    }
+
     @GetMapping("/chat/{roomIdx}")
 	public ResponseEntity<Map<String, Object>> connect(@PathVariable("roomIdx") int roomIdx){
     	Map<String,Object> map = new HashMap<>();

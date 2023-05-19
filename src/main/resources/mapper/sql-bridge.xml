@@ -63,7 +63,7 @@
 		from pay_list pl, user_profile up
 		where
 		((user_id1=#{userId1} and user_id2 =#{userId2})
-		 or (user_id2=#{userId1} and user_id1=#{userId2})) and pl.user_id1 =
+		or (user_id2=#{userId1} and user_id1=#{userId2})) and pl.user_id1 =
 		up.user_id
 		order by pl_idx desc
 	</select>
@@ -73,7 +73,8 @@
 		resultType="bridge.dto.PartnerDetailDto">
 		SELECT pd.pd_idx, pd.user_id1, pd.user_id2, up.profile_img,
 		up.user_tag1, up.user_tag2, up.user_tag3, pd.progress
-		FROM partner_detail pd
+		FROM
+		partner_detail pd
 		JOIN user_profile up ON pd.user_id2 = up.user_id
 		WHERE CASE
 		WHEN pd.user_id1 = #{userId1} THEN pd.user_id1 = #{userId1}
@@ -86,11 +87,14 @@
 	<select id="selectPartnerComment"
 		resultType="bridge.dto.PartnerDetailCommentDto">
 		select
-		pdc.pdc_comment, pdc.user_id, pdc.pdc_idx, up.profile_img, pdc.pc_idx
-		from partner_detail_comment pdc, user_profile up
+		pdc.pdc_comment, pdc.user_id, pdc.pdc_idx,
+		up.profile_img, pdc.pc_idx
+		from partner_detail_comment pdc,
+		user_profile up
 		where
 		comment_deleted_yn = 'N' and
-		pc_idx = #{pcIdx} and pdc.user_id = up.user_id
+		pc_idx = #{pcIdx} and
+		pdc.user_id = up.user_id
 	</select>
 
 	<!-- 10. 파트너 협업창 게시글의 댓글 작성 -->
@@ -118,17 +122,26 @@
 	</update>
 
 	<select id="getPorfile" resultType="bridge.dto.UserProfileDto"
-		parameterType="String">
+		parameterType="bridge.dto.UserProfileDto">
 		select *
 		from user_profile
+		where user_profile_idx = #{userProfileIdx}
+	</select>
+
+	<select id="getProfileIdx" resultType="int" >
+		select max(user_profile_idx) from user_profile 
 		where user_id = #{userId}
 	</select>
+
 	<select id="getTaglist" resultType="bridge.dto.TagDto"
-		parameterType="String">
+		parameterType="bridge.dto.TagDto">
 		select * from
 		user_tag
-		where user_id = #{userId}
+		where user_profile_idx =
+		#{user_profile_idx}
 	</select>
+
+
 	<select id="getReview" resultType="bridge.dto.ReviewDto"
 		parameterType="String">
 		select * from

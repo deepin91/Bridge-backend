@@ -9,4 +9,6 @@ public class ConcertMusicDto {
 	private int cmIdx;
 	private String cmInstrument;
 	private String cmUser;
+	private String musicUUID;
+	private String mucisTitle;
 }

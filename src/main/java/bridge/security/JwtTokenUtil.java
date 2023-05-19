@@ -46,7 +46,9 @@ public class JwtTokenUtil {
 				.setExpiration(Date.from(now.plus(this.expirationTime, ChronoUnit.MILLIS)))
 				.signWith(this.hmacKey)
 				.compact();
+		log.debug("**************************************");
 		log.debug(jwtToken);
+		log.debug("**************************************");
 		return jwtToken;
 	}
 

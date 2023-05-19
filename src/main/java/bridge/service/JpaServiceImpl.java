@@ -85,7 +85,10 @@ public class JpaServiceImpl implements JpaService {
 	public int selectNoticeListCount() throws Exception {
 		return noticeMapper.selectNoticeListCount();
 	}
-
+	@Override
+    public void openChat(ChattingEntity chattingEntity) {
+        jpaChattingRepository.save(chattingEntity);
+    }
 
 
 }

@@ -190,15 +190,15 @@ public class BridgeServiceImpl implements BridgeService {
 	}
 
 	@Override
-	public List<UserProfileDto> getPorfile(String userId) {
+	public List<UserProfileDto> getPorfile(int idx) {
 		// TODO Auto-generated method stub
-		return bridgeMapper.getPorfile(userId);
+		return bridgeMapper.getPorfile(idx);
 	}
 
 	@Override
-	public List<TagDto> getTaglist(String userId) {
+	public List<TagDto> getTaglist(int idx) {
 		// TODO Auto-generated method stub
-		return bridgeMapper.getTaglist(userId);
+		return bridgeMapper.getTaglist(idx);
 	}
 
 	@Override

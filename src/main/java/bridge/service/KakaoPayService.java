@@ -73,6 +73,7 @@ public class KakaoPayService {
 		log.info("결재준비 응답객체: " + readyResponse);
 		pod = uuid;
 		userId = userDto.getUserId();
+		log.info("1111111111111111" + userDto.getUserId());
 		this.totalAmount =  totalAmount;
 		return readyResponse;
 	}
@@ -84,6 +85,7 @@ public class KakaoPayService {
 			parameters.add("cid","TC0ONETIME");
 			parameters.add("tid", readyResponse.getTid());			
 			parameters.add("partner_order_id", pod); // 주문명
+			log.info("2222222222222" + userId);
 			
 			log.info("==========================" +pod);
 			

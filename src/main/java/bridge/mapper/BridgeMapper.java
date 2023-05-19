@@ -103,9 +103,9 @@ public interface BridgeMapper {
 	
 	void insertTag(TagDto tag);
 
-	List<UserProfileDto> getPorfile(String userId);
+	List<UserProfileDto> getPorfile(int idx);
 
-	List<TagDto> getTaglist(String userId);
+	List<TagDto> getTaglist(int idx);
 
 	List<ReviewDto> getReview(String userId);
 
@@ -132,6 +132,8 @@ public interface BridgeMapper {
 	int selectIdx(String userId);
 
 	void tagToProfile(TagDto tag);
+
+	int getProfileIdx(String userId);
 	
 
 }

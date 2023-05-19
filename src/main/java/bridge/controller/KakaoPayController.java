@@ -59,11 +59,13 @@ public class KakaoPayController {
 		kakaoPayMapper.kakaoToList();
 		System.out.println(">>>>>>>>>>>>>>>>>>" + approveResponse);
 		
+		log.info("33333333333333" + userId);
+		
 		//충전내역 저장
 //		kakaoPayMapper.insertPayment()
 		
 		
-		response.sendRedirect("http://localhost:3000/19");
+		response.sendRedirect("http://localhost:3000/");
 	}
 
 //	@GetMapping("/test1")

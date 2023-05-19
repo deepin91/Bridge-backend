@@ -124,6 +124,8 @@ public class JamController {
 
 				UserDto userDto = (UserDto) authentication.getPrincipal();
 				concertMusicDto.setCmUser(userDto.getUserId());
+				concertMusicDto.setMusicUUID(uuid);
+				concertMusicDto.setMucisTitle(originFileName);
 				concertMusicDto.setCmMusic(uuid);
 				concertMusicDto.setCIdx(cIdx);
 				System.out.println("`111111111111111111111111111" + concertMusicDto);
