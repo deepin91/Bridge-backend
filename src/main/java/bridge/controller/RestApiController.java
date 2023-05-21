@@ -69,9 +69,9 @@ public class RestApiController {
 				bos.write(buf, 0, read);
 			}
 		} finally {
-			bos.close();
-			bis.close();
-			fis.close();
+//			bos.close();
+//			bis.close();
+//			fis.close();
 		}
 	}
 

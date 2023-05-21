@@ -15,7 +15,7 @@
 		user_profile up
 		where pd_idx = #{pdIdx} and
 		deleted_yn = 'N' and
-		pc.pc_writer = up.user_id
+		pc.pc_writer = 	user_id
 	</select>
 
 	<!-- 3. 파트너 협업창 게시글 상세조회 -->
@@ -43,7 +43,8 @@
 		update partner_content
 		set pc_content = #{pcContent},
 		pc_file = #{pcFile},
-		pc_idx = #{pcIdx}
+		pc_idx = #{pcIdx},
+		cm_music = #{cmMusic}
 		where pc_idx = #{pcIdx}
 	</update>
 
@@ -81,6 +82,13 @@
 		WHEN pd.user_id2 = #{userId1} THEN pd.user_id2 = #{userId1}
 		END;
 	</select>
+	
+	<!-- 8-1. 작업 목록 추가 -->
+	<insert id="insertProjectList" 
+		parameterType="bridge.dto.PartnerDetailDto">
+		insert into partner_detail (user_id1, user_id2, progress)
+			values (#{userId1}, #{userId2}, #{progress})
+	</insert>
 
 	<!-- 9. 파트너 협업창 게시글의 댓글 조회 -->
 

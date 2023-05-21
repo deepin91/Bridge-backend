@@ -158,6 +158,12 @@ public class BridgeServiceImpl implements BridgeService {
 	public List<PartnerDetailDto> selectProjectList(String userId1) throws Exception {
 		return bridgeMapper.selectProjectList(userId1);
 	}
+	
+	// 8-1. 작업 목록 추가
+	@Override
+	public int insertProjectList(PartnerDetailDto partnerDetailDto) throws Exception {
+		return bridgeMapper.insertProjectList(partnerDetailDto);
+	}
 
 	// 9. 파트너 협업창 게시글의 댓글 조회
 	@Override

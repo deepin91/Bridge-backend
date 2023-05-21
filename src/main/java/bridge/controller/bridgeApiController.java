@@ -72,7 +72,9 @@ public class bridgeApiController {
 	public ResponseEntity<Map<String, Object>> insertPartnetContent(@PathVariable int pdIdx,
 			@RequestPart(value = "Data", required = false) PartnerContentDto partnerContentDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] pcFile) throws Exception {
-		String UPLOAD_PATH = "C:/temp/upload/";
+		String UPLOAD_PATH = "C:/temp/";
+//		/upload/
+	
 		String uuid = UUID.randomUUID().toString();
 		List<String> fileNames = new ArrayList<>();
 
@@ -83,7 +85,7 @@ public class bridgeApiController {
 			if (pcFile != null) {
 				for (MultipartFile mf : pcFile) {
 					String originFileName = mf.getOriginalFilename();
-					
+
 					// 파일이 음악 파일인지 확인
 					if (isAudioFile(originFileName)) {
 						// 음악 파일인 경우 처리
@@ -160,20 +162,36 @@ public class bridgeApiController {
 	public ResponseEntity<Map<String, Object>> updatePartnerContent(@PathVariable("pcIdx") int pcIdx,
 			@RequestPart(value = "Data", required = false) PartnerContentDto partnerContentDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] pcImg) throws Exception {
-		String UPLOAD_PATH = "C:/temp/upload/";
+		String UPLOAD_PATH = "C:/temp/";
+//		upload/
+		String uuid = UUID.randomUUID().toString();
 		int insertedCount;
 		partnerContentDto.setPcIdx(pcIdx);
 		try {
 			if (pcImg != null) {
 				for (MultipartFile mf : pcImg) {
 					String originFileName = mf.getOriginalFilename();
-					try {
-						File f = new File(UPLOAD_PATH + originFileName);
-						mf.transferTo(f);
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
+
+					// 파일이 음악 파일인지 확인
+					if (isAudioFile(originFileName)) {
+						// 음악 파일인 경우 처리
+						try {
+							File f = new File(UPLOAD_PATH + File.separator + uuid + ".mp3");
+							mf.transferTo(f);
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						}
+						partnerContentDto.setCmMusic(uuid);
+					} else {
+						// 일반 파일인 경우 처리
+						try {
+							File f = new File(UPLOAD_PATH + originFileName);
+							mf.transferTo(f);
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						}
+						partnerContentDto.setPcFile(originFileName);
 					}
-					partnerContentDto.setPcFile(originFileName);
 				}
 				insertedCount = bridgeService.updatePartnerContent(partnerContentDto);
 
@@ -253,6 +271,15 @@ public class bridgeApiController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
+	
+	// 8-1. 작업 목록 추가
+	@PostMapping("api/bridge/partnerdetail/projectList/insert")
+	public ResponseEntity<Integer> addProjectList(@RequestPart PartnerDetailDto partnerDetailDto) throws Exception {
+		int insertProjectListCount = bridgeService.insertProjectList(partnerDetailDto);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(insertProjectListCount);
+		
+	}
 
 	// 9. 파트너 협업창 게시글의 댓글 조회
 	@GetMapping("/api/bridge/partnerdetail/comment/{pcIdx}")
@@ -266,7 +293,7 @@ public class bridgeApiController {
 			if (list.size() != 0) {
 				return ResponseEntity.status(HttpStatus.OK).body(list);
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+				return ResponseEntity.status(HttpStatus.OK).body(list);
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -279,16 +306,20 @@ public class bridgeApiController {
 			throws Exception {
 
 		int insertCommentCount;
+
 		if (partnerDetailCommentDto.getPdcComment() == "") {
 			insertCommentCount = 0;
 		} else {
 			insertCommentCount = bridgeService.insertPartnerComment(partnerDetailCommentDto);
 		}
-		if (insertCommentCount != 1) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(insertCommentCount);
-		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(insertCommentCount);
-		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(insertCommentCount);
+
+//		if (insertCommentCount != 1) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(insertCommentCount);
+//		} else {
+//			return ResponseEntity.status(HttpStatus.OK).body(insertCommentCount);
+//		}
 
 	}
 
@@ -318,15 +349,16 @@ public class bridgeApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(completeCount);
 		}
 	}
-	
+
 	// 13. 파트너 협업창 게시글 파일 클릭 시 다운로드
 	@GetMapping("/api/bridge/partnerdetail/download/{fileName}")
 	public void downloadFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws Exception {
-		String filePath = "C:\\Temp\\upload\\" + fileName;
+		String filePath = "C:\\Temp\\" + fileName;
+//		upload\\
 		File file = new File(filePath);
 		if (file.exists()) {
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-			try(FileInputStream inputStream = new FileInputStream(file);
+			try (FileInputStream inputStream = new FileInputStream(file);
 					ServletOutputStream outputStream = response.getOutputStream()) {
 				byte[] buffer = new byte[1024];
 				int length;
@@ -339,6 +371,5 @@ public class bridgeApiController {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-
 
 }
