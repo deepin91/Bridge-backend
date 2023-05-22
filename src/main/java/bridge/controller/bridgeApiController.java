@@ -273,12 +273,27 @@ public class bridgeApiController {
 	}
 	
 	// 8-1. 작업 목록 추가
-	@PostMapping("api/bridge/partnerdetail/projectList/insert")
-	public ResponseEntity<Integer> addProjectList(@RequestPart PartnerDetailDto partnerDetailDto) throws Exception {
+	@PostMapping("/api/bridge/partnerdetail/projectList/insert")
+	public ResponseEntity<Integer> addProjectList(@RequestBody PartnerDetailDto partnerDetailDto) throws Exception {
+		
 		int insertProjectListCount = bridgeService.insertProjectList(partnerDetailDto);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(insertProjectListCount);
 		
+	}
+	
+	// 8-2. 작업 목록 삭제
+	@DeleteMapping("/api/bridge/partnerdetail/projectList/delete/{pdIdx}")
+	public ResponseEntity<Integer> deleteProjectList(@PathVariable("pdIdx") int pdIdx) {
+		
+		int deleteProjectListCount;
+		try {
+			deleteProjectListCount = bridgeService.deleteProjectList(pdIdx);
+			return ResponseEntity.status(HttpStatus.OK).body(deleteProjectListCount);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+		 
 	}
 
 	// 9. 파트너 협업창 게시글의 댓글 조회

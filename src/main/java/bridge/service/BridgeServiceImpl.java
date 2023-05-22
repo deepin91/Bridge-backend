@@ -165,6 +165,12 @@ public class BridgeServiceImpl implements BridgeService {
 		return bridgeMapper.insertProjectList(partnerDetailDto);
 	}
 
+	// 8-2. 작업 목록 삭제
+	@Override
+	public int deleteProjectList(int pdIdx) throws Exception {
+		return bridgeMapper.deleteProjectList(pdIdx);
+	}
+	
 	// 9. 파트너 협업창 게시글의 댓글 조회
 	@Override
 	public List<PartnerDetailCommentDto> selectPartnerComment(int pcIdx) throws Exception {

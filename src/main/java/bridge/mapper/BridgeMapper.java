@@ -92,6 +92,9 @@ public interface BridgeMapper {
 	// 8-1. 작업 목록 추가
 	int insertProjectList(PartnerDetailDto partnerDetailDto) throws Exception;
 	
+	// 8-2. 작업 목록 삭제
+	int deleteProjectList(int pdIdx) throws Exception;
+	
 	// 9. 파트너 협업창 게시글의 댓글 조회
 	List<PartnerDetailCommentDto> selectPartnerComment(int pcIdx) throws Exception;
 	
