@@ -181,7 +181,7 @@
 	</select>
 
 	<!-- 예치금 포인트에 추가하고 0으로 업데이트 -->
-	<update id="partnerMoney"
+	<!--<update id="partnerMoney"
 		parameterType="bridge.dto.PartnerDetailCommentDto">
 		UPDATE users u, partner_detail d
 		SET u.user_point =
@@ -189,7 +189,8 @@
 		d.pd_money = 0
 		WHERE u.user_id = d.user_id2
 		and d.pd_idx = #{pdIdx}
-	</update>
+	</update> -->
+
 
 
 </mapper>

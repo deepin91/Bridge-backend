@@ -10,4 +10,5 @@ public class CommentsDto {
 	private int cIdx;
 	private String cDate;
 	private String deletedYn;
+	private int progress;
 }
