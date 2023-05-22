@@ -43,15 +43,24 @@
 	</update>
 
 	<!-- 결제한 금액을 예치금으로 값 기록 -->
+	<!-- <update id="updatePartnerMoney"> UPDATE partner_detail AS d INNER JOIN 
+		payment AS p ON d.user_id1 = p.clients AND d.user_id2 = p.producer INNER 
+		JOIN ( SELECT MAX(payment_idx) AS max_payment_idx FROM payment ) AS t ON 
+		p.payment_idx = t.max_payment_idx SET d.pd_money = d.pd_money + p.downpayment; 
+		</update> -->
+
 	<update id="updatePartnerMoney">
-		UPDATE partner_detail AS d
+		UPDATE commission AS c
 		INNER JOIN payment AS p
-		ON d.user_id1 = p.clients AND d.user_id2 = p.producer
+		ON
+		c.user_id1 = p.clients AND c.user_id2 = p.producer
 		INNER JOIN (
-		SELECT MAX(payment_idx) AS max_payment_idx FROM payment
+		SELECT
+		MAX(payment_idx) AS max_payment_idx FROM payment
 		) AS t
-		ON p.payment_idx = t.max_payment_idx
-		SET d.pd_money = d.pd_money + p.downpayment;
+		ON p.payment_idx
+		= t.max_payment_idx
+		SET c.c_money = c.c_money + p.downpayment;
 	</update>
 
 	<!-- 결제 내역 기록 -->
@@ -84,26 +93,32 @@
 		where user_id2 = "Bridge"
 		order by pl_idx DESC
 	</select>
-	
+
 	<!-- 회원용 결제 내역 -->
-	<select id="payList" parameterType="String" resultType="bridge.dto.PayListDto">
+	<select id="payList" parameterType="String"
+		resultType="bridge.dto.PayListDto">
 		select * from pay_list
-		where user_id1 = #{userId} or user_id2 = #{userId}
+		where user_id1 = #{userId} or
+		user_id2 = #{userId}
 		order by pl_idx DESC
 	</select>
 
 	<!-- 회원 거래내역 -->
-	<select id="payDeal" parameterType="String" resultType="bridge.dto.PayListDto">
+	<select id="payDeal" parameterType="String"
+		resultType="bridge.dto.PayListDto">
 		select * from pay_list
 		where
-		user_id2 != "Bridge" and user_id1 = #{userId} or user_id2 = #{userId}
+		user_id2 != "Bridge" and
+		user_id1 = #{userId} or user_id2 = #{userId}
 		order by pl_idx DESC
 	</select>
-	
+
 	<!-- 회원 충전내역 -->
-	<select id="payCharge" parameterType="String" resultType="bridge.dto.PayListDto">
+	<select id="payCharge" parameterType="String"
+		resultType="bridge.dto.PayListDto">
 		select * from pay_list
-		where user_id2 = "Bridge" and user_id1 = #{userId}
+		where user_id2 = "Bridge" and
+		user_id1 = #{userId}
 		order by pl_idx DESC
 	</select>
 </mapper>

@@ -1,5 +1,15 @@
 package bridge.dto;
 
-public class CommissionDto {
+import lombok.Data;
 
+@Data
+public class CommissionDto {
+	
+	private int cIdx;
+	private String userId1;
+	private String userId2;
+	private int cMoney;
+	private boolean deletedYn;
+	private boolean progress;
+	
 }

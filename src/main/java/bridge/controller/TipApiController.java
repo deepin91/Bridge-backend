@@ -41,7 +41,7 @@ public class TipApiController {
 			return ResponseEntity.status(HttpStatus.OK).body(registedCount);
 		}
 
-	}
+	}	
 	// update 에 1이 넘어오면 뷰 횟수 증가
 	@GetMapping("api/tipdetail/{tb_idx}/{update}")
 	public ResponseEntity<Map<String,Object>> tipDetail(@PathVariable("tb_idx") int tbIdx,@PathVariable("update") int update) throws Exception{
