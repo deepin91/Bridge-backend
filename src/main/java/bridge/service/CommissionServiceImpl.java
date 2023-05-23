@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
 import bridge.mapper.CommissionMapper;
@@ -68,6 +69,16 @@ public class CommissionServiceImpl implements CommissionService {
 	@Override
 	public void moneyToUser2(int cIdx) {
 		commissionMapper.moneyToUser2(cIdx);
+	}
+
+	@Override
+	public int CommissionComment(CommissionCommentDto commissionCommentDto) {
+		return commissionMapper.CommissionComment(commissionCommentDto);
+	}
+
+	@Override
+	public List<CommissionCommentDto> CommissionComment(int cdIdx) {
+		return commissionMapper.getCommissionComment(cdIdx);
 	}
 
 }

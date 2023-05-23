@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
 
@@ -31,5 +32,9 @@ public interface CommissionMapper {
 	void delCommissionList(int cIdx);
 
 	void moneyToUser2(int cIdx);
+
+	int CommissionComment(CommissionCommentDto commissionCommentDto);
+
+	List<CommissionCommentDto> getCommissionComment(int cdIdx);
 
 }

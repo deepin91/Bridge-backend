@@ -16,6 +16,7 @@
 		where pd_idx = #{pdIdx} and
 		deleted_yn = 'N' and
 		pc.pc_writer = 	user_id
+		order by DESC
 	</select>
 
 	<!-- 3. 파트너 협업창 게시글 상세조회 -->

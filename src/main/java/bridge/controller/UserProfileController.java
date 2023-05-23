@@ -49,10 +49,7 @@ public class UserProfileController {
 		try {
 			for (MultipartFile mf : files) {
 				String uuid = UUID.randomUUID().toString();
-//				String originFileName = mf.getOriginalFilename(); // 원본 파일 명
-//				String safeFile = System.currentTimeMillis() + originFileName;
 				userProfileDto.setProfileImg(uuid);
-//				fileNames = fileNames + "," + safeFile;
 				try {
 					File f1 = new File(UPLOAD_PATH + uuid + ".jpg");
 					mf.transferTo(f1);
@@ -71,18 +68,19 @@ public class UserProfileController {
 				}
 			}
 			
-			
-			
 			userProfileDto.setUserId(userId);
-//			int idx = bridgeMapper.selectIdx(userId);
-//			userProfileDto.
 			
 			insertedCount = bridgeService.insertProfile(userProfileDto);
 			
 			tag.setUserProfileIdx(userProfileDto.getUserProfileIdx());
 			bridgeService.insertTag(tag);
+			
+			tag.setUserTag1(tag.getTags().length > 0 ? tag.getTags()[0] : null);
+			tag.setUserTag2(tag.getTags().length > 1 ? tag.getTags()[1] : null);
+			tag.setUserTag3(tag.getTags().length > 2 ? tag.getTags()[2] : null);
+			
 			bridgeMapper.tagToProfile(tag);
-
+			
 			if (insertedCount > 0) {
 				Map<String, Object> result = new HashMap<>();
 				result.put("message", "정상적으로 등록되었습니다.");

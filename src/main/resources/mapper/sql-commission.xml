@@ -6,9 +6,11 @@
 	<select id="getCommissionList"
 		resultType="bridge.dto.CommissionDto">
 		select * from commission
-		where user_id1 = #{userId} and
-		deleted_yn = 0
+		where user_id1 = #{userId} 
+		or user_id2 = #{userId}
 	</select>
+	
+	<!-- deleted_yn = 0 -->
 
 	<select id="getProgress" resultType="bridge.dto.CommissionDto">
 		select * from commission
@@ -88,5 +90,16 @@
 		and
 		c.c_idx = #{cIdx}
 	</update>
+	
+	<insert id="CommissionComment" parameterType="bridge.dto.CommissionCommentDto">
+		insert into commission_comment
+		(user_id, cc_date, cc_contents, cd_idx)
+		values (#{userId}, now(), #{ccContents}, #{cdIdx})
+	</insert>
+	
+	<select id="getCommissionComment" resultType="bridge.dto.CommissionCommentDto">
+		select * from commission_comment
+		where cd_idx = #{cdIdx}
+	</select>
 
 </mapper>

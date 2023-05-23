@@ -164,8 +164,10 @@
 
 	<insert id="tagToProfile">
 		UPDATE user_profile
-		SET user_tag1 = #{tags[0]}, user_tag2 = #{tags[1]}, user_tag3 =
-		#{tags[2]}
+		SET
+		user_tag1 = IFNULL(#{userTag1}, user_tag1),
+		user_tag2 = IFNULL(#{userTag2}, user_tag2),
+		user_tag3 = IFNULL(#{userTag3}, user_tag3)
 		WHERE user_profile_idx = #{userProfileIdx}
 	</insert>
 

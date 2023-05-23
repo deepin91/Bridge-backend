@@ -2,6 +2,7 @@ package bridge.service;
 
 import java.util.List;
 
+import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
 
@@ -28,5 +29,9 @@ public interface CommissionService {
 	void delCommissionList(int cIdx);
 
 	void moneyToUser2(int cIdx);
+
+	int CommissionComment(CommissionCommentDto commissionCommentDto);
+
+	List<CommissionCommentDto> CommissionComment(int cdIdx);
 
 }
