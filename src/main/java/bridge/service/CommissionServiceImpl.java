@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
+import bridge.dto.ReviewDto;
 import bridge.mapper.CommissionMapper;
 
 @Service
@@ -79,6 +80,11 @@ public class CommissionServiceImpl implements CommissionService {
 	@Override
 	public List<CommissionCommentDto> CommissionComment(int cdIdx) {
 		return commissionMapper.getCommissionComment(cdIdx);
+	}
+
+	@Override
+	public int insertReview(ReviewDto reviewDto) {
+		return commissionMapper.insertReview(reviewDto);
 	}
 
 }

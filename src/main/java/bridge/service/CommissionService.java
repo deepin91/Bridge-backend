@@ -5,6 +5,7 @@ import java.util.List;
 import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
+import bridge.dto.ReviewDto;
 
 public interface CommissionService {
 
@@ -33,5 +34,7 @@ public interface CommissionService {
 	int CommissionComment(CommissionCommentDto commissionCommentDto);
 
 	List<CommissionCommentDto> CommissionComment(int cdIdx);
+
+	int insertReview(ReviewDto reviewDto);
 
 }

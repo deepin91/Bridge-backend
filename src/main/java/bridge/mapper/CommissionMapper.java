@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
+import bridge.dto.ReviewDto;
 
 @Mapper
 public interface CommissionMapper {
@@ -36,5 +37,7 @@ public interface CommissionMapper {
 	int CommissionComment(CommissionCommentDto commissionCommentDto);
 
 	List<CommissionCommentDto> getCommissionComment(int cdIdx);
+
+	int insertReview(ReviewDto reviewDto);
 
 }
