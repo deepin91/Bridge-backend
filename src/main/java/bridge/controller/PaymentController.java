@@ -32,15 +32,15 @@ public class PaymentController {
 	PaymentMapper paymentMapper;
 
 	/* 공지 리스트 */
-	@GetMapping("/api/payment/list")
-	public ResponseEntity<List<PaymentDto>> paymentList() throws Exception {
-		List<PaymentDto> paymentList = paymentService.paymentList();
-		if (paymentList != null && paymentList.size() > 0) {
-			return ResponseEntity.status(HttpStatus.OK).body(paymentList);
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
-	};
+//	@GetMapping("/api/payment/list")
+//	public ResponseEntity<List<PaymentDto>> paymentList() throws Exception {
+//		List<PaymentDto> paymentList = paymentService.paymentList();
+//		if (paymentList != null && paymentList.size() > 0) {
+//			return ResponseEntity.status(HttpStatus.OK).body(paymentList);
+//		} else {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//		}
+//	};
 
 	//보유포인트
 	@GetMapping("/api/payment/detail/{userId}")

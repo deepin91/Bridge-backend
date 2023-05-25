@@ -58,7 +58,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		
 		String username= (((User)authResult.getPrincipal()).getUsername());
 		UserDto userDto = loginMapper.selectUserByUserId(username);
-		
 //		//설정 파일에서 비밀키를 가져와서 서명에 사용할 키를 생성
 //		//BASE64로 인코딩된 문자열
 //		String secret = env.getProperty("token.secret");
