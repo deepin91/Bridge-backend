@@ -28,6 +28,7 @@ import bridge.dto.MusicDto;
 import bridge.dto.UserDto;
 import bridge.service.BridgeService;
 import bridge.service.JamService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class JamController {
@@ -36,26 +37,15 @@ public class JamController {
 	JamService jamService;
 	@Autowired
 	BridgeService bridgeService;
-//	@PostMapping("api/insertJam")
-//	public ResponseEntity<Object> insertTip(@RequestBody ConcertDto concertDto, Authentication authentication)
-//			throws Exception {
-//		UserDto userDto = (UserDto) authentication.getPrincipal();
-//		concertDto.setCWriter(userDto.getUserId());
-//		int registedCount = jamService.insertJam(concertDto);
-//		if (registedCount > 0) {
-//			return ResponseEntity.status(HttpStatus.CREATED).body(registedCount);
-//		} else {
-//			return ResponseEntity.status(HttpStatus.OK).body(registedCount);
-//		}
-//		
-//	}
-	
+
+	@ApiOperation(value = "잼 목록 조회")
 	@GetMapping("/api/jam")
 	public ResponseEntity<List<ConcertDto>> JamList() throws Exception {
 		List<ConcertDto> list = jamService.jamList();
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
-	
+
+	@ApiOperation(value = "잼 게시글 작성")
 	@PostMapping("/api/insertjam")
 	public ResponseEntity<Integer> insertTip(@RequestPart(value = "data", required = false) ConcertDto concertDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] files, Authentication authentication)
@@ -99,6 +89,7 @@ public class JamController {
 		}
 	}
 
+	@ApiOperation(value = "잼 게시글 음악 첨부")
 	@PostMapping("/api/insertmusic/{cIdx}")
 	public ResponseEntity<Integer> insertMusic(@PathVariable("cIdx") int cIdx,
 			@RequestPart(value = "data", required = false) ConcertMusicDto concertMusicDto,
@@ -107,7 +98,6 @@ public class JamController {
 		String UPLOAD_PATH = "C:\\Temp\\";
 		String uuid = UUID.randomUUID().toString();
 		List<String> fileNames = new ArrayList<>();
-//		Map<String, Object> result = new HashMap<>();
 		int registedCount = 0;
 		try {
 			for (MultipartFile mf : files) {
@@ -128,8 +118,6 @@ public class JamController {
 				concertMusicDto.setMucisTitle(originFileName);
 				concertMusicDto.setCmMusic(uuid);
 				concertMusicDto.setCIdx(cIdx);
-				System.out.println("`111111111111111111111111111" + concertMusicDto);
-				System.out.println("`222222222222222222222222222" + userDto.getUserId());
 				registedCount = jamService.insertMusic(concertMusicDto);
 			}
 
@@ -145,6 +133,7 @@ public class JamController {
 		}
 	}
 
+	@ApiOperation(value = "잼 디테일 조회")
 	@GetMapping("/api/jam/{cIdx}")
 	public ResponseEntity<Map<String, Object>> insertTip(@PathVariable("cIdx") int cIdx) throws Exception {
 		ConcertDto Data = jamService.getJam(cIdx);
@@ -157,7 +146,7 @@ public class JamController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
-	// 잼 코멘트
+	@ApiOperation(value = "잼 댓글 작성")
 	@PostMapping("/api/insertComments/{cIdx}")
 	public ResponseEntity<Map<String, Object>> insertComments(@RequestBody CommentsDto commentsDto,
 			@PathVariable("cIdx") int cIdx, Authentication authentication) throws Exception {
@@ -170,7 +159,6 @@ public class JamController {
 		if (insertedCount > 0) {
 			result.put("message", "정상적으로 등록되었습니다.");
 			result.put("ccIdx", commentsDto.getCcIdx());
-//				result.put("cIdx", commentsDto.getCIdx());
 
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} else {
@@ -178,32 +166,9 @@ public class JamController {
 			result.put("count", insertedCount);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
 		}
-
 	}
 
-//	@GetMapping("/api/openComments/{cIdx}")
-//	public ResponseEntity<Map<String, Object>> openComments(@PathVariable("cIdx") int cIdx) throws Exception {
-//		List<CommentsDto> list = bridgeService.selectCommentsList(cIdx);
-//		Map<String, Object> result = new HashMap<>();
-//		result.put("selectCommentsList", list);
-//		if (result != null && result.size() > 0) {
-//			return ResponseEntity.status(HttpStatus.OK).body(result);
-//		} else {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//		}
-//	}
-//	@PutMapping("/api/Comments/{ccIdx}")
-//	public ResponseEntity<Object> updateComments(@PathVariable("ccIdx") int ccIdx, @RequestBody CommentsDto commentsDto)
-//			throws Exception {
-//		try {
-//			commentsDto.setCcIdx(ccIdx);
-//			bridgeService.updateComments(commentsDto);
-//			return ResponseEntity.status(HttpStatus.OK).body(1);
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
-//		}
-//	}
-
+	@ApiOperation(value = "잼 댓글 삭제")
 	@DeleteMapping("/api/CommentsDelete/{ccIdx}")
 	public ResponseEntity<Object> deleteComments(@PathVariable("ccIdx") int ccIdx) throws Exception {
 		try {

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import bridge.dto.NoticeDto;
 import bridge.dto.UserDto;
 import bridge.service.JpaService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -31,7 +32,7 @@ public class NoticeController {
 	@Autowired
 	JpaService jpaService;
 
-	/* 공지 리스트 */
+	@ApiOperation(value="공지 목록 조회")
 	@GetMapping("/api/notice")
 	public ResponseEntity<List<NoticeDto>> noticeList() throws Exception {
 		List<NoticeDto> noticeList = jpaService.noticeList();
@@ -42,8 +43,7 @@ public class NoticeController {
 		}
 	}
 
-	
-	/* 공지 작성 */
+	@ApiOperation(value="공지 작성")
 	@PostMapping("/api/notice/write")
 	public ResponseEntity<String> insertNotice(@RequestBody NoticeDto noticeDto,Authentication authentication) throws Exception {
 		try {
@@ -56,8 +56,8 @@ public class NoticeController {
 		return ResponseEntity.status(HttpStatus.OK).body("정상적으로 등록되었습니다.");
 	}
 
-	
-	/* 공지 상세 */
+
+	@ApiOperation(value="공지 게시글 조회")
 	@GetMapping("/api/notice/detail/{noticeIdx}")
 	public ResponseEntity<NoticeDto> noticeDetail(@PathVariable("noticeIdx") int noticeIdx) throws Exception {
 		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -70,11 +70,10 @@ public class NoticeController {
 		}
 	}
 
-	/* 공지 수정 */
+	@ApiOperation(value="공지 게시글 수정")
 	@PutMapping("/api/notice/{noticeIdx}")
 	public ResponseEntity<String> updateNotice(@PathVariable("noticeIdx") int noticeIdx, 
 			@RequestBody NoticeDto noticeDto, Authentication authentication) throws Exception {
-		System.out.println("putputputputputputputputputputputputputputput");
 		try {
 			NoticeDto detail = jpaService.noticeDetail(noticeIdx);
 			UserDto userDto = (UserDto) authentication.getPrincipal();	
@@ -96,18 +95,15 @@ public class NoticeController {
 		}
 	}
 
-	/* 공지 삭제 */
+	@ApiOperation(value="공지 게시글 삭제")
 	@DeleteMapping("/api/notice/delete/{noticeIdx}")
 	public ResponseEntity<String> deleteNotice(@PathVariable ("noticeIdx") int noticeIdx, Authentication authentication) throws Exception{
-		System.out.println("deldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldeldel");
 		try {
 			UserDto userDto = (UserDto) authentication.getPrincipal();
 			NoticeDto noticeDto = jpaService.noticeDetail(noticeIdx);
 
 			if (noticeDto.getWriter().equals(noticeDto.getWriter()) || userDto.getUserId().equals("admin") ) {
-				System.out.println("if문안에 들어옴if문안에 들어옴if문안에 들어옴if문안에 들어옴if문안에 들어옴if문안에 들어옴");
 				int deletedCount = jpaService.deleteNotice(noticeIdx);
-				System.out.println("deletedCount >>>>>>>>>>>>>" + deletedCount);
 				if (deletedCount != 1) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("삭제에 실패했습니다");
 				} else {
@@ -121,18 +117,7 @@ public class NoticeController {
 		}
 	}
 }
-	
-//	@GetMapping("/api/notice/search")
-//	public ResponseEntity<List<NoticeDto>> getSerchList(@RequestParam(value = "search") String search) {
-//	        try {
-//	            List<NoticeDto> getSerchList = jpaService.getSerchList(word);
-//	            log.debug("<<<<<<<<<<<<<<<<<<<<<<<<<" + jpaService.getSerchList(word));
-//	            return ResponseEntity.status(HttpStatus.OK).body(getSerchList);
-//	        } catch (Exception exception) {
-//	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//	        }
-//	    }
-//}
+
 	
 
 

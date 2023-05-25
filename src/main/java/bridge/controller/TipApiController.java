@@ -20,6 +20,7 @@ import bridge.dto.TipCommentsDto;
 import bridge.dto.TipDto;
 import bridge.dto.UserDto;
 import bridge.service.TipService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -29,6 +30,7 @@ public class TipApiController {
 	@Autowired
 	TipService tipService;
 
+	@ApiOperation(value="커뮤니티 게시글 작성")
 	@PostMapping("api/inserttip")
 	public ResponseEntity<Object> insertTip(@RequestBody TipDto tipDto, Authentication authentication)
 			throws Exception {
@@ -40,9 +42,9 @@ public class TipApiController {
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(registedCount);
 		}
-
 	}	
-	// update 에 1이 넘어오면 뷰 횟수 증가
+	
+	@ApiOperation(value="커뮤니티 게시글 조회")
 	@GetMapping("api/tipdetail/{tb_idx}/{update}")
 	public ResponseEntity<Map<String,Object>> tipDetail(@PathVariable("tb_idx") int tbIdx,@PathVariable("update") int update) throws Exception{
 		TipDto tipDto = tipService.tipdetail(tbIdx);
@@ -55,6 +57,8 @@ public class TipApiController {
 		map.put("commentsList",tipCommentsDto);
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
+	
+	@ApiOperation(value="커뮤니티 댓글 작성")
 	@PostMapping("api/comment")
 	public ResponseEntity<Object> insertComments (@RequestBody TipCommentsDto tipCommentsDto,Authentication authentication){
 		UserDto userDto = (UserDto) authentication.getPrincipal();
@@ -62,21 +66,29 @@ public class TipApiController {
 		tipService.insertComment(tipCommentsDto);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
+	
+	@ApiOperation(value="커뮤니티 게시글 목록 조회")
 	@GetMapping("api/tiplist")
 	public ResponseEntity<List<TipDto>> tiplist() throws Exception{
 		List<TipDto> tipDto = tipService.tipList();
 		return ResponseEntity.status(HttpStatus.OK).body(tipDto);
 	}
+	
+	@ApiOperation(value="커뮤니티 댓글 조회")
 	@GetMapping("api/comments/{tb_idx}")
 	public  ResponseEntity<List<TipCommentsDto>> getComments(@PathVariable("tb_idx") int tbIdx){
 		List<TipCommentsDto> tipCommentsDto = tipService.tipcommentslist(tbIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(tipCommentsDto);
 	}
+	
+	@ApiOperation(value="커뮤니티 게시글 수정")
 	@PutMapping("api/update/tip")
 	public ResponseEntity<Object> updateTip(@RequestBody TipDto tipDto){
 		tipService.updateTip(tipDto);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
+	
+	@ApiOperation(value="커뮤니티 게시글 삭제")
 	@DeleteMapping("api/tip/delete/{tb_idx}")
 	public ResponseEntity<Object> updateTip(@PathVariable("tb_idx") int tbIdx){
 		tipService.deleteTip(tbIdx);

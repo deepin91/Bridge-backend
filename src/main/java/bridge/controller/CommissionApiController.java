@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
-import bridge.dto.MusicDto;
 import bridge.dto.ReviewDto;
-import bridge.dto.TipDto;
 import bridge.service.CommissionService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -42,7 +40,7 @@ public class CommissionApiController {
 	@Autowired
 	CommissionService commissionService;
 
-	// 작업 목록 전부 불러오기
+	@ApiOperation(value="커미션 목록 조회")
 	@GetMapping("/api/getCommissionList/{userId}")
 	public ResponseEntity<List<CommissionDto>> getCommissionList(@PathVariable("userId") String userId)
 			throws Exception {
@@ -50,21 +48,21 @@ public class CommissionApiController {
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 
-	// 작업진행상황, 예치금 불러오기
+	@ApiOperation(value="커미션 진행 상황 및 예치금 조회")
 	@GetMapping("/api/getProgress/{cIdx}")
 	public ResponseEntity<List<CommissionDto>> getProgress(@PathVariable("cIdx") int cIdx) throws Exception {
 		List<CommissionDto> list = commissionService.getProgress(cIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 
-	// 작업 디테일 불러오기
+	@ApiOperation(value="커미션 디테일 조회")
 	@GetMapping("/api/getCommissionDetail/{cIdx}")
 	public ResponseEntity<List<CommissionDto>> getCommissionDetail(@PathVariable("cIdx") int cIdx) throws Exception {
 		List<CommissionDto> list = commissionService.getCommissionDetail(cIdx);
-		log.info("===============" + cIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 
+	@ApiOperation(value="커미션 게시글 등록")
 	@PostMapping("/api/insertCommissionDetail/{cIdx}")
 	public ResponseEntity<Map<String, Object>> insertCommissionDetail(@PathVariable("cIdx") int cIdx,
 			@RequestPart(value = "data", required = false) CommissionDetailDto commissionDetail,
@@ -109,6 +107,7 @@ public class CommissionApiController {
 		}
 	}
 
+	@ApiOperation(value="커미션 게시글 수정")
 	@PutMapping("/api/editCommissionDetail/{cidx}/{cdIdx}")
 	public ResponseEntity<Object> editCommissionDetail(@PathVariable("cidx") int cidx, @PathVariable("cdIdx") int cdIdx,
 			@RequestPart(value = "data", required = false) CommissionDetailDto commissionDetail,
@@ -153,28 +152,28 @@ public class CommissionApiController {
 		}
 	}
 
-	// 게시글 삭제
+	@ApiOperation(value="커미션 게시글 삭제")
 	@PutMapping("/api/delCommissionDetail/{cdIdx}")
 	public ResponseEntity<Object> delCommissionDetail(@PathVariable("cdIdx") int cdIdx) throws Exception {
 		commissionService.delCommissionDetail(cdIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	// 게시 파일 삭제
+	@ApiOperation(value="커미션 첨부파일 삭제")
 	@PutMapping("/api/delCommissionFile/{cdIdx}")
 	public ResponseEntity<Object> delCommissionFile(@PathVariable("cdIdx") int cdIdx) throws Exception {
 		commissionService.delCommissionFile(cdIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	// 작업목록에서 삭제
+	@ApiOperation(value="커미션 목록 삭제")
 	@PutMapping("/api/delCommissionList/{cIdx}")
 	public ResponseEntity<Object> delCommissionList(@PathVariable("cIdx") int cIdx) throws Exception {
 		commissionService.delCommissionList(cIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	// 작업완료
+	@ApiOperation(value="커미션 진행상황 완료")
 	@PutMapping("/api/commissionEnd/{cIdx}")
 	public ResponseEntity<Object> commissionEnd(@PathVariable("cIdx") int cIdx) throws Exception {
 		commissionService.commissionEnd(cIdx);
@@ -182,7 +181,7 @@ public class CommissionApiController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	// 작업목록에 생성
+	@ApiOperation(value="커미션 목록 생성")
 	@PostMapping("/api/insertCommission/{userId2}")
 	public ResponseEntity<Object> insertCommission(@PathVariable("userId2") String userId2,
 			@RequestBody CommissionDto commissionDto) throws Exception {
@@ -191,7 +190,7 @@ public class CommissionApiController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	// 댓글 작성
+	@ApiOperation(value="커미션 댓글 작성")
 	@PostMapping("/api/insert/CommissionComment/{cdIdx}")
 	public ResponseEntity<Object> CommissionComment(@PathVariable("cdIdx") int cdIdx,
 			@RequestBody CommissionCommentDto commissionCommentDto) throws Exception {
@@ -204,7 +203,7 @@ public class CommissionApiController {
 		}
 	}
 
-	// 댓글 조회
+	@ApiOperation(value="커미션 댓글 조회")
 	@GetMapping("/api/get/CommissionComment/{cdIdx}")
 	public ResponseEntity<List<CommissionCommentDto>> CommissionComment(@PathVariable("cdIdx") int cdIdx)
 			throws Exception {
@@ -212,7 +211,7 @@ public class CommissionApiController {
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 
-	// 음악 파일 다운로드
+	@ApiOperation(value="커미션 첨부파일 다운로드")
 	@GetMapping("/api/CommissionDown/{uuid}")
 	public void CommissionDown(@PathVariable("uuid") String uuid, HttpServletResponse response) throws Exception {
 		String filePath = "C:\\Temp\\" + uuid + ".mp3";
@@ -233,7 +232,8 @@ public class CommissionApiController {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-	//작업 완료 후 리뷰 작성
+	
+	@ApiOperation(value="커미션 리뷰 작성")
 	@PostMapping("/api/insertReview/{userId}")
 	public ResponseEntity<Object> insertReview(@PathVariable("userId") String userId, @RequestBody ReviewDto reviewDto)
 			throws Exception {
