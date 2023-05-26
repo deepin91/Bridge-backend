@@ -123,9 +123,7 @@ public class CommissionApiController {
 					String originFileName = mf.getOriginalFilename();
 					try {
 						File f = new File(UPLOAD_PATH + File.separator + uuid + ".mp3");
-						System.out.println("---------------------------" + f);
 						mf.transferTo(f);
-
 					} catch (IllegalStateException e) {
 						e.printStackTrace();
 					}
@@ -139,15 +137,10 @@ public class CommissionApiController {
 			if (fileNames.size() > 0) {
 				commissionDetail.setCdFile(uuid);
 			}
-
-			System.out.println(">>>>>>>>>>>>>>>>>>>commissionDetail: " + commissionDetail);
-
 			commissionService.editCommissionDetail(commissionDetail);
-
 			return ResponseEntity.status(HttpStatus.OK).body(commissionDetail);
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.info(">>>>>>>>>>>>>>>>>>>" + e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
 		}
 	}

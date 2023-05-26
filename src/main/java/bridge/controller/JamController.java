@@ -60,7 +60,6 @@ public class JamController {
 				String originFileName = mf.getOriginalFilename();
 				try {
 					File f = new File(UPLOAD_PATH + File.separator + uuid + ".jpg");
-					System.out.println("---------------------------" + f);
 					mf.transferTo(f);
 
 				} catch (IllegalStateException e) {
@@ -71,8 +70,6 @@ public class JamController {
 				UserDto userDto = (UserDto) authentication.getPrincipal();
 				concertDto.setCWriter(userDto.getUserId());
 				concertDto.setCPhoto(uuid);
-				System.out.println("`111111111111111111111111111" + concertDto);
-				System.out.println("`222222222222222222222222222" + userDto.getUserId());
 				registedCount = jamService.insertJam(concertDto);
 			}
 
@@ -104,7 +101,6 @@ public class JamController {
 				String originFileName = mf.getOriginalFilename();
 				try {
 					File f = new File(UPLOAD_PATH + File.separator + uuid + ".mp3");
-					System.out.println("---------------------------" + f);
 					mf.transferTo(f);
 
 				} catch (IllegalStateException e) {

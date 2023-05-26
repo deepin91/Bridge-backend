@@ -87,7 +87,9 @@ public class JpaServiceImpl implements JpaService {
 	}
 	@Override
     public void openChat(ChattingEntity chattingEntity) {
+		System.out.println(">>>>>>>>>>>오픈챗 서비스");
         jpaChattingRepository.save(chattingEntity);
+        System.out.println(">>>>>>>>>>>오픈챗 서비스 나옴");
     }
 
 

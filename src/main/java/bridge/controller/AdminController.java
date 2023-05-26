@@ -56,11 +56,9 @@ public class AdminController {
 	@GetMapping("/api/reportCount/{userId}")
 	public ResponseEntity<Object> selectReportCount(@PathVariable("userId") String userId)
 			throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>" + bridgeMapper.selectReportCount(userId));
 		try {
 			int a = bridgeMapper.selectReportCount(userId);
 			return ResponseEntity.status(HttpStatus.OK).body(a);
-			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
 		}

@@ -46,7 +46,9 @@ public class JpaMessageController {
     @ApiOperation(value="채팅방 열기")
     @PostMapping("/api/chatroom")
     public void openChat(@RequestBody ChattingEntity chattingEntity){
+    	System.out.println(">>>>>>>>>>>>>>>>>>>> 오픈챗 실행");
         jpaService.openChat(chattingEntity);
+        System.out.println(">>>>>>>>>>>>>>>> 오픈챗 종료");
     }
 
     @ApiOperation(value="채팅 작성")
