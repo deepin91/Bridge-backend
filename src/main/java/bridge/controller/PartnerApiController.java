@@ -29,6 +29,7 @@ import bridge.dto.ComposerRequestTagDto;
 import bridge.dto.TipDto;
 import bridge.mapper.BridgeMapper;
 import bridge.service.BridgeService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -41,7 +42,7 @@ public class PartnerApiController {
 	@Autowired
 	BridgeMapper bridgeMapper;
 
-	// 파트너 모집글 작성
+	@ApiOperation(value="커미션 게시글 작성")
 	@PostMapping("/api/insertPartnerWrite")
 	public ResponseEntity<Map<String, Object>> insertPartnerWrite(
 			@RequestPart(value = "data", required = false) ComposerRequestDto composerRequestDto,
@@ -51,7 +52,7 @@ public class PartnerApiController {
 		dto.setCrIdx(composerRequestDto.getCrIdx());
 		dto.setCrtTags(composerRequestDto.getCrtTag());
 
-		String UPLOAD_PATH = "C:\\Temp\\";
+		String UPLOAD_PATH = "/home/ubuntu/temp/";
 		int insertedCount = 0;
 
 		String fileNames = "";
@@ -95,7 +96,7 @@ public class PartnerApiController {
 		}
 	}
 
-	// 파트너 구인 리스트
+	@ApiOperation(value="커미션 목록 조회")
 	@GetMapping("/api/openPartnerList")
 	public ResponseEntity<Map<String, Object>> openPartnerList() throws Exception {
 
@@ -110,7 +111,7 @@ public class PartnerApiController {
 		}
 	};
 
-	// 파트너 구인 태그
+	@ApiOperation(value="커미션 게시글에 달린 태그 조회")
 	@GetMapping("/api/openTagList")
 	public ResponseEntity<Map<String, Object>> openTagList() throws Exception {
 		Map<String, Object> map = new HashMap<>();
@@ -124,7 +125,7 @@ public class PartnerApiController {
 		}
 	}
 
-	// 파트너 구인 디테일
+	@ApiOperation(value="커미션 게시글 상세 조회")
 	@GetMapping("/api/openPartnerDetail/{crIdx}")
 	public ResponseEntity<Map<String, Object>> openPartnerDetail(@PathVariable("crIdx") int crIdx) throws Exception {
 		Map<String, Object> map = new HashMap<>();
@@ -142,12 +143,13 @@ public class PartnerApiController {
 	}
 
 	// 이미지 불러오는 코드 -> 재활용 가능
+	@ApiOperation(value="커미션 목록 이미지 조회")
 	@GetMapping("/api/getImage/{imgName}")
 	public void getImage(@PathVariable("imgName") String imgName, HttpServletResponse response) throws Exception {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		OutputStream out = null;
-		String UPLOAD_PATH = "C:\\Temp\\";
+		String UPLOAD_PATH = "/home/ubuntu/temp/";
 
 		try {
 			response.setContentType("image/jpeg");
@@ -171,7 +173,8 @@ public class PartnerApiController {
 			}
 		}
 	}
-
+	
+	@ApiOperation(value="커미션 게시글 수정")
 	@PutMapping("/api/updatePartner/{crIdx}")
 	public ResponseEntity<Object> updatePartner(@PathVariable("crIdx") int crIdx,
 			@RequestPart(value = "data", required = false) ComposerRequestDto composerRequestDto,
@@ -180,6 +183,7 @@ public class PartnerApiController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 	
+	@ApiOperation(value="커미션 게시글 삭제")
 	@DeleteMapping("/api/deletePartner/{crIdx}")
 	public ResponseEntity<Object> deletePartner(@PathVariable("crIdx") int crIdx) throws Exception {
 		bridgeMapper.deletePartner(crIdx);

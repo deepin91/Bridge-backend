@@ -23,6 +23,7 @@ import bridge.dto.UserDto;
 import bridge.dto.UserProfileDto;
 import bridge.mapper.BridgeMapper;
 import bridge.service.BridgeService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -36,7 +37,7 @@ public class UserProfileController {
 	@Autowired
 	BridgeMapper bridgeMapper;
 
-	// 프로필 작성
+	@ApiOperation(value="프로필 작성")
 	@PostMapping("/api/insertProfile/{userId}")
 	public ResponseEntity<Map<String, Object>> insertProfile(@PathVariable("userId") String userId,
 			@RequestPart(value = "data", required = false) UserProfileDto userProfileDto,
@@ -44,7 +45,7 @@ public class UserProfileController {
 			@RequestPart(value = "music", required = false) MultipartFile[] files1,
 			@RequestPart(value = "tag", required = false) TagDto tag) throws Exception {
 		System.out.println(tag);
-		String UPLOAD_PATH = "C:\\Temp\\";
+		String UPLOAD_PATH = "/home/ubuntu/temp/";
 		int insertedCount = 0;
 		try {
 			for (MultipartFile mf : files) {
@@ -102,6 +103,7 @@ public class UserProfileController {
 		}
 	}
 	
+	@ApiOperation(value="프로필 조회")
 	@GetMapping("/api/profile/{userId}")
 	public ResponseEntity<Map<String, Object>> getPorfile(@PathVariable("userId") String userId) throws Exception {
 		Map<String, Object> result = new HashMap<>();
@@ -121,8 +123,5 @@ public class UserProfileController {
 		}
 	}
 	
-	//프로필 리뷰 불러오기
-//	@GetMapping("/api/getReivew/{userId}")
-//	public ResponseEn
 
 }

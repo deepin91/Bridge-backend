@@ -26,11 +26,11 @@ public class AdminController {
 
 	@Autowired
 	private BridgeService bridgeService;
-	
+
 	@Autowired
 	private BridgeMapper bridgeMapper;
 
-	@ApiOperation(value="신고 목록 조회")
+	@ApiOperation(value = "신고 목록 조회")
 	@GetMapping("/api/openReportList")
 	public ResponseEntity<List<ReportDto>> openReportList() throws Exception {
 		List<ReportDto> list = bridgeService.openReportList();
@@ -41,7 +41,7 @@ public class AdminController {
 		}
 	}
 
-	@ApiOperation(value="특정 신고 불러오기")
+	@ApiOperation(value = "특정 신고 목록 조회")
 	@GetMapping("/api/openReportDetail/{reportIdx}")
 	public ResponseEntity<ReportDto> openReportDetail(@PathVariable("reportIdx") int reportIdx) throws Exception {
 		ReportDto reportDto = bridgeService.openReportDetail(reportIdx);
@@ -51,22 +51,21 @@ public class AdminController {
 			return ResponseEntity.status(HttpStatus.OK).body(reportDto);
 		}
 	}
-	
-	@ApiOperation(value="신고 목록 조회")
+
+	@ApiOperation(value = "유저 신고 카운트 조회")
+
 	@GetMapping("/api/reportCount/{userId}")
-	public ResponseEntity<Object> selectReportCount(@PathVariable("userId") String userId)
-			throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>" + bridgeMapper.selectReportCount(userId));
+	public ResponseEntity<Object> selectReportCount(@PathVariable("userId") String userId) throws Exception {
 		try {
 			int a = bridgeMapper.selectReportCount(userId);
 			return ResponseEntity.status(HttpStatus.OK).body(a);
-			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
 		}
 	}
 
-	@ApiOperation(value="유저 정지")
+	@ApiOperation(value = "신고 처리")
+
 	@PutMapping("/api/handleReport/{userId}")
 	public ResponseEntity<Object> handleReport(@PathVariable("userId") String userId, @RequestBody UserDto userDto)
 			throws Exception {
@@ -78,5 +77,5 @@ public class AdminController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
 		}
 	}
-	
+
 }
