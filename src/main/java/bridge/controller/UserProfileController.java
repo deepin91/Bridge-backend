@@ -120,5 +120,9 @@ public class UserProfileController {
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		}
 	}
+	
+	//프로필 리뷰 불러오기
+//	@GetMapping("/api/getReivew/{userId}")
+//	public ResponseEn
 
 }

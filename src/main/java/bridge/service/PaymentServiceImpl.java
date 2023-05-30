@@ -1,5 +1,6 @@
 package bridge.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import bridge.dto.PayListDto;
 import bridge.dto.PaymentDto;
-import bridge.dto.UserDto;
 import bridge.mapper.PaymentMapper;
 
 @Service
@@ -35,7 +35,10 @@ public class PaymentServiceImpl implements PaymentService{
 	@Override
 	public void doPayment(PaymentDto paymentDto) {
 		paymentMapper.doPayment(paymentDto);
-		paymentMapper.updatePoint(paymentDto.getUsepoint());
+		HashMap<String,Object> map = new HashMap<>();
+		map.put("userId",paymentDto.getClients());
+		map.put("plMoney", paymentDto.getUsepoint());
+ 		paymentMapper.updatePoint(map);
 	}
 
 	@Override

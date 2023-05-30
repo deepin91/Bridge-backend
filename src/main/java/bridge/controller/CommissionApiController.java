@@ -1,11 +1,15 @@
 package bridge.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +29,7 @@ import bridge.dto.CommissionCommentDto;
 import bridge.dto.CommissionDetailDto;
 import bridge.dto.CommissionDto;
 import bridge.dto.MusicDto;
+import bridge.dto.ReviewDto;
 import bridge.dto.TipDto;
 import bridge.service.CommissionService;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +91,7 @@ public class CommissionApiController {
 					insertedCount++;
 				}
 				commissionDetail.setCdFile(uuid);
+				result.put("uuid", uuid);
 			}
 
 			commissionDetail.setCIdx(cIdx);
@@ -200,9 +206,44 @@ public class CommissionApiController {
 
 	// 댓글 조회
 	@GetMapping("/api/get/CommissionComment/{cdIdx}")
-	public ResponseEntity<List<CommissionCommentDto>> CommissionComment(@PathVariable("cdIdx") int cdIdx) throws Exception {
+	public ResponseEntity<List<CommissionCommentDto>> CommissionComment(@PathVariable("cdIdx") int cdIdx)
+			throws Exception {
 		List<CommissionCommentDto> list = commissionService.CommissionComment(cdIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(list);
+	}
+
+	// 음악 파일 다운로드
+	@GetMapping("/api/CommissionDown/{uuid}")
+	public void CommissionDown(@PathVariable("uuid") String uuid, HttpServletResponse response) throws Exception {
+		String filePath = "C:\\Temp\\" + uuid + ".mp3";
+		File file = new File(filePath);
+		if (file.exists()) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + uuid + "\"");
+			try (FileInputStream inputStream = new FileInputStream(file);
+					ServletOutputStream outputStream = response.getOutputStream()) {
+				byte[] buffer = new byte[1024];
+				int length;
+				while ((length = inputStream.read(buffer)) > 0) {
+					outputStream.write(buffer, 0, length);
+				}
+				outputStream.flush();
+			}
+		} else {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+	//작업 완료 후 리뷰 작성
+	@PostMapping("/api/insertReview/{userId}")
+	public ResponseEntity<Object> insertReview(@PathVariable("userId") String userId, @RequestBody ReviewDto reviewDto)
+			throws Exception {
+		reviewDto.setUserId(userId);
+		int insertCount = commissionService.insertReview(reviewDto);
+		if (insertCount > 0) {
+			return ResponseEntity.status(HttpStatus.CREATED).body(insertCount);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(insertCount);
+		}
 	}
 
 }

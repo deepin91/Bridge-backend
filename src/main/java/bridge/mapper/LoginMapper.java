@@ -21,4 +21,6 @@ public interface LoginMapper {
 	public String findId(String email);
 	public UserDto findPassword(String email);
 	public void updatePassword(UserDto userDto);
+	//추가
+	public int selectHalted(String username);
 }

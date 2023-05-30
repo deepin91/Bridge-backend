@@ -57,7 +57,7 @@ public class PaymentController {
 
 		paymentService.doPayment(paymentDto);		// 결제 진행 + 유저 포인트 업데이트 수행
 		paymentMapper.insertPayment();				// 결제 내역 pay_list 에 기록
-		paymentMapper.updatePartnerMoney();			// 결제 내역 partner_detail 에 기록
+//		paymentMapper.updatePartnerMoney();			// 결제 내역 partner_detail 에 기록
     }
 	
 	//관리자용 결제내역 (모든 유저/ 모든 거래)

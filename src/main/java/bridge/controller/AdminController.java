@@ -66,7 +66,6 @@ public class AdminController {
 		}
 	}
 
-	// 신고 처리
 	@ApiOperation(value="유저 정지")
 	@PutMapping("/api/handleReport/{userId}")
 	public ResponseEntity<Object> handleReport(@PathVariable("userId") String userId, @RequestBody UserDto userDto)

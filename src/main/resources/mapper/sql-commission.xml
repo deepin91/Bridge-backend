@@ -6,10 +6,11 @@
 	<select id="getCommissionList"
 		resultType="bridge.dto.CommissionDto">
 		select * from commission
-		where user_id1 = #{userId} 
-		or user_id2 = #{userId}
+		where user_id1 = #{userId} and
+		deleted_yn = 0
+		or user_id2 = #{userId} and deleted_yn = 0
 	</select>
-	
+
 	<!-- deleted_yn = 0 -->
 
 	<select id="getProgress" resultType="bridge.dto.CommissionDto">
@@ -71,7 +72,7 @@
 		parameterType="bridge.dto.CommissionDto">
 		insert into commission
 		(user_id1, user_id2, c_money)
-		values (#{userId1}, #{userId2}, 0)
+		values (#{userId1}, #{userId2}, #{coMoney})
 	</insert>
 
 	<update id="delCommissionList" parameterType="int">
@@ -90,16 +91,25 @@
 		and
 		c.c_idx = #{cIdx}
 	</update>
-	
-	<insert id="CommissionComment" parameterType="bridge.dto.CommissionCommentDto">
+
+	<insert id="CommissionComment"
+		parameterType="bridge.dto.CommissionCommentDto">
 		insert into commission_comment
-		(user_id, cc_date, cc_contents, cd_idx)
+		(user_id, cc_date,
+		cc_contents, cd_idx)
 		values (#{userId}, now(), #{ccContents}, #{cdIdx})
 	</insert>
-	
-	<select id="getCommissionComment" resultType="bridge.dto.CommissionCommentDto">
+
+	<select id="getCommissionComment"
+		resultType="bridge.dto.CommissionCommentDto">
 		select * from commission_comment
 		where cd_idx = #{cdIdx}
 	</select>
+
+	<insert id="insertReview" parameterType="bridge.dto.ReviewDto">
+		insert into user_review
+		( content, user_id)
+		values ( #{content}, #{userId})
+	</insert>
 
 </mapper>
