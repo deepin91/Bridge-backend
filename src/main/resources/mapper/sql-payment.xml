@@ -4,10 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bridge.mapper.PaymentMapper">
 
-	<select resultType="bridge.dto.PaymentDto" id="paymentList"> select
+<!-- 	<select resultType="bridge.dto.PaymentDto" id="paymentList">
+		select
 		payment_idx, clients, producer, deposit, downpayment, total_cost,
 		client_point, usepoint from payment order by payment_idx desc
 	</select>
+	 -->
 
 	<!-- <select resultType="bridge.dto.PaymentDto" id="paymentDetail" parameterType="int">select 
 		payment_idx, clients, producer, deposit, downpayment, total_cost, usepoint 
@@ -19,9 +21,19 @@
 		from users
 		where user_id = #{userId}
 	</select>
+	
+	<!-- 결제 내역 기록 -->
+	<insert id="insertPayment">
+		insert into pay_list(user_id1, user_id2,
+		pl_money,pl_date)
+		select clients, producer, downpayment, payment_dt
+		from
+		payment
+		order by payment_idx DESC limit 1
+	</insert>
 
 	<!-- 결제 진행 -->
-	<insert id="doPayment" parameterType="bridge.dto.PaymentDto">
+	 <insert id="doPayment" parameterType="bridge.dto.PaymentDto">
 		insert
 		into payment
 		(clients, producer, downpayment, total_cost, client_point, usepoint,
@@ -29,17 +41,15 @@
 		values
 		(#{clients}, #{producer}, #{downpayment},
 		#{totalCost}, #{clientPoint}, #{usepoint}, now() )
-	</insert>
+	</insert> 
 
 	<!-- '보유포인트 - 사용포인트' 값을 유저 포인트에 업데이트 -->
-	<update id="updatePoint">
-		update payment p, users u
+	<update id="updatePoint" parameterType="HashMap">
+		update users 
 		set
-		p.client_point =
-		u.user_point - #{usepoint},
-		u.user_point = p.client_point
+		user_point = user_point - #{plMoney}
 		where
-		p.clients = u.user_id
+		user_id = #{userId}
 	</update>
 
 	<!-- 결제한 금액을 예치금으로 값 기록 -->
@@ -49,7 +59,7 @@
 		p.payment_idx = t.max_payment_idx SET d.pd_money = d.pd_money + p.downpayment; 
 		</update> -->
 
-	<update id="updatePartnerMoney">
+<!-- 	<update id="updatePartnerMoney">
 		UPDATE commission AS c
 		INNER JOIN payment AS p
 		ON
@@ -61,17 +71,8 @@
 		ON p.payment_idx
 		= t.max_payment_idx
 		SET c.c_money = c.c_money + p.downpayment;
-	</update>
+	</update> -->
 
-	<!-- 결제 내역 기록 -->
-	<insert id="insertPayment">
-		insert into pay_list(user_id1, user_id2,
-		pl_money,pl_date)
-		select clients, producer, downpayment, payment_dt
-		from
-		payment
-		order by payment_idx DESC limit 1
-	</insert>
 
 
 	<!-- 관리자용 결제 리스트 -->

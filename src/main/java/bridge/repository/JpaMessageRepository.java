@@ -9,6 +9,7 @@ import bridge.entity.MessageEntity;
 public interface JpaMessageRepository extends CrudRepository<MessageEntity, Integer> {
 
 	List<MessageEntity> findByRoomIdx(int roomIdx);
-	
+
+
 
 }

@@ -18,7 +18,7 @@ public class SwaggerConfiguration {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("tantara"))
+				.apis(RequestHandlerSelectors.basePackage("bridge"))
 				.paths(PathSelectors.any())
 				.build();
 	}
@@ -26,7 +26,7 @@ public class SwaggerConfiguration {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("Spring Boot Open API with Swagger")
-				.description("tantara REST API")
+				.description("Bridge REST API")
 				.version("1.0.0")
 				.build();
 	}

@@ -43,12 +43,15 @@ public class PaymentController {
 		}
 	};
 
+
 	@ApiOperation(value = "유저 보유포인트 조회")
 	@GetMapping("/api/payment/detail/{userId}")
 	public ResponseEntity<Integer> paymentDetail(@PathVariable("userId") String userId) throws Exception {
 		int abc = paymentService.paymentDetail(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(abc);
 	}
+
+	
 
 	@ApiOperation(value = "회원간 결제 진행")
 	@PostMapping("/api/doPayment/{producer}")

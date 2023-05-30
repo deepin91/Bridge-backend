@@ -52,7 +52,7 @@ public class PartnerApiController {
 		dto.setCrIdx(composerRequestDto.getCrIdx());
 		dto.setCrtTags(composerRequestDto.getCrtTag());
 
-		String UPLOAD_PATH = "C:\\Temp\\";
+		String UPLOAD_PATH = "/home/ubuntu/temp/";
 		int insertedCount = 0;
 
 		String fileNames = "";
@@ -149,7 +149,7 @@ public class PartnerApiController {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		OutputStream out = null;
-		String UPLOAD_PATH = "C:\\Temp\\";
+		String UPLOAD_PATH = "/home/ubuntu/temp/";
 
 		try {
 			response.setContentType("image/jpeg");

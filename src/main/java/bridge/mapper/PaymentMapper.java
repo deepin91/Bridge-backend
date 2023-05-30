@@ -1,5 +1,6 @@
 package bridge.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -15,7 +16,7 @@ public interface PaymentMapper {
     void insertPayment(PaymentDto paymentDto)throws Exception;
     int paymentDetail(String userId)throws Exception;
 	void doPayment(PaymentDto paymentDto);
-	void updatePoint(int i);
+	void updatePoint(HashMap<String, Object> map);
 	void updatePartnerMoney();
 	int insertPayment();
 	//관리자용 결제 내역

@@ -10,11 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import bridge.dto.UserDto;
 import bridge.entity.ChattingEntity;
@@ -23,7 +23,7 @@ import bridge.service.JpaService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class JpaMessageController {
 
@@ -48,6 +48,7 @@ public class JpaMessageController {
     public void openChat(@RequestBody ChattingEntity chattingEntity){
     	System.out.println(">>>>>>>>>>>>>>>>>>>> 오픈챗 실행");
         jpaService.openChat(chattingEntity);
+
         System.out.println(">>>>>>>>>>>>>>>> 오픈챗 종료");
     }
 
