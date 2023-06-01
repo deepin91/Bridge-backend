@@ -20,18 +20,16 @@ import bridge.dto.TipCommentsDto;
 import bridge.dto.TipDto;
 import bridge.dto.UserDto;
 import bridge.service.TipService;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 public class TipApiController {
-	
+
 	@Autowired
 	TipService tipService;
 
-	@ApiOperation(value="커뮤니티 게시글 작성")
-	@PostMapping("api/inserttip")
+	@PostMapping("/api/inserttip")
 	public ResponseEntity<Object> insertTip(@RequestBody TipDto tipDto, Authentication authentication)
 			throws Exception {
 		UserDto userDto = (UserDto) authentication.getPrincipal();
@@ -42,56 +40,109 @@ public class TipApiController {
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(registedCount);
 		}
-	}	
-	
-	@ApiOperation(value="커뮤니티 게시글 조회")
-	@GetMapping("api/tipdetail/{tb_idx}/{update}")
-	public ResponseEntity<Map<String,Object>> tipDetail(@PathVariable("tb_idx") int tbIdx,@PathVariable("update") int update) throws Exception{
+
+	}
+
+	// update 에 1이 넘어오면 뷰 횟수 증가
+	@GetMapping("/api/tipdetail/{tbIdx}/{update}")
+	public ResponseEntity<Map<String, Object>> tipDetail(@PathVariable("tbIdx") int tbIdx,
+			@PathVariable("update") int update) throws Exception {
 		TipDto tipDto = tipService.tipdetail(tbIdx);
 		List<TipCommentsDto> tipCommentsDto = tipService.tipcommentslist(tbIdx);
 		Map<String, Object> map = new HashMap<>();
-		if(update == 1) {
-			tipService.updateViews(tbIdx);	
+		if (update == 1) {
+			tipService.updateViews(tbIdx);
 		}
-		map.put("tipDetail",tipDto);
-		map.put("commentsList",tipCommentsDto);
+		map.put("tipDetail", tipDto);
+		map.put("commentsList", tipCommentsDto);
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
-	
-	@ApiOperation(value="커뮤니티 댓글 작성")
-	@PostMapping("api/comment")
-	public ResponseEntity<Object> insertComments (@RequestBody TipCommentsDto tipCommentsDto,Authentication authentication){
+
+	@PostMapping("/api/comment")
+	public ResponseEntity<Object> insertComments(@RequestBody TipCommentsDto tipCommentsDto,
+			Authentication authentication) {
 		UserDto userDto = (UserDto) authentication.getPrincipal();
 		tipCommentsDto.setUserId(userDto.getUserId());
 		tipService.insertComment(tipCommentsDto);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
-	
-	@ApiOperation(value="커뮤니티 게시글 목록 조회")
-	@GetMapping("api/tiplist")
-	public ResponseEntity<List<TipDto>> tiplist() throws Exception{
+
+	@GetMapping("/api/tiplist")
+	public ResponseEntity<List<TipDto>> tiplist() throws Exception {
 		List<TipDto> tipDto = tipService.tipList();
 		return ResponseEntity.status(HttpStatus.OK).body(tipDto);
 	}
-	
-	@ApiOperation(value="커뮤니티 댓글 조회")
-	@GetMapping("api/comments/{tb_idx}")
-	public  ResponseEntity<List<TipCommentsDto>> getComments(@PathVariable("tb_idx") int tbIdx){
+
+	@GetMapping("/api/comments/{tbIdx}")
+	public ResponseEntity<List<TipCommentsDto>> getComments(@PathVariable("tb_idx") int tbIdx) {
 		List<TipCommentsDto> tipCommentsDto = tipService.tipcommentslist(tbIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(tipCommentsDto);
 	}
-	
-	@ApiOperation(value="커뮤니티 게시글 수정")
-	@PutMapping("api/update/tip")
-	public ResponseEntity<Object> updateTip(@RequestBody TipDto tipDto){
+
+	@PutMapping("/api/update/tip")
+	public ResponseEntity<Object> updateTip(@RequestBody TipDto tipDto) {
 		tipService.updateTip(tipDto);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
-	
-	@ApiOperation(value="커뮤니티 게시글 삭제")
-	@DeleteMapping("api/tip/delete/{tb_idx}")
-	public ResponseEntity<Object> updateTip(@PathVariable("tb_idx") int tbIdx){
+
+	@DeleteMapping("/api/tip/delete/{tbIdx}")
+	public ResponseEntity<Object> updateTip(@PathVariable("tbIdx") int tbIdx) {
 		tipService.deleteTip(tbIdx);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
+
+	// 상세 조회 - 좋아요
+	@GetMapping("/api/tipdetail/{tbIdx}/getHeart")
+	public ResponseEntity<TipDto> openGetHeart(@PathVariable("tbIdx") int tbIdx) throws Exception {
+		TipDto tipDto = tipService.selectHeartCount(tbIdx);
+		if (tipDto == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(tipDto);
+		}
+	}
+
+	// 좋아요 수 업데이트
+	@PutMapping("/api/tipdetail/{tbIdx}/heart")
+	public ResponseEntity<Integer> updateHeart(@PathVariable("tbIdx") int tbIdx, @RequestBody TipDto tipDto)
+			throws Exception {
+		int updatedCount = tipService.updateHeartCount(tipDto);
+		if (updatedCount != 1) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(updatedCount);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(updatedCount);
+		}
+	}
+
+	// 좋아요 수 업데이트
+	@PutMapping("/api/tipdetail/{tbIdx}/unHeart")
+	public ResponseEntity<Integer> cancleHeart(@PathVariable("tbIdx") int tbIdx, @RequestBody TipDto tipDto)
+			throws Exception {
+		int updatedCount = tipService.cancleHeartCount(tipDto);
+		if (updatedCount != 1) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(updatedCount);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(updatedCount);
+		}
+	}
+	
+	
+	
+//	@GetMapping("/api/tiplist")
+//	public ResponseEntity<List<TipDto>> tiplist() throws Exception {
+//		List<TipDto> tipDto = tipService.tipList();
+//		return ResponseEntity.status(HttpStatus.OK).body(tipDto);
+//	}
+
+	// 사용자 : 뮤지컬 메인 화면- 좋아요 랭킹 순 출력
+	@GetMapping("/api/tiplist/heartsList")
+	public ResponseEntity<List<TipDto>> heartsList() throws Exception {
+		List<TipDto> heartsList = tipService.selectHeartsList();
+		if (heartsList != null && heartsList.size() > 0) {
+			return ResponseEntity.status(HttpStatus.OK).body(heartsList);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+
 }

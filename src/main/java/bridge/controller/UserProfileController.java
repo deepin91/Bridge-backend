@@ -45,7 +45,7 @@ public class UserProfileController {
 			@RequestPart(value = "music", required = false) MultipartFile[] files1,
 			@RequestPart(value = "tag", required = false) TagDto tag) throws Exception {
 		System.out.println(tag);
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:/home/ubuntu/temp/";
 		int insertedCount = 0;
 		try {
 			for (MultipartFile mf : files) {

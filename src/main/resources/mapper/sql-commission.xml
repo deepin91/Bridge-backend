@@ -9,6 +9,7 @@
 		where user_id1 = #{userId} and
 		deleted_yn = 0
 		or user_id2 = #{userId} and deleted_yn = 0
+		order by c_idx DESC
 	</select>
 
 	<!-- deleted_yn = 0 -->

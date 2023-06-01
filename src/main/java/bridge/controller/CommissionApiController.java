@@ -67,7 +67,7 @@ public class CommissionApiController {
 	public ResponseEntity<Map<String, Object>> insertCommissionDetail(@PathVariable("cIdx") int cIdx,
 			@RequestPart(value = "data", required = false) CommissionDetailDto commissionDetail,
 			@RequestPart(value = "files", required = false) MultipartFile[] files) throws Exception {
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:/home/ubuntu/temp/";
 		int insertedCount = 0;
 		List<String> fileNames = new ArrayList<>();
 
@@ -113,7 +113,7 @@ public class CommissionApiController {
 			@RequestPart(value = "data", required = false) CommissionDetailDto commissionDetail,
 			@RequestPart(value = "files", required = false) MultipartFile[] files) throws Exception {
 
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:/home/ubuntu/temp/";
 		String uuid = UUID.randomUUID().toString();
 		List<String> fileNames = new ArrayList<>();
 
@@ -207,7 +207,7 @@ public class CommissionApiController {
 	@ApiOperation(value="커미션 첨부파일 다운로드")
 	@GetMapping("/api/CommissionDown/{uuid}")
 	public void CommissionDown(@PathVariable("uuid") String uuid, HttpServletResponse response) throws Exception {
-		String filePath = "/home/ubuntu/temp/" + uuid + ".mp3";
+		String filePath = "C:/home/ubuntu/temp/" + uuid + ".mp3";
 		File file = new File(filePath);
 		if (file.exists()) {
 			response.setContentType("application/octet-stream");

@@ -62,4 +62,30 @@ public class TipServiceImpl implements TipService{
 		tipMapper.deleteTip(tbIdx);
 	}
 
+	@Override
+	public TipDto selectHeartCount(int tbIdx) {
+		// TODO Auto-generated method stub
+		return tipMapper.selectHeartCount(tbIdx);
+	}
+
+	@Override
+	public int updateHeartCount(TipDto tipDto) {
+		// TODO Auto-generated method stub
+		return tipMapper.updateHeartCount(tipDto);
+	}
+
+	@Override
+	public int cancleHeartCount(TipDto tipDto) {
+		// TODO Auto-generated method stub
+		return tipMapper.cancleHeartCount(tipDto);
+	}
+
+	@Override
+	public List<TipDto> selectHeartsList() {
+		// TODO Auto-generated method stub
+		return tipMapper.selectHeartsList();
+	}
 }
+//	int updateHeartCount(TipDto tipDto);
+//
+//}

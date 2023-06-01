@@ -50,7 +50,7 @@ public class JamController {
 	public ResponseEntity<Integer> insertTip(@RequestPart(value = "data", required = false) ConcertDto concertDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] files, Authentication authentication)
 			throws Exception {
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:/home/ubuntu/temp/";
 		String uuid = UUID.randomUUID().toString();
 		List<String> fileNames = new ArrayList<>();
 		Map<String, Object> result = new HashMap<>();
@@ -92,7 +92,7 @@ public class JamController {
 			@RequestPart(value = "data", required = false) ConcertMusicDto concertMusicDto,
 			@RequestPart(value = "files", required = false) MultipartFile[] files, Authentication authentication)
 			throws Exception {
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:/home/ubuntu/temp/";
 		String uuid = UUID.randomUUID().toString();
 		List<String> fileNames = new ArrayList<>();
 		int registedCount = 0;

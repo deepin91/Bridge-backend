@@ -25,4 +25,12 @@ public interface TipMapper {
 
 	void deleteTip(int tbIdx);
 
+	int cancleHeartCount(TipDto tipDto);
+
+	List<TipDto> selectHeartsList();
+
+	int updateHeartCount(TipDto tipDto);
+
+	TipDto selectHeartCount(int tbIdx);
+
 }

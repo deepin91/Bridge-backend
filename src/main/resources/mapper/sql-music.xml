@@ -79,6 +79,7 @@
 		select report_idx,
 		report_reason, user_id, reported_user_id
 		from report
+		order by report_idx DESC
 	</select>
 
 	<!-- 특정 신고 디테일 -->
@@ -112,6 +113,7 @@
 		select a_idx, a_title, a_contents, a_date
 		from announcement
 		where deleted_yn='N'
+		order by a_idx DESC
 	</select>
 
 	<!-- 특정 공지 -->

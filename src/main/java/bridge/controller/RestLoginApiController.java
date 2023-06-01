@@ -17,8 +17,10 @@ import bridge.dto.UserDto;
 import bridge.security.JwtTokenUtil;
 import bridge.service.LoginService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 public class RestLoginApiController {
 	@Autowired
 	private LoginService loginService;
@@ -26,7 +28,9 @@ public class RestLoginApiController {
 	@ApiOperation(value="회원가입")
 	@PostMapping("/api/regist")
 	public ResponseEntity<Object> regist(@RequestBody UserDto userDto) throws Exception {
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>" + userDto);
 		int registedCount = loginService.registUser(userDto);
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>" + userDto);
 		if (registedCount > 0) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(registedCount);
 		} else {

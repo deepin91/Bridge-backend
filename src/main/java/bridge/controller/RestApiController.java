@@ -55,7 +55,7 @@ public class RestApiController {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		BufferedOutputStream bos = null;
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:/home/ubuntu/temp/";
 		System.out.println(">>>>>>>>>>>>>>>>>>>>    " + musicUUID);
 		System.out.println("++++++++++++++++++++++" + response);
 		try {
@@ -127,7 +127,7 @@ public class RestApiController {
 	@ApiOperation(value = "분리된 음원 폴더 조회")
 	@GetMapping("/api/splitedMusic/{musicUUID}")
 	public List<String> splitedMusic(@PathVariable("musicUUID") String musicUUID) throws Exception {
-		String path = "/home/ubuntu/temp/output/" + musicUUID + "/";
+		String path = "C:/home/ubuntu/temp/output/" + musicUUID + "/";
 		File file = new File(path);
 
 		File[] files = file.listFiles();
@@ -148,7 +148,7 @@ public class RestApiController {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		BufferedOutputStream bos = null;
-		String path = "/home/ubuntu/temp/output/" + musicUUID + "/" + fn;
+		String path = "C:/home/ubuntu/temp/output/" + musicUUID + "/" + fn;
 		System.out.println(">>>>>>>>>>>>>>>>>>>>    " + musicUUID);
 		System.out.println("111111111111111" + fn);
 		System.out.println("++++++++++++++++++++++" + response);
@@ -171,7 +171,7 @@ public class RestApiController {
 	@GetMapping("/api/downloadSplitedMusic/{musicUUID}/{fileName:.+}")
 	public void downloadSplitedMusic(@PathVariable("musicUUID") String musicUUID,
 			@PathVariable("fileName") String fileName, HttpServletResponse response) throws Exception {
-		String filePath = "/home/ubuntu/temp/output/" + musicUUID + "/" + fileName;
+		String filePath = "C:/home/ubuntu/temp/output/" + musicUUID + "/" + fileName;
 		File file = new File(filePath);
 		if (file.exists()) {
 			response.setContentType("application/octet-stream");
@@ -194,7 +194,7 @@ public class RestApiController {
 	@PostMapping("/api/insertMusicForSplit/{cIdx}")
 	public ResponseEntity<Map<String, Object>> insertMusicForSplit(@PathVariable("cIdx") int cIdx,
 			@RequestPart(value = "files", required = false) MultipartFile[] files) throws Exception {
-		String UPLOAD_PATH = "/home/ubuntu/temp/";
+		String UPLOAD_PATH = "C:\\home\\ubuntu\\temp\\";
 		int insertedCount = 0;
 		String uuid = UUID.randomUUID().toString();
 		List<String> fileNames = new ArrayList<>();

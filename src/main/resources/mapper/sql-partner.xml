@@ -11,7 +11,6 @@
 		from composer_request
 		where deleted_yn = 0
 		order by cr_idx desc
-		
 	</select>
 
 	<!-- 파트너 구인 작성 -->
